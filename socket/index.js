@@ -14,24 +14,23 @@ function SocketServer(){
     var self = this;
 
     io.on('connection', function (socket) {
-        self.on('request', function (req, res) {
-            var requestJson = parseRequest(req);
-            socket.emit('request', requestJson)
-        });
-        self.on('response', function (req, res) {
-            var requestJson = parseRequest(req);
-            socket.emit('request', requestJson)
-        });
-        self.on('setRequest', function (req, res) {
-            var requestJson = parseRequest(req);
-            socket.emit('request', requestJson)
-        });
-        self.on('setResponse', function (req, res) {
-            var requestJson = parseRequest(req);
-            socket.emit('request', requestJson)
-        });
+        //self.on('request', function (req, res) {
+        //    var requestJson = parseRequest(req);
+        //    socket.emit('request', requestJson)
+        //});
+        //self.on('response', function (req, res) {
+        //    var requestJson = parseRequest(req);
+        //    socket.emit('request', requestJson)
+        //});
+        //self.on('setRequest', function (req, res) {
+        //    var requestJson = parseRequest(req);
+        //    socket.emit('request', requestJson)
+        //});
+        //self.on('setResponse', function (req, res) {
+        //    var requestJson = parseRequest(req);
+        //    socket.emit('request', requestJson)
+        //});
         self.on('data', function (data, rewrite, req, res) {
-
             socket.emit('data', parseRequest(req,data))
         });
 
@@ -58,6 +57,7 @@ function parseRequest (req,data) {
     var response = JSON.parse(JSON.stringify(req.proxyOptions));
     response.socketData = data;
     response.contentType = req.res.headers['content-type'];
+    response.id = req.requestId;
     return response;
 }
 
