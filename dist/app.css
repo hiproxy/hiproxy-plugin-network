@@ -1,4 +1,106 @@
-.table td,
-.table th {
-  padding: .3rem .4rem;
+@charset "utf-8";
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+a,
+img {
+  -webkit-touch-callout: none;
+}
+a {
+  color: #000;
+  text-decoration: none;
+  outline: none;
+}
+a:active {
+  outline: none;
+  color: #000;
+}
+i {
+  font-style: normal;
+}
+img {
+  display: block;
+}
+body {
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: PingFang SC, Helvetica Neue, Helvetica, Microsoft YaHei, STHeiTi, sans-serif;
+}
+ul,
+li {
+  max-height: 1000000px;
+}
+#app {
+  width: 100%;
+  height: 100%;
+}
+#app .navbar {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 50px;
+  color: #1ba9ba;
+}
+#app .right-nav .btn {
+  margin: 0 20px;
+  color: #1ba9ba;
+}
+#app .table {
+  width: 100%;
+  text-align: left;
+}
+#app .table .table-header {
+  height: 30px;
+  width: 100%;
+  background: #f0f0f0;
+}
+#app .table .table-header th {
+  min-width: 50px;
+  padding-left: 10px;
+}
+#app .dialog {
+  position: absolute;
+  top: 52px;
+  width: 900px;
+  right: 0;
+  background: #fff;
+  z-index: 2;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  max-height: 100%;
+}
+#app .dialog .code-container {
+  width: 100%;
+  height: 100%;
+}
+#app .dialog header {
+  width: 100%;
+  height: 21px;
+  background: #eee;
+  line-height: 21px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+#app .dialog header div {
+  text-align: center;
+  width: 80px;
+  border-right: 1px solid #ccc;
+}
+#app .dialog header .active {
+  background: #ccc;
+}
+#app .dialog section {
+  padding-left: 20px;
 }

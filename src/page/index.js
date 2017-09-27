@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { onArrive } from '../action';
 import {Table} from './table';
+import Dialog from './dialog';
 import './index.less';
 import io from 'socket.io-client';
 
@@ -9,6 +10,11 @@ class Home extends Component {
 
     constructor (props) {
         super(props);
+
+        this.state = {
+            showRequestDetail: false,
+            requestDetail: null
+        }
     }
 
     componentDidMount() {
@@ -25,19 +31,25 @@ class Home extends Component {
 
     render () {
         const { proxyPath, sslPath } = this.state||{};
-        return <div className="col-lg-12">
-            <header className="navbar bg-secondary s-container container">
-                <section className="navbar-section">
-                    <h1 className="navbar-brand mr-10 text-primary">Hiproxy devtool</h1>
-                </section>
-                <a href={proxyPath} className="btn btn-link">proxy.pac</a>
-                <a href={sslPath} className="btn btn-link">ssl-certificate</a>
-                <section>
+        return <div>
+            <header className="navbar">
+                <h1 className="navbar-brand">Hiproxy devtool</h1>
+                <div className="right-nav">
+                    <a href={proxyPath} className="btn btn-link">proxy.pac</a>
+                    <a href={sslPath} className="btn btn-link">ssl-certificate</a>
                     <a href="https://github.com/picturepan2/spectre" className="btn btn-link">GitHub</a>
-                </section>
+                </div>
             </header>
-            <Table data={this.props.requests}/>
+            <Table data={this.props.requests} showRequestDetail={this.showRequestDetail.bind(this)}/>
+            <Dialog showRequestDetail={this.state.showRequestDetail} requestDetail={this.state.requestDetail}/>
         </div>
+    }
+
+    showRequestDetail( item )  {
+        this.setState({
+            showRequestDetail: true,
+            requestDetail: item
+        })
     }
 }
 const mapStateToProps = (state)=>{

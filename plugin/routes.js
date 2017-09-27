@@ -31,8 +31,8 @@ module.exports = [
           socketInstance.emit('data', data.toString(), req, res);
         });
 
-        hiproxyServer.on('response', function (req, res,data) {
-          socketInstance.emit('response', req, res, data);
+        hiproxyServer.on('response', function (req, res) {
+          socketInstance.emit('response', req, res);
         });
       }
 
