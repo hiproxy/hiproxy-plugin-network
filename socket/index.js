@@ -8,30 +8,29 @@ var EventEmitter = require('events');
 var app = require('http').createServer();
 var io = require('socket.io')(app);
 app.listen(9999);
+var zlib = require('zlib');
+
+var streamArray = {};
 
 function SocketServer(){
     EventEmitter.call(this);
     var self = this;
 
     io.on('connection', function (socket) {
-        //self.on('request', function (req, res) {
-        //    var requestJson = parseRequest(req);
-        //    socket.emit('request', requestJson)
-        //});
-        //self.on('response', function (req, res) {
-        //    var requestJson = parseRequest(req);
-        //    socket.emit('request', requestJson)
-        //});
-        //self.on('setRequest', function (req, res) {
-        //    var requestJson = parseRequest(req);
-        //    socket.emit('request', requestJson)
-        //});
-        //self.on('setResponse', function (req, res) {
-        //    var requestJson = parseRequest(req);
-        //    socket.emit('request', requestJson)
-        //});
+        self.on('response', function (req,res,data) {
+            if (streamArray[req.requestId]) {
+                socket.emit('data', parseRequest(req,streamArray[req.requestId]));
+            }
+        });
+
         self.on('data', function (data, rewrite, req, res) {
-            socket.emit('data', parseRequest(req,data))
+            var reqId = req.requestId;
+
+            if (streamArray[reqId]) {
+                streamArray[reqId] += data;
+            } else {
+                streamArray[reqId] = data;
+            }
         });
 
         socket.emit('pageReady', getPageData());
@@ -58,7 +57,10 @@ function parseRequest (req,data) {
     response.socketData = data;
     response.contentType = req.res.headers['content-type'];
     response.id = req.requestId;
-    return response;
+    response.statusCode = req.res.statusCode;
+    response.time = Date.now() - req._startTime;
+
+    return JSON.stringify(response);
 }
 
 module.exports = SocketServer;

@@ -6,12 +6,11 @@ export const  Table =  (props) => {
         <tr>
             <th>id</th>
             <th>name</th>
-            <th>method</th>
             <th>status</th>
-            <th>protocol</th>
-            <th>domain</th>
             <th>remote address</th>
             <th>type</th>
+            <th>size</th>
+            <th>time</th>
         </tr>
         </thead>
         <tbody>
@@ -19,15 +18,19 @@ export const  Table =  (props) => {
             props.data && props.data.map( (t,index) => {
                 return <tr className="active" key={index}>
                     <td>{index}</td>
-                    <td>{t.name}</td>
-                    <td>{t.status}</td>
-                    <th>{t.protocol}</th>
-                    <th>{t.domain}</th>
-                    <th>{t.remoteAddress}</th>
-                    <th>{t.type}</th>
+                    <td>{t.path}</td>
+                    <td>{t.statusCode}</td>
+                    <td>{t.hostname}:{t.port}</td>
+                    <td>{getContentType(t.contentType)}</td>
+                    <td>0</td>
+                    <td>{t.time}</td>
                 </tr>
             })
         }
         </tbody>
     </table>
 };
+
+function getContentType (contentType) {
+    var source = ['text/plain','stylesheet','font','xhr','script','document'];
+}

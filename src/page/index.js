@@ -18,25 +18,9 @@ class Home extends Component {
            this.setState(data);
         });
 
-        socket.on('request',  (data) => {
-            this.props.onArrive(data);
-        });
-
         socket.on('data', data => {
-            console.log(data)
+            this.props.onArrive(JSON.parse(data));
         });
-
-        socket.on('setRequest', data => {
-            console.log(data)
-        })
-
-        socket.on('response', data => {
-            console.log(data)
-        })
-
-        socket.on('setResponse', data => {
-            console.log(data)
-        })
     }
 
     render () {

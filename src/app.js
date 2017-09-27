@@ -5,7 +5,9 @@ import { Provider } from 'react-redux';
 import reducer from './reducer';
 import thunk from 'redux-thunk';
 import Home from './page';
-let Store = createStore(reducer, applyMiddleware(thunk));
+import logger from 'redux-logger';
+
+let Store = createStore(reducer, applyMiddleware(thunk,logger));
 
 
 const mainRender = () => {
