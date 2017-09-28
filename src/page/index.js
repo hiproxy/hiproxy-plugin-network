@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { onArrive } from '../action';
+import { onArrive, clearAll } from '../action';
 import {Table} from './table';
 import Dialog from './dialog';
 import './index.less';
@@ -35,6 +35,7 @@ class Home extends Component {
             <header className="navbar">
                 <h1 className="navbar-brand">Hiproxy devtool</h1>
                 <div className="right-nav">
+                    <a className="btn btn-link" onClick={this.props.clearAll}>clear</a>
                     <a href={proxyPath} className="btn btn-link">proxy.pac</a>
                     <a href={sslPath} className="btn btn-link">ssl-certificate</a>
                     <a href="https://github.com/picturepan2/spectre" className="btn btn-link">GitHub</a>
@@ -59,7 +60,8 @@ const mapStateToProps = (state)=>{
 };
 
 const mapDispatchToProps = {
-    onArrive
+    onArrive,
+    clearAll
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

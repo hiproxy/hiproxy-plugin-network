@@ -2866,8 +2866,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.onArrive = onArrive;
+exports.clearAll = clearAll;
 var Actions = exports.Actions = {
-    'ON_ARRIVE': 'ON_ARRIVE'
+    'ON_ARRIVE': 'ON_ARRIVE',
+    'CLEAR': 'CLEAR'
 };
 
 function onArrive(request) {
@@ -2875,6 +2877,16 @@ function onArrive(request) {
         dispatch({
             type: Actions.ON_ARRIVE,
             data: request
+        });
+    };
+}
+
+function clearAll() {
+    "use strict";
+
+    return function (dispatch) {
+        dispatch({
+            type: Actions.CLEAR
         });
     };
 }
@@ -7584,7 +7596,8 @@ function HomeReducer() {
       });
 
       break;
-
+    case _action.Actions.CLEAR:
+      return initState;
     default:
       return state;
   }
@@ -7715,6 +7728,11 @@ var Home = function (_Component) {
                         { className: 'right-nav' },
                         _react2.default.createElement(
                             'a',
+                            { className: 'btn btn-link', onClick: this.props.clearAll },
+                            'clear'
+                        ),
+                        _react2.default.createElement(
+                            'a',
                             { href: proxyPath, className: 'btn btn-link' },
                             'proxy.pac'
                         ),
@@ -7754,7 +7772,8 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = {
-    onArrive: _action.onArrive
+    onArrive: _action.onArrive,
+    clearAll: _action.clearAll
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Home);

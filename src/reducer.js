@@ -13,7 +13,8 @@ function HomeReducer(state = initState , action) {
       });
 
       break;
-
+    case Actions.CLEAR:
+      return initState;
     default:
       return state;
   }

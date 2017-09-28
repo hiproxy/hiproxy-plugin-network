@@ -23,7 +23,6 @@ function SocketServer(){
                 if (res.headers['content-encoding'] == 'gzip') {
                     res.headers['content-length'] = sizeof(streamArray[req.requestId],'utf-8');
                 }
-                console.log('response', req.url,'\n')
 
                 socket.emit('data', parseRequest(req,res,streamArray[req.requestId]));
             }

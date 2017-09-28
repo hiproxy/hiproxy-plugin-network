@@ -1,5 +1,6 @@
 export const Actions = {
-    'ON_ARRIVE': 'ON_ARRIVE'
+    'ON_ARRIVE': 'ON_ARRIVE',
+    'CLEAR': 'CLEAR'
 };
 
 export function onArrive(request) {
@@ -8,5 +9,15 @@ export function onArrive(request) {
             type: Actions.ON_ARRIVE,
             data: request
         });
+    }
+}
+
+
+export function clearAll () {
+    "use strict";
+    return dispatch => {
+        dispatch({
+            type: Actions.CLEAR
+        })
     }
 }
