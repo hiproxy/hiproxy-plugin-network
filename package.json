@@ -4,7 +4,8 @@
   "description": "hiproxy plugin devtools",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semistandard": "semistandard --fix"
   },
   "repository": {
     "type": "git",
@@ -39,5 +40,10 @@
     "less-loader": "^4.0.4",
     "style-loader": "^0.18.2",
     "webpack": "^3.4.1"
+  },
+  "semistandard": {
+    "ignore": [
+      "/source/"
+    ]
   }
 }

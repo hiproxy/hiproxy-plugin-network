@@ -4,7 +4,7 @@ const initState = {
   requests: []
 };
 
-function HomeReducer(state = initState , action) {
+function HomeReducer (state = initState, action) {
   switch (action.type) {
     case Actions.ON_ARRIVE:
 

@@ -23,7 +23,6 @@ module.exports = [
       var pageName = route._ || 'index.html';
       var filePath = path.join(__dirname, '..', pageName);
 
-
       if (!socketInstance) {
         socketInstance = new Socket();
 

@@ -7,16 +7,15 @@ import thunk from 'redux-thunk';
 import Home from './page';
 import logger from 'redux-logger';
 
-let Store = createStore(reducer, applyMiddleware(thunk,logger));
-
+let Store = createStore(reducer, applyMiddleware(thunk, logger));
 
 const mainRender = () => {
-    render(
-        <Provider store={Store}>
-            <Home/>
-        </Provider>,
+  render(
+    <Provider store={Store}>
+      <Home />
+    </Provider>,
         document.querySelector('#app')
-    )
+    );
 };
 
 mainRender();
