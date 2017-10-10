@@ -13,7 +13,7 @@ var streamArray = {};
 
 function SocketServer () {
   EventEmitter.call(this);
-  app.listen(9999);
+  app.listen(9998);
 
   var self = this;
 
