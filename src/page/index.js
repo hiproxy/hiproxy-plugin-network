@@ -17,7 +17,7 @@ class Home extends Component {
   }
 
   componentDidMount () {
-    const socket = io.connect('http://127.0.0.1:9999');
+    const socket = io.connect('http://127.0.0.1:9998');
 
     socket.on('pageReady', (data) => {
       this.setState(data);
