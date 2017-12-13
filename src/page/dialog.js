@@ -30,8 +30,8 @@ export default class Dialog extends Component {
         return <section>
           <h3>General</h3>
           <ul>
-            <li>Request URL: {t.url}</li>
-            <li>Proxy URL: {t.newUrl}</li>
+            <li>Request URL:  {t.url}</li>
+            <li>Proxy URL:  {t.newUrl}</li>
             <li>Request Method: {t.method}</li>
             <li>Status Code: {t.statusCode}</li>
             <li>Remote Address: {t.hostname}</li>
@@ -46,17 +46,17 @@ export default class Dialog extends Component {
           </ul>
         </section>;
       } else if (tab === 'response') {
-        console.log(t.socketData);
-        return <textarea style={{height: (window.innerHeight - 70) + 'px'}} className='code-container' defaultValue={t.socketData} />;
+        if (t.type == '')
+          return <textarea style={{height: (window.innerHeight - 70) + 'px'}} className='code-container' defaultValue={t.socketData} />;
       }
     };
 
-    return <div className='dialog'>
+    return <div className='dialog' style={{top: 46, height: window.innerHeight - 46 }}>
       <header>
         <div className={tab === 'headers' ? 'active' : ''}
           onClick={this.switchTab.bind(this, 'headers')}>Headers</div>
-        <div className={tab === 'response' ? 'active' : ''}
-          onClick={this.switchTab.bind(this, 'response')}>Response</div>
+        {/*<div className={tab === 'response' ? 'active' : ''}
+          onClick={this.switchTab.bind(this, 'response')}>Response</div>*/}
       </header>
       {content()}
     </div>;
@@ -78,7 +78,7 @@ function parseData (data) {
   let result = [];
 
   for (let key in data) {
-    result.push(<li>{key}:{data[key]}</li>);
+    result.push(<li>{key} : {data[key]}</li>);
   }
 
   return result;

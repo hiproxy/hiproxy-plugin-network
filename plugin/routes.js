@@ -23,21 +23,23 @@ module.exports = [
       var pageName = route._ || 'index.html';
       var filePath = path.join(__dirname, '..', pageName);
 
-      if (!socketInstance) {
-        socketInstance = new Socket();
-
-        hiproxyServer.on('data', function (data, req, res) {
-          socketInstance.emit('data', data.toString(), req, res);
-        });
-
-        hiproxyServer.on('response', function (req, res) {
-          socketInstance.emit('response', req, res);
-        });
-      }
-
       if (pageName === 'index.html') {
-        return render(filePath, response);
+
+        if (!socketInstance) {
+          socketInstance = new Socket();
+
+          hiproxyServer.on('data', function (data, req, res) {
+            socketInstance.emit('data', data.toString(), req, res);
+          });
+
+          hiproxyServer.on('response', function (req, res) {
+            socketInstance.emit('response', req, res);
+          });
+
+          return render(filePath, response);
+        }
       }
+
       sendFile(filePath, response);
     }
   }

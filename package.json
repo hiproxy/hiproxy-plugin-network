@@ -22,10 +22,12 @@
   },
   "homepage": "https://github.com/huaziHear/hiproxy-plugin-devtools#readme",
   "dependencies": {
+    "antd": "^3.0.0",
     "brace": "^0.10.0",
     "less": "^2.7.2",
     "mustache": "^2.3.0",
     "react-ace": "^5.0.1",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "simple-mime": "^0.1.0",
     "socket.io": "^2.0.3"

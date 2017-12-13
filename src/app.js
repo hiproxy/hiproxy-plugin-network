@@ -6,8 +6,9 @@ import reducer from './reducer';
 import thunk from 'redux-thunk';
 import Home from './page';
 import logger from 'redux-logger';
+import 'antd/dist/antd.css';
 
-let Store = createStore(reducer, applyMiddleware(thunk, logger));
+let Store = createStore(reducer, applyMiddleware(thunk));
 
 const mainRender = () => {
   render(
