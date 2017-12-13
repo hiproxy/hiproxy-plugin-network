@@ -52107,7 +52107,7 @@ var Home = function (_Component) {
             null,
             _react2.default.createElement(
               'a',
-              { href: 'https://github.com/picturepan2/spectre' },
+              { href: 'https://github.com/huaziHear/hiproxy-plugin-devtools' },
               'GitHub'
             )
           )

@@ -37,7 +37,7 @@ class Home extends Component {
         <Menu.Item><a onClick={this.props.clearAll}>clear</a></Menu.Item>
         <Menu.Item><a href={proxyPath}>proxy.pac</a></Menu.Item>
         <Menu.Item><a href={sslPath} >ssl-certificate</a></Menu.Item>
-        <Menu.Item><a href='https://github.com/picturepan2/spectre'>GitHub</a></Menu.Item>
+        <Menu.Item><a href='https://github.com/huaziHear/hiproxy-plugin-devtools'>GitHub</a></Menu.Item>
       </Menu>
       <Tables data={this.props.requests} showRequestDetail={this.showRequestDetail.bind(this)} />
       <Dialog showRequestDetail={this.state.showRequestDetail} requestDetail={this.state.requestDetail} />
