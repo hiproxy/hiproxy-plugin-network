@@ -48,7 +48,8 @@ module.exports = {
       'react': __dirname + '/source/scripts/react.min.js',
       'redux': __dirname + '/source/scripts/redux.min.js',
       'react-dom': __dirname + '/source/scripts/react-dom.min.js',
-      'react-redux': __dirname + '/source/scripts/react-redux.min.js'
+      'react-redux': __dirname + '/source/scripts/react-redux.min.js',
+      'redux-thunk': __dirname + '/source/scripts/redux-thunk.min.js'
     }
   }
 };

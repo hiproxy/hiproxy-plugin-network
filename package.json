@@ -1,8 +1,12 @@
 {
   "name": "hiproxy-plugin-devtools",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "hiproxy plugin devtools",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semistandard": "semistandard --fix"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/huaziHear/hiproxy-plugin-devtools.git"
@@ -16,14 +20,9 @@
   "bugs": {
     "url": "https://github.com/huaziHear/hiproxy-plugin-devtools/issues"
   },
-  "scripts": {
-    "start": "webpack -w"
-  },
   "homepage": "https://github.com/huaziHear/hiproxy-plugin-devtools#readme",
   "dependencies": {
     "antd": "^3.0.0",
-    "brace": "^0.10.0",
-    "less": "^2.7.2",
     "mustache": "^2.3.0",
     "simple-mime": "^0.1.0",
     "socket.io": "^2.0.3"
