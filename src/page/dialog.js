@@ -46,7 +46,6 @@ export default class Dialog extends Component {
           </ul>
         </section>;
       } else if (tab === 'response') {
-        if (t.type == '')
           return <textarea style={{height: (window.innerHeight - 70) + 'px'}} className='code-container' defaultValue={t.socketData} />;
       }
     };
@@ -55,8 +54,8 @@ export default class Dialog extends Component {
       <header>
         <div className={tab === 'headers' ? 'active' : ''}
           onClick={this.switchTab.bind(this, 'headers')}>Headers</div>
-        {/*<div className={tab === 'response' ? 'active' : ''}
-          onClick={this.switchTab.bind(this, 'response')}>Response</div>*/}
+        <div className={tab === 'response' ? 'active' : ''}
+          onClick={this.switchTab.bind(this, 'response')}>Response</div>
       </header>
       {content()}
     </div>;
