@@ -24,7 +24,24 @@ class Home extends Component {
     });
 
     socket.on('data', data => {
-      this.props.onArrive(JSON.parse(data));
+      var length = data.toString().length;
+      var maxLen = 1 * 1024 * 1024;
+      var obj = JSON.parse(data);
+      var path = obj.path;
+      var isSocketIOURL = /^\/socket\.io/.test(path);
+
+      console.info('on data ==>', obj);
+
+      if (isSocketIOURL) {
+        console.warn('socket.io本身的请求，忽略');
+        return;
+      }
+
+      if ((obj.socketData || '').length > maxLen) {
+        obj.socketData = '内容太长，无法查看！';
+      }
+
+      this.props.onArrive(obj);
     });
   }
 

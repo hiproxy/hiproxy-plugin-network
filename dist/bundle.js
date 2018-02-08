@@ -52138,7 +52138,24 @@ var Home = function (_Component) {
       });
 
       socket.on('data', function (data) {
-        _this2.props.onArrive(JSON.parse(data));
+        var length = data.toString().length;
+        var maxLen = 1 * 1024 * 1024;
+        var obj = JSON.parse(data);
+        var path = obj.path;
+        var isSocketIOURL = /^\/socket\.io/.test(path);
+
+        console.info('on data ==>', obj);
+
+        if (isSocketIOURL) {
+          console.warn('socket.io本身的请求，忽略');
+          return;
+        }
+
+        if ((obj.socketData || '').length > maxLen) {
+          obj.socketData = '内容太长，无法查看！';
+        }
+
+        _this2.props.onArrive(obj);
       });
     }
   }, {
@@ -52307,7 +52324,7 @@ var Tables = exports.Tables = function Tables(props) {
       id: index,
       status: t.statusCode,
       address: t.hostname + (t.port ? ':' + t.port : ''),
-      type: getContentType(t.contentType),
+      type: getContentType(t.contentType || 'text/plain'),
       size: (t.resHeaders['content-length'] / 1024).toFixed(2),
       time: t.time
     };
@@ -109546,7 +109563,11 @@ var Dialog = function (_Component) {
             )
           );
         } else if (tab === 'response') {
-          return _react2.default.createElement('textarea', { style: { height: window.innerHeight - 70 + 'px' }, className: 'code-container', defaultValue: t.socketData });
+          return _react2.default.createElement(
+            'pre',
+            { className: 'code' },
+            t.socketData
+          );
         }
       };
 
@@ -112723,3 +112744,4 @@ Backoff.prototype.setJitter = function(jitter){
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=bundle.js.map

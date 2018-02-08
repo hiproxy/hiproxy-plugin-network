@@ -56,7 +56,7 @@ export default class Dialog extends Component {
           </ul>
         </section>;
       } else if (tab === 'response') {
-          return <textarea style={{height: (window.innerHeight - 70) + 'px'}} className='code-container' defaultValue={t.socketData} />;
+          return <pre className="code">{t.socketData}</pre>;
       }
     };
 

@@ -14,8 +14,8 @@ const mainRender = () => {
     <Provider store={Store}>
       <Home />
     </Provider>,
-        document.querySelector('#app')
-    );
+    document.querySelector('#app')
+  );
 };
 
 mainRender();

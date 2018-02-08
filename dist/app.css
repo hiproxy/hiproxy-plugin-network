@@ -67,11 +67,6 @@ ul , li{max-height:1000000px;}
     margin-bottom: 5px;
 }
 
-.dialog .code-container {
-    width: 100%;
-    height: 100%;
-}
-
 .dialog header {
     width: 100%;
     height: 30px;
@@ -109,6 +104,16 @@ ul , li{max-height:1000000px;}
     font-size: 13px;
     flex: 1;
     overflow: auto;
+}
+
+.dialog .code {
+    padding: 15px;
+    max-height: 100%;
+    width: 100%;
+    overflow: auto;
+    border: none;
+    margin: 0;
+    font-size: 13px;
 }
 
 .dialog ul.list {
@@ -21100,3 +21105,4 @@ li.ant-tree-treenode-disabled > .ant-tree-node-content-wrapper:hover {
     opacity: 0;
   }
 }
+/*# sourceMappingURL=app.css.map*/

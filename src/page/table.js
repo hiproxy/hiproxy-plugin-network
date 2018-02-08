@@ -55,19 +55,21 @@ export const Tables = (props) => {
       id: index,
       status: t.statusCode,
       address: t.hostname+(t.port ? ':'+t.port : ''),
-      type: getContentType(t.contentType),
+      type: getContentType(t.contentType || 'text/plain'),
       size: (t.resHeaders['content-length'] / 1024).toFixed(2),
       time: t.time
     }
   });
 
-  return <Table
-    dataSource={dataSource}
-    pagination={false}
-    columns={columns}
-    onRowClick={props.showRequestDetail}
-    scroll={{ y: window.innerHeight - 100 }}
-  />;
+  return (
+    <Table
+      dataSource={dataSource}
+      pagination={false}
+      columns={columns}
+      onRowClick={props.showRequestDetail}
+      scroll={{ y: window.innerHeight - 100 }}
+    />
+  );
 };
 
 function getContentType (contentType) {

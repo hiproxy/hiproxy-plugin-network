@@ -15,6 +15,7 @@ function SocketServer () {
   var app = http.createServer();
   var io = skt(app);
   var self = this;
+  var eventBound = false;
 
   EventEmitter.call(this);
   app.listen(9998);
@@ -24,30 +25,35 @@ function SocketServer () {
     socketObj = socket;
     streamArray = {};
     var me = this;
-    self.on('response', function (req, res) {
-      if (streamArray[req.requestId]) {
-        // gzip过后,content-length没了,所以计算一下
-        if (res.headers['content-encoding'] == 'gzip') {
-          res.headers['content-length'] = sizeof(streamArray[req.requestId], 'utf-8');
+
+    if (!eventBound) {
+      eventBound = true;
+
+      self.on('response', function (req, res) {
+        if (streamArray[req.requestId]) {
+          // gzip过后,content-length没了,所以计算一下
+          if (res.headers['content-encoding'] == 'gzip') {
+            res.headers['content-length'] = sizeof(streamArray[req.requestId], 'utf-8');
+          }
+  
+          for(var key in me.sockets) {
+            me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]))
+          }
+  
+          delete streamArray[req.requestId];
         }
-
-        for(var key in me.sockets) {
-          me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]))
+      });
+  
+      self.on('data', function (data, req, res) {
+        var reqId = req.requestId;
+        
+        if (streamArray[reqId]) {
+          streamArray[reqId] += data;
+        } else {
+          streamArray[reqId] = data;
         }
-
-        delete streamArray[req.requestId];
-      }
-    });
-
-    self.on('data', function (data, req, res) {
-      var reqId = req.requestId;
-
-      if (streamArray[reqId]) {
-        streamArray[reqId] += data;
-      } else {
-        streamArray[reqId] = data;
-      }
-    });
+      });
+    }
 
     socketObj.emit('pageReady', getPageData());
   });
