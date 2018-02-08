@@ -30,8 +30,6 @@ class Home extends Component {
       var path = obj.path;
       var isSocketIOURL = /^\/socket\.io/.test(path);
 
-      console.info('on data ==>', obj);
-
       if (isSocketIOURL) {
         console.warn('socket.io本身的请求，忽略');
         return;

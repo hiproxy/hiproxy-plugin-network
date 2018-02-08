@@ -1,13 +1,40 @@
 import React, { Component } from 'react';
 import './index.css';
+let startX = 0;
+let maxWidth, minWidth;
+let shouldMove = false
+var throttle = function(fn, delay, mustRunDelay){
+  var timer = null;
+  var t_start;
+  return function(){
+    var context = this, args = arguments, t_curr = +new Date();
+    clearTimeout(timer);
+    if(!t_start){
+      t_start = t_curr;
+    }
+    if(t_curr - t_start >= mustRunDelay){
+      fn.apply(context, args);
+      t_start = t_curr;
+    }
+    else {
+      timer = setTimeout(function(){
+        fn.apply(context, args);
+      }, delay);
+    }
+  };
+};
 
 export default class Dialog extends Component {
   constructor (props) {
     super(props);
 
     this.state = {
-      tab: 'headers'
+      tab: 'headers',
+      dialogWidth: '900'
     };
+
+    document.onmousemove = throttle(this.onMousemove.bind(this),50,100);
+    document.onmouseup = this.onMouseup.bind(this);
   }
 
   componentWillReceiveProps () {
@@ -19,6 +46,34 @@ export default class Dialog extends Component {
   componentDidUpdate () {
     var block = document.getElementById('js-code');
     block && hljs.highlightBlock(block);
+  }
+  onMousedown (eve){
+    shouldMove = true;
+
+    maxWidth = 900;
+    minWidth = 100;
+
+    startX = eve.clientX;
+
+    eve.preventDefault();
+  };
+
+  onMousemove  (eve){
+    if(!shouldMove){
+      return
+    }
+
+    let {clientX} = eve;
+    let delta = startX - clientX;
+    startX = startX - delta;
+    let width =  this.state.dialogWidth;
+    width += delta;
+    width = width < minWidth ? minWidth : width>maxWidth? maxWidth: width;
+    this.setState({dialogWidth: width});
+  };
+
+  onMouseup () {
+    shouldMove = false;
   }
 
   render () {
@@ -33,6 +88,9 @@ export default class Dialog extends Component {
     const content = () => {
       if (tab === 'headers') {
         return <section className="body">
+          <div id="spliter"
+               onMouseDown={this.onMousedown.bind(this)}
+          ></div>
           <h3 className="header">General</h3>
           <ul className="list">
             <li>
@@ -73,7 +131,7 @@ export default class Dialog extends Component {
     };
 
     return (
-      <div className='dialog'>
+      <div className='dialog' style={{width: this.state.dialogWidth+'px'}}>
         <header>
           <div className="close" onClick={this.close.bind(this)}>&times;</div>
           <div className={tab === 'headers' ? 'tab active' : 'tab'}
