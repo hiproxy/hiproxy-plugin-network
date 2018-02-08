@@ -105,6 +105,10 @@ export const Tables = (props) => {
 
     fileType = fileType.trim();
 
+    if (fileType.indexOf('+')) {
+      fileType = fileType.split('+')[0];
+    }
+
     if (files.indexOf(fileType) === -1) {
       fileType = 'file';
     }

@@ -106,7 +106,7 @@ ul , li{max-height:1000000px;}
     overflow: auto;
 }
 
-.dialog .code {
+.dialog .code, .dialog .content {
     padding: 15px;
     height: calc(100% - 30px);
     box-sizing: border-box;
