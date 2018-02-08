@@ -11,36 +11,55 @@ var source = {
   'document': 'html'
 };
 const columns = [{
-  title: 'id',
+  title: 'ID',
   dataIndex: 'id',
   key: 'id',
-  width: 100
+  width: 50
 }, {
-  title: 'name',
+  title: 'Name',
   dataIndex: 'name',
-  key: 'name'
+  width: 300,
+  key: 'name',
+  render: (value, record) => {
+    console.log('value', value);
+    var arr = value.split('/');
+    var name = arr.pop();
+    var path = arr.join('/');
+
+    if (!path) {
+      name = value;
+    }
+
+    return (
+      <div className="req-path">
+        <img src="" />
+        <p className="name">{name}</p>
+        <p className="path">{path}</p>
+      </div>
+    )
+  }
 }, {
-  title: 'status',
+  title: 'Status',
   dataIndex: 'status',
   key: 'status',
   width: 100
 }, {
-  title: 'address',
+  title: 'Address',
   dataIndex: 'address',
   key: 'address',
   width: 150
 },{
-  title: 'type',
+  title: 'Type',
   dataIndex: 'type',
   key: 'type',
   width: 150
 },{
-  title: 'size',
+  title: 'Size',
   dataIndex: 'size',
   key: 'size',
   width: 100
 },{
-  title: 'time',
+  title: 'Time',
   dataIndex: 'time',
   key: 'time',
   width: 100
@@ -48,10 +67,9 @@ const columns = [{
 
 export const Tables = (props) => {
   const dataSource = props.data && props.data.map( (t, index) => {
-    const name = t.path.length > 80 ? t.path.substr(0,80)+'...':t.path;
     return {
       key: index,
-      name,
+      name: t.path,
       id: index,
       status: t.statusCode,
       address: t.hostname+(t.port ? ':'+t.port : ''),
@@ -63,11 +81,13 @@ export const Tables = (props) => {
 
   return (
     <Table
+      bordered
       dataSource={dataSource}
       pagination={false}
       columns={columns}
       onRowClick={props.showRequestDetail}
       scroll={{ y: window.innerHeight - 100 }}
+      className="abc"
     />
   );
 };

@@ -52280,36 +52280,63 @@ var source = {
   'document': 'html'
 };
 var columns = [{
-  title: 'id',
+  title: 'ID',
   dataIndex: 'id',
   key: 'id',
-  width: 100
+  width: 50
 }, {
-  title: 'name',
+  title: 'Name',
   dataIndex: 'name',
-  key: 'name'
+  width: 300,
+  key: 'name',
+  render: function render(value, record) {
+    console.log('value', value);
+    var arr = value.split('/');
+    var name = arr.pop();
+    var path = arr.join('/');
+
+    if (!path) {
+      name = value;
+    }
+
+    return _react2.default.createElement(
+      'div',
+      { className: 'req-path' },
+      _react2.default.createElement('img', { src: '' }),
+      _react2.default.createElement(
+        'p',
+        { className: 'name' },
+        name
+      ),
+      _react2.default.createElement(
+        'p',
+        { className: 'path' },
+        path
+      )
+    );
+  }
 }, {
-  title: 'status',
+  title: 'Status',
   dataIndex: 'status',
   key: 'status',
   width: 100
 }, {
-  title: 'address',
+  title: 'Address',
   dataIndex: 'address',
   key: 'address',
   width: 150
 }, {
-  title: 'type',
+  title: 'Type',
   dataIndex: 'type',
   key: 'type',
   width: 150
 }, {
-  title: 'size',
+  title: 'Size',
   dataIndex: 'size',
   key: 'size',
   width: 100
 }, {
-  title: 'time',
+  title: 'Time',
   dataIndex: 'time',
   key: 'time',
   width: 100
@@ -52317,10 +52344,9 @@ var columns = [{
 
 var Tables = exports.Tables = function Tables(props) {
   var dataSource = props.data && props.data.map(function (t, index) {
-    var name = t.path.length > 80 ? t.path.substr(0, 80) + '...' : t.path;
     return {
       key: index,
-      name: name,
+      name: t.path,
       id: index,
       status: t.statusCode,
       address: t.hostname + (t.port ? ':' + t.port : ''),
@@ -52331,11 +52357,13 @@ var Tables = exports.Tables = function Tables(props) {
   });
 
   return _react2.default.createElement(_antd.Table, {
+    bordered: true,
     dataSource: dataSource,
     pagination: false,
     columns: columns,
     onRowClick: props.showRequestDetail,
-    scroll: { y: window.innerHeight - 100 }
+    scroll: { y: window.innerHeight - 100 },
+    className: 'abc'
   });
 };
 

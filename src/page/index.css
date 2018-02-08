@@ -119,3 +119,36 @@ ul , li{max-height:1000000px;}
 .dialog ul.list {
     margin-left: 15px;
 }
+
+.ant-table {
+    color: #000000!important;
+    font-size: 13px!important;
+}
+
+.ant-table-tbody > tr {
+    padding: 0!important;
+    height: 50px;
+    box-sizing: border-box;
+}
+
+.ant-table-tbody > tr > td, .ant-table-thead > tr > th {
+    padding: 5px 10px!important;
+}
+
+.req-path {
+    vertical-align: top!important;
+}
+
+
+.req-path p {
+    margin: 0;
+}
+
+
+.req-path .name {
+    font-weight: 400;
+}
+
+.req-path .path {
+    color: #838383;
+}
