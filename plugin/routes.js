@@ -80,7 +80,7 @@ function sendFile (file, res) {
 
   res.writeHead(statusCode, {
     'Content-Type': mime,
-    'Powder-By': 'hiproxy-plugin-dashboard'
+    'Powered-By': 'hiproxy-plugin-dashboard'
   });
 
   if (stream) {
