@@ -16,6 +16,11 @@ export default class Dialog extends Component {
     });
   }
 
+  componentDidUpdate () {
+    var block = document.getElementById('js-code');
+    block && hljs.highlightBlock(block);
+  }
+
   render () {
     const { showRequestDetail, requestDetail, onClose } = this.props;
     const tab = this.state.tab;
@@ -56,20 +61,29 @@ export default class Dialog extends Component {
           </ul>
         </section>;
       } else if (tab === 'response') {
-          return <pre className="code">{t.socketData}</pre>;
+        // 获取content-type
+        let {resHeaders} = t;
+        let contentType = resHeaders['content-type'] || '';
+        let fileType = contentType.split(';')[0].split('/')[1] || '';
+
+        fileType = fileType.trim();
+
+        return <pre className="code" id="js-code"><code className={fileType}>{t.socketData}</code></pre>;
       }
     };
 
-    return <div className='dialog'>
-      <header>
-        <div className="close" onClick={this.close.bind(this)}>&times;</div>
-        <div className={tab === 'headers' ? 'tab active' : 'tab'}
-          onClick={this.switchTab.bind(this, 'headers')}>Headers</div>
-        <div className={tab === 'response' ? 'tab active' : 'tab'}
-          onClick={this.switchTab.bind(this, 'response')}>Response</div>
-      </header>
-      {content()}
-    </div>;
+    return (
+      <div className='dialog'>
+        <header>
+          <div className="close" onClick={this.close.bind(this)}>&times;</div>
+          <div className={tab === 'headers' ? 'tab active' : 'tab'}
+            onClick={this.switchTab.bind(this, 'headers')}>Headers</div>
+          <div className={tab === 'response' ? 'tab active' : 'tab'}
+            onClick={this.switchTab.bind(this, 'response')}>Response</div>
+        </header>
+        {content()}
+      </div>
+    );
   }
 
   close (eve) {

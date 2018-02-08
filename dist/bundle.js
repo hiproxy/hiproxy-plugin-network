@@ -109458,6 +109458,12 @@ var Dialog = function (_Component) {
       });
     }
   }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      var block = document.getElementById('js-code');
+      block && hljs.highlightBlock(block);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props = this.props,
@@ -109563,10 +109569,22 @@ var Dialog = function (_Component) {
             )
           );
         } else if (tab === 'response') {
+          // 获取content-type
+          var resHeaders = t.resHeaders;
+
+          var contentType = resHeaders['content-type'] || '';
+          var fileType = contentType.split(';')[0].split('/')[1] || '';
+
+          fileType = fileType.trim();
+
           return _react2.default.createElement(
             'pre',
-            { className: 'code' },
-            t.socketData
+            { className: 'code', id: 'js-code' },
+            _react2.default.createElement(
+              'code',
+              { className: fileType },
+              t.socketData
+            )
           );
         }
       };
