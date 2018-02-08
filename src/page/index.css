@@ -131,12 +131,27 @@ ul , li{max-height:1000000px;}
     box-sizing: border-box;
 }
 
-.ant-table-tbody > tr > td, .ant-table-thead > tr > th {
-    padding: 5px 10px!important;
+.ant-table-tbody > tr > td {
+    padding: 5px 5px!important;
+}
+
+.ant-table-thead > tr > th {
+    padding: 10px 5px!important;
 }
 
 .req-path {
     vertical-align: top!important;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.req-path img {
+    width: 35px;
+    height: 35px;
+    margin-left: -2px;
+    margin-right: 3px;
 }
 
 

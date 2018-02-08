@@ -28,7 +28,7 @@ class Home extends Component {
       var maxLen = 1 * 1024 * 1024;
       var obj = JSON.parse(data);
       var path = obj.path;
-      var isSocketIOURL = /^\/socket\.io/.test(path);
+      var isSocketIOURL = /^\/(socket\.io|devtools)/.test(path);
 
       if (isSocketIOURL) {
         console.warn('socket.io本身的请求，忽略');

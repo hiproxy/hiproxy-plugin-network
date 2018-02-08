@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'antd';
+import FileIcon from 'react-file-icon';
 
 var source = {
   'text/plain': '',
@@ -10,18 +11,21 @@ var source = {
   'json': 'json',
   'document': 'html'
 };
+
 const columns = [{
   title: 'ID',
   dataIndex: 'id',
   key: 'id',
-  width: 50
+  width: 20
 }, {
   title: 'Name',
   dataIndex: 'name',
   width: 300,
   key: 'name',
-  render: (value, record) => {
-    console.log('value', value);
+  render: (val, record) => {
+    console.log('value', value, record);
+    var value = val[0];
+    var fileType = val[1];
     var arr = value.split('/');
     var name = arr.pop();
     var path = arr.join('/');
@@ -32,9 +36,11 @@ const columns = [{
 
     return (
       <div className="req-path">
-        <img src="" />
-        <p className="name">{name}</p>
-        <p className="path">{path}</p>
+        <img src={"icons/" + fileType + '.png'} />
+        <div>
+          <p className="name">{name}</p>
+          <p className="path">{path}</p>
+        </div>
       </div>
     )
   }
@@ -42,7 +48,7 @@ const columns = [{
   title: 'Status',
   dataIndex: 'status',
   key: 'status',
-  width: 100
+  width: 50
 }, {
   title: 'Address',
   dataIndex: 'address',
@@ -52,24 +58,40 @@ const columns = [{
   title: 'Type',
   dataIndex: 'type',
   key: 'type',
-  width: 150
+  width: 100
 },{
   title: 'Size',
   dataIndex: 'size',
   key: 'size',
-  width: 100
+  width: 80
 },{
   title: 'Time',
   dataIndex: 'time',
   key: 'time',
-  width: 100
+  width: 80
 }];
+
+const files = [
+  'css', 'file', 'html', 'javascript',
+  'jpg', 'png', 'pdf', 'json', 'svg', 'gif',
+  'txt', 'xml', 'zip'
+];
 
 export const Tables = (props) => {
   const dataSource = props.data && props.data.map( (t, index) => {
+    let {resHeaders} = t;
+    let contentType = resHeaders['content-type'] || '';
+    let fileType = contentType.split(';')[0].split('/')[1] || '';
+
+    fileType = fileType.trim();
+
+    if (files.indexOf(fileType) === -1) {
+      fileType = 'file';
+    }
+    
     return {
       key: index,
-      name: t.path,
+      name: [t.path, fileType],
       id: index,
       status: t.statusCode,
       address: t.hostname+(t.port ? ':'+t.port : ''),
@@ -87,7 +109,6 @@ export const Tables = (props) => {
       columns={columns}
       onRowClick={props.showRequestDetail}
       scroll={{ y: window.innerHeight - 100 }}
-      className="abc"
     />
   );
 };
