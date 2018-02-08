@@ -118,7 +118,18 @@ ul , li{max-height:1000000px;}
 
 .dialog ul.list {
     margin-left: 15px;
-}/*!
+}
+
+#spliter {
+    width: 1px;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    z-index: 2222;
+    padding: 0 3px;
+    cursor: ew-resize;
+}
+/*!
  * 
  * antd v3.0.2
  * 
@@ -21105,4 +21116,3 @@ li.ant-tree-treenode-disabled > .ant-tree-node-content-wrapper:hover {
     opacity: 0;
   }
 }
-/*# sourceMappingURL=app.css.map*/
