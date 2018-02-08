@@ -17,7 +17,7 @@ export default class Dialog extends Component {
   }
 
   render () {
-    const { showRequestDetail, requestDetail } = this.props;
+    const { showRequestDetail, requestDetail, onClose } = this.props;
     const tab = this.state.tab;
 
     if (!showRequestDetail) {
@@ -27,21 +27,31 @@ export default class Dialog extends Component {
 
     const content = () => {
       if (tab === 'headers') {
-        return <section>
-          <h3>General</h3>
-          <ul>
-            <li>Request URL:  {t.url}</li>
-            <li>Proxy URL:  {t.newUrl}</li>
-            <li>Request Method: {t.method}</li>
-            <li>Status Code: {t.statusCode}</li>
-            <li>Remote Address: {t.hostname}</li>
+        return <section className="body">
+          <h3 className="header">General</h3>
+          <ul className="list">
+            <li>
+              <strong>Request URL:</strong>  {t.url}
+            </li>
+            <li>
+              <strong>Proxy URL:</strong>  {t.newUrl}
+            </li>
+            <li>
+              <strong>Request Method:</strong> {t.method}
+            </li>
+            <li>
+              <strong>Status Code:</strong> {t.statusCode}
+            </li>
+            <li>
+              <strong>Remote Address:</strong> {t.hostname}
+            </li>
           </ul>
-          <h3>Response Headers</h3>
-          <ul>
+          <h3 className="header">Response Headers</h3>
+          <ul className="list">
             {parseData(t.resHeaders)}
           </ul>
-          <h3>Request Headers</h3>
-          <ul>
+          <h3 className="header">Request Headers</h3>
+          <ul className="list">
             {parseData(t.headers)}
           </ul>
         </section>;
@@ -52,13 +62,20 @@ export default class Dialog extends Component {
 
     return <div className='dialog' style={{top: 46, height: window.innerHeight - 46 }}>
       <header>
-        <div className={tab === 'headers' ? 'active' : ''}
+        <div className="close" onClick={this.close.bind(this)}>&times;</div>
+        <div className={tab === 'headers' ? 'tab active' : 'tab'}
           onClick={this.switchTab.bind(this, 'headers')}>Headers</div>
-        <div className={tab === 'response' ? 'active' : ''}
+        <div className={tab === 'response' ? 'tab active' : 'tab'}
           onClick={this.switchTab.bind(this, 'response')}>Response</div>
       </header>
       {content()}
     </div>;
+  }
+
+  close (eve) {
+    let {onClose} = this.props;
+
+    onClose && onClose();
   }
 
   switchTab (tab) {
@@ -77,7 +94,7 @@ function parseData (data) {
   let result = [];
 
   for (let key in data) {
-    result.push(<li>{key} : {data[key]}</li>);
+    result.push(<li><strong>{key}</strong> : {data[key]}</li>);
   }
 
   return result;

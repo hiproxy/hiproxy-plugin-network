@@ -40,7 +40,7 @@ class Home extends Component {
         <Menu.Item><a href='https://github.com/huaziHear/hiproxy-plugin-devtools'>GitHub</a></Menu.Item>
       </Menu>
       <Tables data={this.props.requests} showRequestDetail={this.showRequestDetail.bind(this)} />
-      <Dialog showRequestDetail={this.state.showRequestDetail} requestDetail={this.state.requestDetail} />
+      <Dialog showRequestDetail={this.state.showRequestDetail} requestDetail={this.state.requestDetail} onClose={this.onClose.bind(this)} />
     </div>;
   }
 
@@ -48,6 +48,12 @@ class Home extends Component {
     this.setState({
       showRequestDetail: true,
       requestDetail: this.props.requests[item.key]
+    });
+  }
+
+  onClose () {
+    this.setState({
+      showRequestDetail: false
     });
   }
 }
