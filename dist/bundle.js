@@ -109496,7 +109496,7 @@ var Dialog = function (_Component) {
     value: function onMousedown(eve) {
       shouldMove = true;
 
-      maxWidth = 900;
+      maxWidth = 1200;
       minWidth = 100;
 
       startX = eve.clientX;

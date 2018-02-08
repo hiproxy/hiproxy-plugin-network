@@ -3,7 +3,7 @@ import './index.css';
 let startX = 0;
 let maxWidth, minWidth;
 let shouldMove = false
-var throttle = function(fn, delay, mustRunDelay){
+let throttle = function(fn, delay, mustRunDelay){
   var timer = null;
   var t_start;
   return function(){
@@ -50,7 +50,7 @@ export default class Dialog extends Component {
   onMousedown (eve){
     shouldMove = true;
 
-    maxWidth = 900;
+    maxWidth = 1200;
     minWidth = 100;
 
     startX = eve.clientX;
