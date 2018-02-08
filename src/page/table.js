@@ -20,10 +20,9 @@ const columns = [{
 }, {
   title: 'Name',
   dataIndex: 'name',
-  width: 300,
+  width: 200,
   key: 'name',
   render: (val, record) => {
-    console.log('value', value, record);
     var value = val[0];
     var fileType = val[1];
     var arr = value.split('/');
@@ -45,30 +44,50 @@ const columns = [{
     )
   }
 }, {
+  title: 'Method',
+  dataIndex: 'method',
+  key: 'method',
+  width: 45
+}, {
   title: 'Status',
   dataIndex: 'status',
   key: 'status',
-  width: 50
+  width: 45
 }, {
-  title: 'Address',
+  title: 'Scheme',
+  dataIndex: 'protocol',
+  key: 'protocol',
+  width: 45
+},{
+  title: 'Domain',
   dataIndex: 'address',
   key: 'address',
-  width: 150
+  width: 80
+},{
+  title: 'Target Address',
+  dataIndex: 'targetAddress',
+  key: 'targetAddress',
+  width: 70
+},{
+  title: 'Target Path',
+  dataIndex: 'targetPath',
+  key: 'targetPath',
+  width: 100
 },{
   title: 'Type',
   dataIndex: 'type',
   key: 'type',
-  width: 100
+  width: 50
 },{
   title: 'Size',
   dataIndex: 'size',
   key: 'size',
-  width: 80
+  width: 50
 },{
   title: 'Time',
   dataIndex: 'time',
   key: 'time',
-  width: 80
+  width: 50
 }];
 
 const files = [
@@ -79,25 +98,34 @@ const files = [
 
 export const Tables = (props) => {
   const dataSource = props.data && props.data.map( (t, index) => {
-    let {resHeaders} = t;
+    let {resHeaders, url, method, hostname, port, path, time} = t;
     let contentType = resHeaders['content-type'] || '';
     let fileType = contentType.split(';')[0].split('/')[1] || '';
+    let length = resHeaders['content-length'] || t.socketData.length;
 
     fileType = fileType.trim();
 
     if (files.indexOf(fileType) === -1) {
       fileType = 'file';
     }
+
+    console.log('t', t);
+
+    let {host, protocol} = url;
     
     return {
       key: index,
       name: [t.path, fileType],
       id: index,
+      method: method,
+      protocol: protocol.replace(':', '').toUpperCase(),
       status: t.statusCode,
-      address: t.hostname+(t.port ? ':'+t.port : ''),
+      address: host,
+      targetAddress: hostname + (port ? ':' + port : ''),
+      targetPath: path,
       type: getContentType(t.contentType || 'text/plain'),
-      size: (t.resHeaders['content-length'] / 1024).toFixed(2),
-      time: t.time
+      size: getSizeLabel(length),
+      time: time + 'ms'
     }
   });
 
@@ -118,5 +146,18 @@ function getContentType (contentType) {
     if (source[key] && contentType.indexOf(source[key]) != -1) {
       return key;
     }
+  }
+}
+
+function getSizeLabel (num) {
+  let k = num / 1024;
+  let m = k / 1024;
+
+  if (m > 1) {
+    return m.toFixed(2) + ' MB';
+  } else if (k > 1) {
+    return k.toFixed(2) + ' KB';
+  } else {
+    return num + ' B'
   }
 }

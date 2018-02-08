@@ -108,7 +108,8 @@ ul , li{max-height:1000000px;}
 
 .dialog .code {
     padding: 15px;
-    max-height: 100%;
+    height: calc(100% - 30px);
+    box-sizing: border-box;
     width: 100%;
     overflow: auto;
     border: none;
@@ -162,10 +163,18 @@ ul , li{max-height:1000000px;}
 
 .req-path .name {
     font-weight: 400;
+    /* white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 400px;
+    overflow: hidden; */
 }
 
 .req-path .path {
     color: #838383;
+    /* white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 400px;
+    overflow: hidden; */
 }
 
 #spliter {

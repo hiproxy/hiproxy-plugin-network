@@ -6,6 +6,7 @@
 'use strict';
 var EventEmitter = require('events');
 var http = require('http');
+var url = require('url');
 var skt = require('socket.io');
 var zlib = require('zlib');
 var socketObj = null;
@@ -83,7 +84,8 @@ function parseRequest (req, res, data) {
   response.statusCode = res.statusCode;
   response.time = Date.now() - req._startTime;
   response.resHeaders = JSON.parse(JSON.stringify(res.headers));
-  response.url = req.url;
+  // response.url = req.url;
+  response.url = url.parse(req.url);
 
   return JSON.stringify(response);
 }

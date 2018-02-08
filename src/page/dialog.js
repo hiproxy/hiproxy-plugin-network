@@ -94,7 +94,7 @@ export default class Dialog extends Component {
           <h3 className="header">General</h3>
           <ul className="list">
             <li>
-              <strong>Request URL:</strong>  {t.url}
+              <strong>Request URL:</strong>  {t.url.href}
             </li>
             <li>
               <strong>Proxy URL:</strong>  {t.newUrl}
@@ -166,7 +166,7 @@ function parseData (data) {
   let result = [];
 
   for (let key in data) {
-    result.push(<li><strong>{key}</strong> : {data[key]}</li>);
+    result.push(<li key={key}><strong>{key}</strong> : {data[key]}</li>);
   }
 
   return result;
