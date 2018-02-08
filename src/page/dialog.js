@@ -60,7 +60,7 @@ export default class Dialog extends Component {
       }
     };
 
-    return <div className='dialog' style={{top: 46, height: window.innerHeight - 46 }}>
+    return <div className='dialog'>
       <header>
         <div className="close" onClick={this.close.bind(this)}>&times;</div>
         <div className={tab === 'headers' ? 'tab active' : 'tab'}

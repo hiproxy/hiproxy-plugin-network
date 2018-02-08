@@ -47,16 +47,17 @@ ul , li{max-height:1000000px;}
 
 .dialog {
     position: absolute;
-    top: 52px;
     width: 900px;
+    height: calc(100% - 46px);
     right: 0;
-    background: #fff;
+    top: 46px;
     z-index: 2;
     border-left: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     max-height: 100%; 
     display: flex;
     flex-direction: column;
+    background: #fff;
 }
 
 .dialog .header {

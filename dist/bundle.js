@@ -109552,7 +109552,7 @@ var Dialog = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: 'dialog', style: { top: 46, height: window.innerHeight - 46 } },
+        { className: 'dialog' },
         _react2.default.createElement(
           'header',
           null,
