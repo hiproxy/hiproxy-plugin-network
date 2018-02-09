@@ -121,8 +121,8 @@ export default class Dialog extends Component {
           </ul>
           {
             t.body && <div>
-              <h3>{ bodyType == 'json' ? 'Request Payload' : 'Form Data'}&nbsp;&nbsp;
-                <span style={{fontSize:'12px'}}
+              <h3 className="header">{ bodyType == 'json' ? 'Request Payload' : 'Form Data'}&nbsp;&nbsp;
+                <span style={{fontSize:'12px', color: '#838383'}}
                       onClick={this.changeViewJson.bind(this)}>{ viewParsed ? 'view source':'view parsed'}</span></h3>
               {body}
             </div>
