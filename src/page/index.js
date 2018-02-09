@@ -46,11 +46,11 @@ class Home extends Component {
     });
 
     socket.on('connectreq', data => {
-      if (data.hostname === location.hostname && data.port === '9998') {
-        // 忽略插件本身的请求
-      } else {
-        this.props.onArrive(data);
-      }
+      // if (data.hostname === location.hostname && data.port === '9998') {
+      //   // 忽略插件本身的请求
+      // } else {
+      //   this.props.onArrive(data);
+      // }
     });
   }
 
@@ -70,14 +70,15 @@ class Home extends Component {
   }
 
   render () {
-    const { proxyPath, sslPath } = this.state || {};
+    const { proxyPath, sslPath, httpPort } = this.state || {};
+    const _url = 'http://' + location.hostname + ':' + httpPort;
 
     return <div>
       <Menu mode="horizontal" selectedKeys={['1']} theme="dark">
         <Menu.Item key="mail">hiproxy-plugin-devtools</Menu.Item>
         <Menu.Item><a onClick={this.props.clearAll}><Icon type="delete" />Clear</a></Menu.Item>
-        <Menu.Item><a href={proxyPath}><Icon type="file-text" />PAC File</a></Menu.Item>
-        <Menu.Item><a href={sslPath} ><Icon type="cloud-download" />SSL Certificate</a></Menu.Item>
+        <Menu.Item><a href={_url + proxyPath}><Icon type="file-text" />PAC File</a></Menu.Item>
+        <Menu.Item><a href={_url + sslPath} ><Icon type="cloud-download" />SSL Certificate</a></Menu.Item>
         <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target="_blank"><Icon type="github" />GitHub</a></Menu.Item>
       </Menu>
       <Tables 

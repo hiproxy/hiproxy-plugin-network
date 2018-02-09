@@ -85,8 +85,9 @@ SocketServer.prototype = {
 function getPageData () {
   var t = hiproxyServer;
   return {
-    proxyPath: 'http://' + t.localIP + ':' + t.httpPort + '/proxy.pac?type=view',
-    sslPath: 'http://' + t.localIP + ':' + t.httpPort + '/ssl-certificate',
+    httpPort: t.httpPort,
+    proxyPath: '/proxy.pac?type=view',
+    sslPath: '/ssl-certificate',
     httpsPort: t.httpsPort,
     workspace: t.dir
   };
