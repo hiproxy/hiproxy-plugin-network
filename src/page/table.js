@@ -119,9 +119,7 @@ export const Tables = (props) => {
       fileType = 'file';
     }
 
-    console.log('fileType:', fileType);
-
-    console.log('t', t);
+    // console.log('t', t);
 
     let {host, protocol=''} = url;
     
