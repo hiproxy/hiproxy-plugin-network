@@ -18,7 +18,7 @@ class Home extends Component {
 
   componentDidMount () {
     window.ios = io;
-    const socket = io.connect('http://127.0.0.1:9998');
+    const socket = io.connect('http://' + location.hostname + ':9998');
     socket.on('pageReady', (data) => {
       this.setState(data);
     });
@@ -46,7 +46,7 @@ class Home extends Component {
     });
 
     socket.on('connectreq', data => {
-      if (data.hostname === '127.0.0.1' && data.port === '9998') {
+      if (data.hostname === location.hostname && data.port === '9998') {
         // 忽略插件本身的请求
       } else {
         this.props.onArrive(data);
