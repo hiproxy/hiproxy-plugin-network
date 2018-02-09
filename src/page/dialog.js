@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+//import JSONUtil from './jsonUtils';
 import './index.css';
 let startX = 0;
 let maxWidth, minWidth;
@@ -30,7 +31,8 @@ export default class Dialog extends Component {
 
     this.state = {
       tab: 'headers',
-      dialogWidth: 900
+      dialogWidth: 900,
+      viewParsed: true
     };
 
     document.onmousemove = throttle(this.onMousemove.bind(this),50,100);
@@ -39,7 +41,8 @@ export default class Dialog extends Component {
 
   componentWillReceiveProps () {
     this.setState({
-      tab: 'headers'
+      tab: 'headers',
+      viewParsed: true
     });
   }
 
@@ -71,15 +74,20 @@ export default class Dialog extends Component {
   onMouseup () {
     shouldMove = false;
   }
-
+  changeViewJson () {
+    let viewParsed = this.state.viewParsed;
+    this.setState({viewParsed: !viewParsed})
+  }
   render () {
     const { showRequestDetail, requestDetail, onClose } = this.props;
     const tab = this.state.tab;
-
+    let { viewParsed } = this.state;
     if (!showRequestDetail) {
       return null;
     }
     const t = requestDetail;
+    let bodyType = t.contentType.indexOf('json')!=-1 ? 'json' : 'form';
+    let body = <pre><code>{viewParsed ? getBody(t.body) : t.body}</code></pre>;
 
     const content = () => {
       if (tab === 'headers') {
@@ -110,6 +118,14 @@ export default class Dialog extends Component {
           <ul className="list">
             {parseData(t.headers)}
           </ul>
+          {
+            t.body && <div>
+              <h3>{ bodyType == 'json' ? 'Request Payload' : 'Form Data'}&nbsp;&nbsp;
+                <span style={{fontSize:'12px'}}
+                      onClick={this.changeViewJson.bind(this)}>{ viewParsed ? 'view source':'view parsed'}</span></h3>
+              {body}
+            </div>
+          }
         </section>;
       } else if (tab === 'response') {
         // 获取content-type
@@ -180,4 +196,43 @@ function parseData (data) {
   }
 
   return result;
+}
+
+function getQueryObjFromURL(params){
+  if(!params){
+    return null
+  }
+
+  let res = {};
+  let fields = params.split('&');
+
+  fields.forEach((field) => {
+    let kv = field.split('=');
+    let key = kv[0];
+    let value = kv.slice(1).join('=');
+
+    if(key){
+      if(key in res){
+        res[key] = [].concat(res[key], value)
+      }else{
+        res[key] = value;
+      }
+    }
+  });
+
+  return res;
+}
+
+function getBody(body) {
+  let isJson = false;
+  let data;
+
+  try{
+    data = JSON.parse(body);
+    isJson = true;
+  } catch(e) {
+    data = getQueryObjFromURL(decodeURIComponent(body))
+  }
+
+  return isJson ? JSON.stringify(data,null,2):parseData(data)
 }

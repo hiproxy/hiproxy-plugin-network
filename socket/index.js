@@ -47,7 +47,14 @@ function SocketServer () {
   
       self.on('data', function (data, req, res) {
         var reqId = req.requestId;
-        
+
+        if( !streamArray[reqId]
+            && res.headers
+            && res.headers['content-type']
+            && res.headers['content-type'].indexOf(/(image|ico|bmp)/) != -1)  {
+          data = '暂时不传递此类型的数据';
+        }
+
         if (streamArray[reqId]) {
           streamArray[reqId] += data;
         } else {

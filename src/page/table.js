@@ -121,8 +121,6 @@ export const Tables = (props) => {
       fileType = 'file';
     }
 
-    console.log('请求：', t);
-
     let {host, protocol=''} = url;
     
     return {
