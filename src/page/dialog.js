@@ -87,8 +87,8 @@ export default class Dialog extends Component {
       return null;
     }
     const t = requestDetail;
-    let bodyType = t.contentType.indexOf('json')!=-1 ? 'json' : 'form';
-    let body = <pre><code>{viewParsed ? getBody(t.body) : t.body}</code></pre>;
+    let bodyType = getBodyType(t);
+    let body = <pre><code>{viewParsed ? getBody(t) : t.body}</code></pre>;
 
     const content = () => {
       if (tab === 'headers') {
@@ -120,10 +120,10 @@ export default class Dialog extends Component {
             {parseData(t.headers)}
           </ul>
           {
-            t.body && <div>
-              <h3 className="header">{ bodyType == 'json' ? 'Request Payload' : 'Form Data'}&nbsp;&nbsp;
-                <span style={{fontSize:'12px', color: '#838383'}}
-                      onClick={this.changeViewJson.bind(this)}>{ viewParsed ? 'view source':'view parsed'}</span></h3>
+            <div>
+              <h3 className="header">{ bodyType }&nbsp;&nbsp;
+                {bodyType && <span style={{fontSize:'12px', color: '#838383'}}
+                      onClick={this.changeViewJson.bind(this)}>{ viewParsed ? 'view source':'view parsed'}</span>}</h3>
               {body}
             </div>
           }
@@ -234,7 +234,7 @@ function getQueryObjFromURL(params){
       if(key in res){
         res[key] = [].concat(res[key], value)
       }else{
-        res[key] = value;
+        res[key] = decodeURIComponent(value);
       }
     }
   });
@@ -242,9 +242,15 @@ function getQueryObjFromURL(params){
   return res;
 }
 
-function getBody(body) {
+function getBody(t) {
   let isJson = false;
+  let body = t.body;
   let data;
+  if (t.method.toLocaleLowerCase() === 'get'
+      && (t.resContentType && t.resContentType.indexOf('json')!=-1)
+  ) {
+    body = t.path.split('?')[1]
+  }
 
   try{
     data = JSON.parse(body);
@@ -253,5 +259,25 @@ function getBody(body) {
     data = getQueryObjFromURL(decodeURIComponent(body))
   }
 
-  return isJson ? JSON.stringify(data,null,2):parseData(data)
+  return isJson ? JSON.stringify(data,null,2) : parseData(data)
+}
+
+function getBodyType (ctx) {
+  let method = ctx.method.toLocaleLowerCase();
+  if (ctx.resContentType
+      && ctx.resContentType.indexOf('json')!=-1
+      &&  method === 'get') {
+    return 'Query String Paramenters'
+  }
+
+  if (method == 'post') {
+    let isJson = false;
+    try{
+      JSON.parse(ctx.body);
+      isJson = true;
+    } catch(e) {}
+
+    return isJson ? 'Request Payload':'Form data';
+  }
+  return null;
 }
