@@ -29,6 +29,11 @@ module.exports = [
           socketInstance = new Socket();
 
           hiproxyServer.on('data', function (data, req, res) {
+            if(res.headers
+                && res.headers['content-type']
+                && res.headers['content-type'].indexOf('image') != -1)  {
+              data = '暂时不传递此类型的数据';
+            }
             socketInstance.emit('data', data.toString(), req, res);
           });
 
