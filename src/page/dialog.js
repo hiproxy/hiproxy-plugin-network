@@ -38,14 +38,15 @@ export default class Dialog extends Component {
   }
 
   componentWillReceiveProps () {
-    this.setState({
-      tab: 'headers'
-    });
+    // this.setState({
+    //   tab: 'headers'
+    // });
   }
 
   componentDidUpdate () {
     var block = document.getElementById('js-code');
-    block && hljs.highlightBlock(block);
+    // var text = block && block.textContent || '';
+    // block && text.length < 20 * 1024 && hljs.highlightBlock(block);
   }
   onMousedown (eve){
     shouldMove = true;
@@ -128,7 +129,11 @@ export default class Dialog extends Component {
         let targetURL = t.protocol + '//' + t.hostname + (t.port ? ':' + t.port : '') + t.path;
 
         if (/^(html|css|javascript|json|text)$/.test(fileType)) {
-          return <pre className="code" id="js-code"><code className={fileType}>{t.socketData}</code></pre>;
+          if (t.originLength > 1 * 1024 * 1024) {
+            return <div style={{padding: '10px'}}>文件内容太长，<a href={targetURL} target="_blank">点击此处</a>在新窗口中打开。</div>
+          } else {
+            return <pre className="code" id="js-code"><code className={fileType}>{t.socketData}</code></pre>;
+          }
         } else if (/^(png|jpg|jpeg|gif|ico|svg\+xml)$/.test(fileType)) {
           return <div className="content"><img src={targetURL} /></div>
         } else {
