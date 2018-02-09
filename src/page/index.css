@@ -133,6 +133,10 @@ ul , li{max-height:1000000px;}
     box-sizing: border-box;
 }
 
+.ant-table-tbody > tr:nth-child(even) {
+    background: rgba(0,0,0,0.03);
+}
+
 .ant-table-tbody > tr > td {
     padding: 5px 5px!important;
 }
@@ -176,6 +180,10 @@ ul , li{max-height:1000000px;}
     text-overflow: ellipsis;
     max-width: 400px;
     overflow: hidden; */
+}
+
+.ant-menu-item .anticon {
+    margin-right: 4px!important;
 }
 
 #spliter {
