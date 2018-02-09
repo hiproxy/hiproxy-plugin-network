@@ -138,7 +138,7 @@ export default class Dialog extends Component {
 
         if (fileType === 'x-javascript') {
           fileType = 'javascript';
-        } else if (fileType === 'x-ico') {
+        } else if (fileType === 'x-ico' || fileType === 'x-icon') {
           fileType = 'ico';
         }
 
@@ -148,7 +148,16 @@ export default class Dialog extends Component {
           if (t.originLength > 1 * 1024 * 1024) {
             return <div style={{padding: '10px'}}>文件内容太长，<a href={targetURL} target="_blank">点击此处</a>在新窗口中打开。</div>
           } else {
-            let data = fileType === 'json' ? JSON.stringify(JSON.parse(t.socketData),null,2) : t.socketData;
+            let data = t.socketData;
+
+            if (fileType === 'json') {
+              try {
+                data = JSON.stringify(JSON.parse(t.socketData),null,2);
+              } catch (err) {
+                // ...
+                data = t.socketData;
+              }
+            }
             return (
               <pre className="code" id="js-code">
                 <code className={fileType}>{data}</code>

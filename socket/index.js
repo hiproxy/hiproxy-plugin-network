@@ -61,6 +61,16 @@ function SocketServer () {
           streamArray[reqId] = data;
         }
       });
+
+      self.on('connect', function (hostname, port, request, socket, head) {
+        for(var key in me.sockets) {
+          me.sockets[key].emit('connectreq', {
+            type: 'connect',
+            hostname: hostname,
+            port: port
+          })
+        }
+      });
     }
 
     socketObj.emit('pageReady', getPageData());

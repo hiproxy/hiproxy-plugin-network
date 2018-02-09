@@ -44,6 +44,15 @@ class Home extends Component {
 
       this.props.onArrive(obj);
     });
+
+    socket.on('connectreq', data => {
+      console.log('connect req', data);
+      if (data.hostname === '127.0.0.1' && data.port === '9998') {
+
+      } else {
+        this.props.onArrive(data);
+      }
+    });
   }
 
   componentDidUpdate () {

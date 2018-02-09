@@ -24,10 +24,11 @@ const columns = [/*{
   width: 200,
   key: 'name',
   render: (val, record) => {
+    console.log('name', val, record);
     var value = val[0];
     var fileType = val[1];
     var arr = value.split('/');
-    var name = arr.pop();
+    var name = arr.pop() || '';
     var path = arr.join('/');
 
     if (!path) {
@@ -121,10 +122,27 @@ const files = [
 
 export const Tables = (props) => {
   const dataSource = props.data && props.data.map( (t, index) => {
-    let {resHeaders, url, method, hostname, port, path, time} = t;
+    let {resHeaders={}, socketData='', statusCode, url, method, hostname, port, path, time} = t;
     let contentType = resHeaders['content-type'] || '';
     let fileType = contentType.split(';')[0].split('/')[1] || '';
-    let length = resHeaders['content-length'] || t.socketData.length;
+    let length = resHeaders['content-length'] || socketData.length;
+
+    if (t.type === 'connect') {
+      return {
+        key: index,
+        name: ['UNKNOW', 'ssl-error'],
+        id: index,
+        method: 'CONNECT',
+        protocol: 'HTTPS',
+        status: '',
+        address: hostname + ':' + port,
+        targetAddress: '',
+        targetPath: '',
+        type: '',
+        size: 'N/A',
+        time: 'N/A'
+      }
+    }
 
     fileType = fileType.trim();
 
@@ -136,7 +154,7 @@ export const Tables = (props) => {
       fileType = 'jpg';
     } else if (fileType === 'x-javascript') {
       fileType = 'javascript';
-    } else if (fileType === 'x-ico') {
+    } else if (fileType === 'x-ico' || fileType === 'x-icon') {
       fileType = 'ico';
     }
 
@@ -152,11 +170,11 @@ export const Tables = (props) => {
       id: index,
       method: method,
       protocol: protocol.replace(':', '').toUpperCase(),
-      status: t.statusCode,
+      status: statusCode,
       address: host,
       targetAddress: hostname + (port ? ':' + port : ''),
       targetPath: path,
-      type: getContentType(t.contentType || 'text/plain'),
+      type: getContentType(contentType),
       size: getSizeLabel(length),
       time: getTimeLabel(time)
     }
