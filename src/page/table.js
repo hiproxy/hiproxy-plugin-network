@@ -92,7 +92,7 @@ const columns = [{
 
 const files = [
   'css', 'file', 'html', 'javascript',
-  'jpg', 'png', 'pdf', 'json', 'svg', 'gif',
+  'jpg', 'png', 'pdf', 'json', 'svg', 'gif', 'ico',
   'txt', 'xml', 'zip'
 ];
 
@@ -113,13 +113,15 @@ export const Tables = (props) => {
       fileType = 'jpg';
     } else if (fileType === 'x-javascript') {
       fileType = 'javascript';
+    } else if (fileType === 'x-ico') {
+      fileType = 'ico';
     }
 
     if (files.indexOf(fileType) === -1) {
       fileType = 'file';
     }
 
-    // console.log('t', t);
+    console.log('请求：', t);
 
     let {host, protocol=''} = url;
     

@@ -86,6 +86,7 @@ function parseRequest (req, res, data) {
   response.resHeaders = JSON.parse(JSON.stringify(res.headers));
   // response.url = req.url;
   response.url = url.parse(req.url);
+  response.body = req.body;
 
   return JSON.stringify(response);
 }
