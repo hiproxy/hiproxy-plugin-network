@@ -30,7 +30,7 @@ export default class Dialog extends Component {
 
     this.state = {
       tab: 'headers',
-      dialogWidth: '900'
+      dialogWidth: 900
     };
 
     document.onmousemove = throttle(this.onMousemove.bind(this),50,100);
@@ -49,12 +49,9 @@ export default class Dialog extends Component {
   }
   onMousedown (eve){
     shouldMove = true;
-
     maxWidth = 1200;
     minWidth = 100;
-
     startX = eve.clientX;
-
     eve.preventDefault();
   };
 
@@ -62,14 +59,13 @@ export default class Dialog extends Component {
     if(!shouldMove){
       return
     }
-
     let {clientX} = eve;
     let delta = startX - clientX;
     startX = startX - delta;
-    let width =  this.state.dialogWidth;
+    let width =  parseInt(document.querySelector('.dialog').style.width)
     width += delta;
-    width = width < minWidth ? minWidth : width>maxWidth? maxWidth: width;
-    this.setState({dialogWidth: width});
+    width = width < minWidth ? minWidth : width > maxWidth ? maxWidth: width;
+    document.querySelector('.dialog').style.width = width + 'px';
   };
 
   onMouseup () {
@@ -88,9 +84,6 @@ export default class Dialog extends Component {
     const content = () => {
       if (tab === 'headers') {
         return <section className="body">
-          <div id="spliter"
-               onMouseDown={this.onMousedown.bind(this)}
-          ></div>
           <h3 className="header">General</h3>
           <ul className="list">
             <li>
@@ -138,6 +131,9 @@ export default class Dialog extends Component {
 
     return (
       <div className='dialog' style={{width: this.state.dialogWidth+'px'}}>
+        <div id="spliter"
+             onMouseDown={this.onMousedown.bind(this)}
+        ></div>
         <header>
           <div className="close" onClick={this.close.bind(this)}>&times;</div>
           <div className={tab === 'headers' ? 'tab active' : 'tab'}

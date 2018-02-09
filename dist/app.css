@@ -180,7 +180,7 @@ ul , li{max-height:1000000px;}
 #spliter {
     width: 1px;
     height: 100%;
-    left: 0;
+    left: -5px;
     position: absolute;
     z-index: 2222;
     padding: 0 3px;
