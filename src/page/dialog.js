@@ -119,12 +119,18 @@ export default class Dialog extends Component {
 
         fileType = fileType.trim();
 
+        if (fileType === 'x-javascript') {
+          fileType = 'javascript';
+        }
+
+        let targetURL = t.protocol + '//' + t.hostname + (t.port ? ':' + t.port : '') + t.path;
+
         if (/^(html|css|javascript|json|text)$/.test(fileType)) {
           return <pre className="code" id="js-code"><code className={fileType}>{t.socketData}</code></pre>;
-        } else if (/^(png|jpg|gif|svg\+xml)$/.test(fileType)) {
-          return <div className="content"><img src={t.path} /></div>
+        } else if (/^(png|jpg|jpeg|gif|svg\+xml)$/.test(fileType)) {
+          return <div className="content"><img src={targetURL} /></div>
         } else {
-          return <div style={{padding: '10px'}}>暂时不支持此类型文件预览</div>
+          return <div style={{padding: '10px'}}>暂时不支持此类型文件预览，<a href={targetURL} target="_blank">点击此处</a>在新窗口中打开。</div>
         }
       }
     };

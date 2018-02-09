@@ -109,13 +109,21 @@ export const Tables = (props) => {
       fileType = fileType.split('+')[0];
     }
 
+    if (fileType === 'jpeg') {
+      fileType = 'jpg';
+    } else if (fileType === 'x-javascript') {
+      fileType = 'javascript';
+    }
+
     if (files.indexOf(fileType) === -1) {
       fileType = 'file';
     }
 
+    console.log('fileType:', fileType);
+
     console.log('t', t);
 
-    let {host, protocol} = url;
+    let {host, protocol=''} = url;
     
     return {
       key: index,
