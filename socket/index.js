@@ -93,20 +93,21 @@ function getPageData () {
 }
 
 function parseRequest (req, res, data) {
-  var response = JSON.parse(JSON.stringify(req.proxyOptions));
-  response.socketData = data;
-  response.resContentType = req.res.headers['content-type'] || '';
-  response.reqContentType = req.headers['content-type'] || '';
-  response.id = req.requestId;
-  response.newUrl = req.newUrl;
-  response.statusCode = res.statusCode;
-  response.time = Date.now() - req._startTime;
-  response.resHeaders = JSON.parse(JSON.stringify(res.headers));
-  // response.url = req.url;
-  response.url = url.parse(req.url);
-  response.body = req.body;
+  var result = JSON.parse(JSON.stringify(req.proxyOptions));
 
-  return JSON.stringify(response);
+  result.socketData = data;
+  result.resContentType = res.headers['content-type'] || '';
+  result.reqContentType = result.headers['content-type'] || '';
+  result.id = req.requestId;
+  result.newUrl = req.newUrl;
+  result.statusCode = res.statusCode;
+  result.time = Date.now() - req._startTime;
+  result.resHeaders = JSON.parse(JSON.stringify(res.headers));
+  result.url = url.parse(req.url);
+  result.body = req.body;
+  result.querystring = (result.path || '').split('?').slice(1).join('?');
+
+  return JSON.stringify(result);
 }
 
 function sizeof (str, charset) {

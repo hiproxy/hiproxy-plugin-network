@@ -24,7 +24,6 @@ const columns = [/*{
   width: 200,
   key: 'name',
   render: (val, record) => {
-    console.log('name', val, record);
     var value = val[0];
     var fileType = val[1];
     var arr = value.split('/');
@@ -126,6 +125,8 @@ export const Tables = (props) => {
     let contentType = resHeaders['content-type'] || '';
     let fileType = contentType.split(';')[0].split('/')[1] || '';
     let length = resHeaders['content-length'] || socketData.length;
+
+    // console.log('t', t);
 
     if (t.type === 'connect') {
       return {
