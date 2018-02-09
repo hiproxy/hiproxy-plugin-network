@@ -27,6 +27,7 @@ class Home extends Component {
       var length = data.toString().length;
       var maxLen = 1 * 1024 * 1024;
       var obj = JSON.parse(data);
+      var socketData = obj.socketData || '';
       var path = obj.path;
       var isSocketIOURL = /^\/(socket\.io|devtools)/.test(path);
 
@@ -35,12 +36,29 @@ class Home extends Component {
         return;
       }
 
-      if ((obj.socketData || '').length > maxLen) {
+      obj.originLength = socketData.length;
+
+      if (socketData.length > maxLen) {
         obj.socketData = '内容太长，无法查看！';
       }
 
       this.props.onArrive(obj);
     });
+  }
+
+  componentDidUpdate () {
+    var reqRows = document.querySelectorAll('.request-row');
+    let len = reqRows.length;
+    let {isClick} = this;
+
+    // 如果不是隐藏click导致的渲染，滚动到最后
+    if (len && !isClick) {
+      reqRows[len - 1].scrollIntoView();
+    }
+
+    if (isClick) {
+      this.isClick = false;
+    }
   }
 
   render () {
@@ -54,20 +72,34 @@ class Home extends Component {
         <Menu.Item><a href={sslPath} ><Icon type="cloud-download" />SSL Certificate</a></Menu.Item>
         <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target="_blank"><Icon type="github" />GitHub</a></Menu.Item>
       </Menu>
-      <Tables data={this.props.requests} showRequestDetail={this.showRequestDetail.bind(this)} />
-      <Dialog showRequestDetail={this.state.showRequestDetail} requestDetail={this.state.requestDetail} onClose={this.onClose.bind(this)} />
+      <Tables 
+        data={this.props.requests} 
+        showRequestDetail={this.showRequestDetail.bind(this)}
+        currIndex={this.state.currIndex}
+      />
+      <Dialog 
+        showRequestDetail={this.state.showRequestDetail} 
+        requestDetail={this.state.requestDetail} 
+        onClose={this.onClose.bind(this)}
+      />
     </div>;
   }
 
   showRequestDetail (item){
+    let {id, key} = item;
+      
+    this.isClick = true;
+
     this.setState({
       showRequestDetail: true,
-      requestDetail: this.props.requests[item.key]
+      requestDetail: this.props.requests[item.key],
+      currIndex: id
     });
   }
 
   onClose () {
     this.setState({
+      currIndex: -1,
       showRequestDetail: false
     });
   }

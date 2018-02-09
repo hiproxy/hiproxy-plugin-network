@@ -9,7 +9,7 @@ function HomeReducer (state = initState, action) {
     case Actions.ON_ARRIVE:
 
       return Object.assign({}, state, {
-        requests: state.requests.concat([action.data]).slice(-150)
+        requests: state.requests.concat([action.data]).slice(-200)
       });
 
       break;

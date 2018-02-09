@@ -7,17 +7,18 @@ var source = {
   'stylesheet': 'css',
   'font': '',
   'xhr': '',
+  'image': /(jpg|jpeg|bmp|png|svg|gif)/,
   'javascript': 'javascript',
   'json': 'json',
   'document': 'html'
 };
 
-const columns = [{
+const columns = [/*{
   title: 'ID',
   dataIndex: 'id',
   key: 'id',
   width: 20
-}, {
+}, */{
   title: 'Name',
   dataIndex: 'name',
   width: 200,
@@ -33,8 +34,17 @@ const columns = [{
       name = value;
     }
     name = decodeURIComponent(name);
+
+    if (path.length > 80) {
+      path = path.substr(0, 80) + '...';
+    }
+
+    if (name.length > 80) {
+      name = name.substr(0, 80) + '...';
+    }
+
     return (
-      <div className="req-path">
+      <div className="req-path" title={val[0]}>
         <img src={"icons/" + fileType + '.png'} />
         <div>
           <p className="name">{name}</p>
@@ -72,7 +82,20 @@ const columns = [{
   title: 'Target Path',
   dataIndex: 'targetPath',
   key: 'targetPath',
-  width: 100
+  width: 100,
+  render: (val, record) => {
+    let originVal = val;
+
+    if (val.length > 80) {
+      val = val.substr(0, 80) + '...';
+    }
+
+    return (
+      <div className="req-path" title={originVal}>
+        {val}
+      </div>
+    )
+  }
 },{
   title: 'Type',
   dataIndex: 'type',
@@ -135,7 +158,7 @@ export const Tables = (props) => {
       targetPath: path,
       type: getContentType(t.contentType || 'text/plain'),
       size: getSizeLabel(length),
-      time: time + 'ms'
+      time: getTimeLabel(time)
     }
   });
 
@@ -147,16 +170,29 @@ export const Tables = (props) => {
       columns={columns}
       onRowClick={props.showRequestDetail}
       scroll={{ y: window.innerHeight - 100 }}
+      rowClassName={(record, index) => 'request-row' + (props.currIndex === index ? ' active' : '')}
     />
   );
 };
 
 function getContentType (contentType) {
   for (let key in source) {
-    if (source[key] && contentType.indexOf(source[key]) != -1) {
-      return key;
+    let types = source[key];
+
+    if (types) {
+      if (typeof types === 'string') {
+        if (contentType.indexOf(types) !== -1) {
+          return key
+        }
+      } else if (typeof types.test === 'function') {
+        if (types.test(contentType)) {
+          return key;
+        }
+      }
     }
   }
+
+  return '';  
 }
 
 function getSizeLabel (num) {
@@ -169,5 +205,15 @@ function getSizeLabel (num) {
     return k.toFixed(2) + ' KB';
   } else {
     return num + ' B'
+  }
+}
+
+function getTimeLabel (time) {
+  let s = time / 1000;
+
+  if (s > 1) {
+    return s.toFixed(1) + ' s';
+  } else {
+    return time + ' ms';
   }
 }
