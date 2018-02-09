@@ -46,9 +46,8 @@ class Home extends Component {
     });
 
     socket.on('connectreq', data => {
-      console.log('connect req', data);
       if (data.hostname === '127.0.0.1' && data.port === '9998') {
-
+        // 忽略插件本身的请求
       } else {
         this.props.onArrive(data);
       }

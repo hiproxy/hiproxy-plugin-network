@@ -82,55 +82,28 @@ export default class Dialog extends Component {
   render () {
     const { showRequestDetail, requestDetail, onClose } = this.props;
     const tab = this.state.tab;
-    let { viewParsed } = this.state;
     if (!showRequestDetail) {
       return null;
     }
     const t = requestDetail;
-    let bodyType = getBodyType(t);
-    let method = t.method.toLocaleLowerCase();
-    let bodyOrqs = method === 'get' ? t.querystring : t.body;
-    let body = <pre><code>{viewParsed ? getBody(t) : bodyOrqs}</code></pre>;
+    
 
     const content = () => {
       if (tab === 'headers') {
         return <section className="body">
           <h3 className="header">General</h3>
           <ul className="list">
-            <li>
-              <strong>Request URL:</strong>  {t.url.href}
-            </li>
-            <li>
-              <strong>Proxy URL:</strong>  {t.newUrl}
-            </li>
-            <li>
-              <strong>Request Method:</strong> {t.method}
-            </li>
-            <li>
-              <strong>Status Code:</strong> {t.statusCode}
-            </li>
-            <li>
-              <strong>Remote Address:</strong> {t.hostname}
-            </li>
+            <li><strong>Request URL:</strong>  {t.url.href}</li>
+            <li><strong>Proxy URL:</strong>  {t.newUrl}</li>
+            <li><strong>Request Method:</strong> {t.method}</li>
+            <li><strong>Status Code:</strong> {t.statusCode}</li>
+            <li><strong>Remote Address:</strong> {t.hostname}</li>
           </ul>
           <h3 className="header">Response Headers</h3>
-          <ul className="list">
-            {parseData(t.resHeaders)}
-          </ul>
+          <ul className="list">{parseData(t.resHeaders)}</ul>
           <h3 className="header">Request Headers</h3>
-          <ul className="list">
-            {parseData(t.headers)}
-          </ul>
-          {
-            <div>
-              <h3 className="header">
-                { bodyType }&nbsp;&nbsp;
-                {bodyType && <span style={{fontSize:'12px', color: '#838383'}}
-                                    onClick={this.changeViewJson.bind(this)}>{ viewParsed ? 'view source':'view parsed'}</span>}
-              </h3>
-              {body}
-            </div>
-          }
+          <ul className="list">{parseData(t.headers)}</ul>
+          {this.renderParams(t)}
         </section>;
       } else if (tab === 'response') {
         // 获取content-type
@@ -191,6 +164,40 @@ export default class Dialog extends Component {
         {content()}
       </div>
     );
+  }
+
+  renderParams (t) {
+    let bodyType = getBodyType(t);
+    let method = t.method.toLocaleLowerCase();
+    let bodyOrqs = method === 'get' ? t.querystring : t.body;
+    let bodyData = getBody(t);
+    let body = '';
+    let { viewParsed } = this.state;    
+
+    if (!bodyType || !bodyData) {
+      return null;
+    }
+
+    if (bodyType === 'Request Payload' || !viewParsed) {
+      body = <pre><code>{viewParsed ? bodyData : bodyOrqs}</code></pre>
+    } else {
+      body = <ul className="list">{bodyData}</ul>
+    }
+
+    return (
+      <div>
+        <h3 className="header">
+          { bodyType }
+          <span 
+            style={{marginLeft: '20px', fontSize:'12px', color: '#838383'}}
+            onClick={this.changeViewJson.bind(this)}
+          >
+            { viewParsed ? 'view source':'view parsed'}
+          </span>
+        </h3>
+        {body}
+      </div>
+    )
   }
 
   close (eve) {
@@ -288,5 +295,6 @@ function getBodyType (ctx) {
 
     return isJson ? 'Request Payload' : 'Form data';
   }
+
   return null;
 }
