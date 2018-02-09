@@ -48,11 +48,11 @@ class Home extends Component {
 
     return <div>
       <Menu mode="horizontal" selectedKeys={['1']} theme="dark">
-        <Menu.Item key="mail">Hiproxy-plugin-devtools</Menu.Item>
-        <Menu.Item><a onClick={this.props.clearAll}>clear</a></Menu.Item>
-        <Menu.Item><a href={proxyPath}>proxy.pac</a></Menu.Item>
-        <Menu.Item><a href={sslPath} >ssl-certificate</a></Menu.Item>
-        <Menu.Item><a href='https://github.com/huaziHear/hiproxy-plugin-devtools'>GitHub</a></Menu.Item>
+        <Menu.Item key="mail">hiproxy-plugin-devtools</Menu.Item>
+        <Menu.Item><a onClick={this.props.clearAll}><Icon type="delete" />Clear</a></Menu.Item>
+        <Menu.Item><a href={proxyPath}><Icon type="file-text" />PAC File</a></Menu.Item>
+        <Menu.Item><a href={sslPath} ><Icon type="cloud-download" />SSL Certificate</a></Menu.Item>
+        <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target="_blank"><Icon type="github" />GitHub</a></Menu.Item>
       </Menu>
       <Tables data={this.props.requests} showRequestDetail={this.showRequestDetail.bind(this)} />
       <Dialog showRequestDetail={this.state.showRequestDetail} requestDetail={this.state.requestDetail} onClose={this.onClose.bind(this)} />
