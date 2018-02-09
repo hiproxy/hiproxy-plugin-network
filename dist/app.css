@@ -118,6 +118,10 @@ ul , li{max-height:1000000px;}
     font-size: 13px;
 }
 
+.dialog .content img {
+    max-width: 100%;
+}
+
 .dialog ul.list {
     margin-left: 15px;
 }
@@ -127,10 +131,14 @@ ul , li{max-height:1000000px;}
     font-size: 13px!important;
 }
 
-.ant-table-tbody > tr {
+.ant-table-tbody .request-row {
     padding: 0!important;
     height: 50px;
     box-sizing: border-box;
+}
+
+.ant-table-tbody .request-row.active td {
+    background: #e6f7ff;
 }
 
 .ant-table-tbody > tr:nth-child(even) {
@@ -145,6 +153,7 @@ ul , li{max-height:1000000px;}
     padding: 10px 5px!important;
 }
 
+/* 表格中请求文件的路径信息 */
 .req-path {
     vertical-align: top!important;
     display: flex;
