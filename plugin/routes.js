@@ -32,7 +32,7 @@ module.exports = [
             if(res.headers
                 && res.headers['content-type']
                 && res.headers['content-type'].indexOf('image') != -1)  {
-              data = '';
+              data = '暂时不传递此类型的数据';
             }
             socketInstance.emit('data', data.toString(), req, res);
           });
