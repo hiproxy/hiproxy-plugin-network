@@ -32,7 +32,7 @@ const columns = [{
     if (!path) {
       name = value;
     }
-
+    name = decodeURIComponent(name);
     return (
       <div className="req-path">
         <img src={"icons/" + fileType + '.png'} />

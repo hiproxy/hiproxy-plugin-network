@@ -47,7 +47,7 @@ class Home extends Component {
     const { proxyPath, sslPath } = this.state || {};
 
     return <div>
-      <Menu mode="horizontal" selectedKeys={[1]} theme="dark">
+      <Menu mode="horizontal" selectedKeys={['1']} theme="dark">
         <Menu.Item key="mail">hiproxy-plugin-devtools</Menu.Item>
         <Menu.Item><a onClick={this.props.clearAll}><Icon type="delete" />Clear</a></Menu.Item>
         <Menu.Item><a href={proxyPath}><Icon type="file-text" />PAC File</a></Menu.Item>
