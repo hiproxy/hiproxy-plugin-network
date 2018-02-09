@@ -59,3 +59,6 @@ typings/
 
 # System
 .DS_Store
+
+# build
+*.map
