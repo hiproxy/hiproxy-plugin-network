@@ -85,7 +85,7 @@ function getPageData () {
 function parseRequest (req, res, data) {
   var response = JSON.parse(JSON.stringify(req.proxyOptions));
   response.socketData = data;
-  response.contentType = req.res.headers['content-type'];
+  response.contentType = req.res.headers['content-type'] || '';
   response.id = req.requestId;
   response.newUrl = req.newUrl;
   response.statusCode = res.statusCode;

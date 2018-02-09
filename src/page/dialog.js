@@ -148,7 +148,12 @@ export default class Dialog extends Component {
           if (t.originLength > 1 * 1024 * 1024) {
             return <div style={{padding: '10px'}}>文件内容太长，<a href={targetURL} target="_blank">点击此处</a>在新窗口中打开。</div>
           } else {
-            return <pre className="code" id="js-code"><code className={fileType}>{JSON.stringify(JSON.parse(t.socketData),null,2)}</code></pre>;
+            let data = fileType === 'json' ? JSON.stringify(JSON.parse(t.socketData),null,2) : t.socketData;
+            return (
+              <pre className="code" id="js-code">
+                <code className={fileType}>{data}</code>
+              </pre>
+            )
           }
         } else if (/^(png|jpg|jpeg|gif|ico|svg\+xml)$/.test(fileType)) {
           return <div className="content"><img src={targetURL} /></div>
