@@ -116,7 +116,7 @@ ul , li{max-height:1000000px;}
     border: none;
     margin: 0;
     font-size: 13px;
-    white-space: pre-line;
+    /* white-space: pre-line; */
 }
 
 .dialog .content img {
