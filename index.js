@@ -10,12 +10,12 @@ var directives = require('./plugin/directives');
 var routes = require('./plugin/routes');
 
 module.exports = {
-    // CLI commands
+  // CLI commands
   commands: commands,
 
-    // Rewrite config redirectives
+  // Rewrite config redirectives
   directives: directives,
 
-    // HTTP server routes
+  // HTTP server routes
   routes: routes
 };

@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
-//import JSONUtil from './jsonUtils';
+// import JSONUtil from './jsonUtils';
 import './index.css';
 let startX = 0;
 let maxWidth, minWidth;
-let shouldMove = false
-let throttle = function(fn, delay, mustRunDelay){
+let shouldMove = false;
+let throttle = function (fn, delay, mustRunDelay) {
   var timer = null;
   var t_start;
-  return function(){
+  return function () {
     var context = this, args = arguments, t_curr = +new Date();
     clearTimeout(timer);
-    if(!t_start){
+    if (!t_start) {
       t_start = t_curr;
     }
-    if(t_curr - t_start >= mustRunDelay){
+    if (t_curr - t_start >= mustRunDelay) {
       fn.apply(context, args);
       t_start = t_curr;
-    }
-    else {
-      timer = setTimeout(function(){
+    } else {
+      timer = setTimeout(function () {
         fn.apply(context, args);
       }, delay);
     }
@@ -35,13 +34,13 @@ export default class Dialog extends Component {
       viewParsed: true
     };
 
-    document.onmousemove = throttle(this.onMousemove.bind(this),50,100);
+    document.onmousemove = throttle(this.onMousemove.bind(this), 50, 100);
     document.onmouseup = this.onMouseup.bind(this);
   }
 
   componentWillReceiveProps () {
     this.setState({
-      //tab: 'headers',
+      // tab: 'headers',
       viewParsed: true
     });
   }
@@ -51,33 +50,33 @@ export default class Dialog extends Component {
     // var text = block && block.textContent || '';
     // block && text.length < 20 * 1024 && hljs.highlightBlock(block);
   }
-  onMousedown (eve){
+  onMousedown (eve) {
     shouldMove = true;
     maxWidth = 1200;
     minWidth = 100;
     startX = eve.clientX;
     eve.preventDefault();
-  };
+  }
 
-  onMousemove  (eve){
-    if(!shouldMove){
-      return
+  onMousemove (eve) {
+    if (!shouldMove) {
+      return;
     }
     let {clientX} = eve;
     let delta = startX - clientX;
     startX = startX - delta;
-    let width =  parseInt(document.querySelector('.dialog').style.width)
+    let width = parseInt(document.querySelector('.dialog').style.width);
     width += delta;
-    width = width < minWidth ? minWidth : width > maxWidth ? maxWidth: width;
+    width = width < minWidth ? minWidth : width > maxWidth ? maxWidth : width;
     document.querySelector('.dialog').style.width = width + 'px';
-  };
+  }
 
   onMouseup () {
     shouldMove = false;
   }
   changeViewJson () {
     let viewParsed = this.state.viewParsed;
-    this.setState({viewParsed: !viewParsed})
+    this.setState({viewParsed: !viewParsed});
   }
   render () {
     const { showRequestDetail, requestDetail, onClose } = this.props;
@@ -86,23 +85,22 @@ export default class Dialog extends Component {
       return null;
     }
     const t = requestDetail;
-    
 
     const content = () => {
       if (tab === 'headers') {
-        return <section className="body">
-          <h3 className="header">General</h3>
-          <ul className="list">
+        return <section className='body'>
+          <h3 className='header'>General</h3>
+          <ul className='list'>
             <li><strong>Request URL:</strong>  {t.url.href}</li>
             <li><strong>Proxy URL:</strong>  {t.newUrl}</li>
             <li><strong>Request Method:</strong> {t.method}</li>
             <li><strong>Status Code:</strong> {t.statusCode}</li>
             <li><strong>Remote Address:</strong> {t.hostname}</li>
           </ul>
-          <h3 className="header">Response Headers</h3>
-          <ul className="list">{parseData(t.resHeaders)}</ul>
-          <h3 className="header">Request Headers</h3>
-          <ul className="list">{parseData(t.headers)}</ul>
+          <h3 className='header'>Response Headers</h3>
+          <ul className='list'>{parseData(t.resHeaders)}</ul>
+          <h3 className='header'>Request Headers</h3>
+          <ul className='list'>{parseData(t.headers)}</ul>
           {this.renderParams(t)}
         </section>;
       } else if (tab === 'response') {
@@ -123,39 +121,39 @@ export default class Dialog extends Component {
 
         if (/^(html|css|javascript|json|text)$/.test(fileType)) {
           if (t.originLength > 1 * 1024 * 1024) {
-            return <div style={{padding: '10px'}}>文件内容太长，<a href={targetURL} target="_blank">点击此处</a>在新窗口中打开。</div>
+            return <div style={{padding: '10px'}}>文件内容太长，<a href={targetURL} target='_blank'>点击此处</a>在新窗口中打开。</div>;
           } else {
             let data = t.socketData;
 
             if (fileType === 'json') {
               try {
-                data = JSON.stringify(JSON.parse(t.socketData),null,2);
+                data = JSON.stringify(JSON.parse(t.socketData), null, 2);
               } catch (err) {
                 // ...
                 data = t.socketData;
               }
             }
             return (
-              <pre className="code" id="js-code">
+              <pre className='code' id='js-code'>
                 <code className={fileType}>{data}</code>
               </pre>
-            )
+            );
           }
         } else if (/^(png|jpg|jpeg|gif|ico|svg\+xml)$/.test(fileType)) {
-          return <div className="content"><img src={targetURL} /></div>
+          return <div className='content'><img src={targetURL} /></div>;
         } else {
-          return <div style={{padding: '10px'}}>暂时不支持此类型文件预览，<a href={targetURL} target="_blank">点击此处</a>在新窗口中打开。</div>
+          return <div style={{padding: '10px'}}>暂时不支持此类型文件预览，<a href={targetURL} target='_blank'>点击此处</a>在新窗口中打开。</div>;
         }
       }
     };
 
     return (
-      <div className='dialog' style={{width: this.state.dialogWidth+'px'}}>
-        <div id="spliter"
-             onMouseDown={this.onMousedown.bind(this)}
-        ></div>
+      <div className='dialog' style={{width: this.state.dialogWidth + 'px'}}>
+        <div id='spliter'
+          onMouseDown={this.onMousedown.bind(this)}
+        />
         <header>
-          <div className="close" onClick={this.close.bind(this)}>&times;</div>
+          <div className='close' onClick={this.close.bind(this)}>&times;</div>
           <div className={tab === 'headers' ? 'tab active' : 'tab'}
             onClick={this.switchTab.bind(this, 'headers')}>Headers</div>
           <div className={tab === 'response' ? 'tab active' : 'tab'}
@@ -172,32 +170,32 @@ export default class Dialog extends Component {
     let bodyOrqs = method === 'get' ? t.querystring : t.body;
     let bodyData = getBody(t);
     let body = '';
-    let { viewParsed } = this.state;    
+    let { viewParsed } = this.state;
 
     if (!bodyType || !bodyData) {
       return null;
     }
 
     if (bodyType === 'Request Payload' || !viewParsed) {
-      body = <pre><code>{viewParsed ? bodyData : bodyOrqs}</code></pre>
+      body = <pre><code>{viewParsed ? bodyData : bodyOrqs}</code></pre>;
     } else {
-      body = <ul className="list">{bodyData}</ul>
+      body = <ul className='list'>{bodyData}</ul>;
     }
 
     return (
       <div>
-        <h3 className="header">
+        <h3 className='header'>
           { bodyType }
-          <span 
-            style={{marginLeft: '20px', fontSize:'12px', color: '#838383'}}
+          <span
+            style={{marginLeft: '20px', fontSize: '12px', color: '#838383'}}
             onClick={this.changeViewJson.bind(this)}
           >
-            { viewParsed ? 'view source':'view parsed'}
+            { viewParsed ? 'view source' : 'view parsed'}
           </span>
         </h3>
         {body}
       </div>
-    )
+    );
   }
 
   close (eve) {
@@ -228,9 +226,9 @@ function parseData (data) {
   return result;
 }
 
-function getQueryObjFromURL(params){
-  if(!params){
-    return null
+function getQueryObjFromURL (params) {
+  if (!params) {
+    return null;
   }
 
   let res = {};
@@ -241,10 +239,10 @@ function getQueryObjFromURL(params){
     let key = kv[0];
     let value = kv.slice(1).join('=');
 
-    if(key){
-      if(key in res){
-        res[key] = [].concat(res[key], value)
-      }else{
+    if (key) {
+      if (key in res) {
+        res[key] = [].concat(res[key], value);
+      } else {
         res[key] = decodeURIComponent(value);
       }
     }
@@ -253,7 +251,7 @@ function getQueryObjFromURL(params){
   return res;
 }
 
-function getBody(t) {
+function getBody (t) {
   let isJson = false;
   let body = t.body;
   let querystring = t.querystring;
@@ -266,32 +264,32 @@ function getBody(t) {
     data = getQueryObjFromURL(querystring);
   } else if (method === 'post') {
     if (isJSON) {
-      try{
+      try {
         data = JSON.parse(body);
-      } catch(e) {
+      } catch (e) {
         isJSON = false;
-        data = getQueryObjFromURL(body)
+        data = getQueryObjFromURL(body);
       }
     } else {
-      data = getQueryObjFromURL(body)
+      data = getQueryObjFromURL(body);
     }
   }
 
-  return isJSON ? JSON.stringify(data,null,2) : parseData(data)
+  return isJSON ? JSON.stringify(data, null, 2) : parseData(data);
 }
 
 function getBodyType (ctx) {
   let method = ctx.method.toLocaleLowerCase();
   if (method === 'get') {
-    return 'Query String Paramenters'
+    return 'Query String Paramenters';
   }
 
   if (method == 'post') {
     let isJson = false;
-    try{
+    try {
       JSON.parse(ctx.body);
       isJson = true;
-    } catch(e) {}
+    } catch (e) {}
 
     return isJson ? 'Request Payload' : 'Form data';
   }

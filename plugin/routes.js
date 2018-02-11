@@ -7,7 +7,7 @@ var Socket = require('../socket');
 var socketInstance;
 var getMimeType = require('simple-mime')('text/plain');
 
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', function (err) {
   console.log('Caught exception: ', err.stack);
 });
 
@@ -29,14 +29,13 @@ module.exports = [
       var filePath = path.join(__dirname, '..', pageName);
 
       if (pageName === 'index.html') {
-
         if (!socketInstance) {
           socketInstance = new Socket();
 
           hiproxyServer.on('data', function (data, req, res) {
-            if(res.headers
-                && res.headers['content-type']
-                && res.headers['content-type'].indexOf(/(image|ico|bmp)/) != -1)  {
+            if (res && res.headers &&
+                res.headers['content-type'] &&
+                res.headers['content-type'].indexOf(/(image|ico|bmp)/) != -1) {
               data = '';
             }
             socketInstance.emit('data', data.toString(), req, res);
@@ -51,7 +50,7 @@ module.exports = [
             var hostname = urlObj.hostname;
             var port = urlObj.port || 443;
             socketInstance.emit('connect', hostname, port, request, socket, head);
-          })
+          });
 
           return render(filePath, response);
         }

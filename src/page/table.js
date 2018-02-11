@@ -13,113 +13,113 @@ var source = {
   'document': 'html'
 };
 
-const columns = [/*{
+const columns = [/* {
   title: 'ID',
   dataIndex: 'id',
   key: 'id',
   width: 20
 }, */{
-  title: 'Name',
-  dataIndex: 'name',
-  width: 200,
-  key: 'name',
-  render: (val, record) => {
-    var value = val[0];
-    var fileType = val[1];
-    var arr = value.split('/');
-    var name = arr.pop() || '';
-    var path = arr.join('/');
+    title: 'Name',
+    dataIndex: 'name',
+    width: 200,
+    key: 'name',
+    render: (val, record) => {
+      var value = val[0];
+      var fileType = val[1];
+      var arr = value.split('/');
+      var name = arr.pop() || '';
+      var path = arr.join('/');
 
-    if (!path) {
-      name = value;
-    }
-    name = decodeURIComponent(name);
+      if (!path) {
+        name = value;
+      }
+      name = decodeURIComponent(name);
 
-    if (path.length > 80) {
-      path = path.substr(0, 80) + '...';
-    }
+      if (path.length > 50) {
+        path = path.substr(0, 50) + '...';
+      }
 
-    if (name.length > 80) {
-      name = name.substr(0, 80) + '...';
-    }
+      if (name.length > 50) {
+        name = name.substr(0, 50) + '...';
+      }
 
-    return (
-      <div className="req-path" title={val[0]}>
-        <img src={"icons/" + fileType + '.png'} />
-        <div>
-          <p className="name">{name}</p>
-          <p className="path">{path}</p>
+      return (
+        <div className='req-path' title={val[0]}>
+          <img src={'icons/' + fileType + '.png'} />
+          <div>
+            <p className='name'>{name}</p>
+            <p className='path'>{path}</p>
+          </div>
         </div>
-      </div>
-    )
-  }
-}, {
-  title: 'Method',
-  dataIndex: 'method',
-  key: 'method',
-  width: 45
-}, {
-  title: 'Status',
-  dataIndex: 'status',
-  key: 'status',
-  width: 45
-}, {
-  title: 'Scheme',
-  dataIndex: 'protocol',
-  key: 'protocol',
-  width: 45
-},{
-  title: 'Domain',
-  dataIndex: 'address',
-  key: 'address',
-  width: 80
-},{
-  title: 'Target Address',
-  dataIndex: 'targetAddress',
-  key: 'targetAddress',
-  width: 70
-},{
-  title: 'Target Path',
-  dataIndex: 'targetPath',
-  key: 'targetPath',
-  width: 100,
-  render: (val, record) => {
-    let originVal = val;
-
-    if (val.length > 80) {
-      val = val.substr(0, 80) + '...';
+      );
     }
+  }, {
+    title: 'Method',
+    dataIndex: 'method',
+    key: 'method',
+    width: 45
+  }, {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+    width: 45
+  }, {
+    title: 'Scheme',
+    dataIndex: 'protocol',
+    key: 'protocol',
+    width: 45
+  }, {
+    title: 'Domain',
+    dataIndex: 'address',
+    key: 'address',
+    width: 80
+  }, {
+    title: 'Target Address',
+    dataIndex: 'targetAddress',
+    key: 'targetAddress',
+    width: 70
+  }, {
+    title: 'Target Path',
+    dataIndex: 'targetPath',
+    key: 'targetPath',
+    width: 100,
+    render: (val, record) => {
+      let originVal = val;
 
-    return (
-      <div className="req-path" title={originVal}>
-        {val}
-      </div>
-    )
-  }
-},{
-  title: 'Type',
-  dataIndex: 'type',
-  key: 'type',
-  width: 50
-},{
-  title: 'Size',
-  dataIndex: 'size',
-  key: 'size',
-  width: 50,
-  sorter: (a, b) => a.size - b.size,
-  render: (val, record) => {
-    return getSizeLabel(val);
-  }
-},{
-  title: 'Time',
-  dataIndex: 'time',
-  key: 'time',
-  width: 50,
-  sorter: (a, b) => a.time - b.time,
-  render: (val, record) => {
-    return getTimeLabel(val);
-  }
-}];
+      if (val.length > 80) {
+        val = val.substr(0, 80) + '...';
+      }
+
+      return (
+        <div className='req-path' title={originVal}>
+          {val}
+        </div>
+      );
+    }
+  }, {
+    title: 'Type',
+    dataIndex: 'type',
+    key: 'type',
+    width: 50
+  }, {
+    title: 'Size',
+    dataIndex: 'size',
+    key: 'size',
+    width: 50,
+    sorter: (a, b) => a.size - b.size,
+    render: (val, record) => {
+      return getSizeLabel(val);
+    }
+  }, {
+    title: 'Time',
+    dataIndex: 'time',
+    key: 'time',
+    width: 50,
+    sorter: (a, b) => a.time - b.time,
+    render: (val, record) => {
+      return getTimeLabel(val);
+    }
+  }];
 
 const files = [
   'css', 'file', 'html', 'javascript',
@@ -128,13 +128,13 @@ const files = [
 ];
 
 export const Tables = (props) => {
-  const dataSource = props.data && props.data.map( (t, index) => {
-    let {resHeaders={}, socketData='', statusCode, url, method, hostname, port, path, time} = t;
+  const dataSource = props.data && props.data.map((t, index) => {
+    let {resHeaders = {}, socketData = '', statusCode, url, method, hostname, port, path, time} = t;
     let contentType = resHeaders['content-type'] || '';
     let fileType = contentType.split(';')[0].split('/')[1] || '';
     let length = resHeaders['content-length'] || socketData.length;
 
-    // console.log('t', t);
+    console.log('t', t);
 
     if (t.type === 'connect') {
       return {
@@ -150,7 +150,7 @@ export const Tables = (props) => {
         type: '',
         size: 'N/A',
         time: 'N/A'
-      }
+      };
     }
 
     fileType = fileType.trim();
@@ -171,8 +171,8 @@ export const Tables = (props) => {
       fileType = 'file';
     }
 
-    let {host, protocol=''} = url;
-    
+    let {host, protocol = ''} = url;
+
     return {
       key: index,
       name: [t.path, fileType],
@@ -184,9 +184,9 @@ export const Tables = (props) => {
       targetAddress: hostname + (port ? ':' + port : ''),
       targetPath: path,
       type: getContentType(contentType),
-      size: length, //getSizeLabel(length),
-      time: time //getTimeLabel(time)
-    }
+      size: length, // getSizeLabel(length),
+      time: time // getTimeLabel(time)
+    };
   });
 
   return (
@@ -209,7 +209,7 @@ function getContentType (contentType) {
     if (types) {
       if (typeof types === 'string') {
         if (contentType.indexOf(types) !== -1) {
-          return key
+          return key;
         }
       } else if (typeof types.test === 'function') {
         if (types.test(contentType)) {
@@ -219,7 +219,7 @@ function getContentType (contentType) {
     }
   }
 
-  return '';  
+  return '';
 }
 
 function getSizeLabel (num) {
@@ -231,7 +231,7 @@ function getSizeLabel (num) {
   } else if (k > 1) {
     return k.toFixed(2) + ' KB';
   } else {
-    return num + ' B'
+    return num + ' B';
   }
 }
 

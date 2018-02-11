@@ -74,29 +74,29 @@ class Home extends Component {
     const _url = 'http://' + location.hostname + ':' + httpPort;
 
     return <div>
-      <Menu mode="horizontal" selectedKeys={['1']} theme="dark">
-        <Menu.Item key="mail">hiproxy-plugin-devtools</Menu.Item>
-        <Menu.Item><a onClick={this.props.clearAll}><Icon type="delete" />Clear</a></Menu.Item>
-        <Menu.Item><a href={_url + proxyPath}><Icon type="file-text" />PAC File</a></Menu.Item>
-        <Menu.Item><a href={_url + sslPath} ><Icon type="cloud-download" />SSL Certificate</a></Menu.Item>
-        <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target="_blank"><Icon type="github" />GitHub</a></Menu.Item>
+      <Menu mode='horizontal' selectedKeys={['1']} theme='dark'>
+        <Menu.Item key='mail'>hiproxy-plugin-devtools</Menu.Item>
+        <Menu.Item><a onClick={this.props.clearAll}><Icon type='delete' />Clear</a></Menu.Item>
+        <Menu.Item><a href={_url + proxyPath}><Icon type='file-text' />PAC File</a></Menu.Item>
+        <Menu.Item><a href={_url + sslPath} ><Icon type='cloud-download' />SSL Certificate</a></Menu.Item>
+        <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target='_blank'><Icon type='github' />GitHub</a></Menu.Item>
       </Menu>
-      <Tables 
-        data={this.props.requests} 
+      <Tables
+        data={this.props.requests}
         showRequestDetail={this.showRequestDetail.bind(this)}
         currIndex={this.state.currIndex}
       />
-      <Dialog 
-        showRequestDetail={this.state.showRequestDetail} 
-        requestDetail={this.state.requestDetail} 
+      <Dialog
+        showRequestDetail={this.state.showRequestDetail}
+        requestDetail={this.state.requestDetail}
         onClose={this.onClose.bind(this)}
       />
     </div>;
   }
 
-  showRequestDetail (item){
+  showRequestDetail (item) {
     let {id, key} = item;
-      
+
     this.isClick = true;
 
     this.setState({

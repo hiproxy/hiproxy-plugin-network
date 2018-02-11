@@ -21,7 +21,6 @@ function SocketServer () {
   EventEmitter.call(this);
   app.listen(9998);
 
-
   io.on('connection', function (socket) {
     socketObj = socket;
     streamArray = {};
@@ -33,25 +32,25 @@ function SocketServer () {
       self.on('response', function (req, res) {
         if (streamArray[req.requestId]) {
           // gzip过后,content-length没了,所以计算一下
-          if (res.headers['content-encoding'] == 'gzip') {
+          if (res.headers['content-encoding'] === 'gzip') {
             res.headers['content-length'] = sizeof(streamArray[req.requestId], 'utf-8');
           }
-  
-          for(var key in me.sockets) {
-            me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]))
+
+          for (var key in me.sockets) {
+            me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]));
           }
-  
+
           delete streamArray[req.requestId];
         }
       });
-  
+
       self.on('data', function (data, req, res) {
         var reqId = req.requestId;
 
-        if( !streamArray[reqId]
-            && res.headers
-            && res.headers['content-type']
-            && res.headers['content-type'].indexOf(/(image|ico|bmp)/) != -1)  {
+        if (!streamArray[reqId] &&
+            res.headers &&
+            res.headers['content-type'] &&
+            res.headers['content-type'].indexOf(/(image|ico|bmp)/) !== -1) {
           data = '暂时不传递此类型的数据';
         }
 
@@ -63,12 +62,12 @@ function SocketServer () {
       });
 
       self.on('connect', function (hostname, port, request, socket, head) {
-        for(var key in me.sockets) {
+        for (var key in me.sockets) {
           me.sockets[key].emit('connectreq', {
             type: 'connect',
             hostname: hostname,
             port: port
-          })
+          });
         }
       });
     }
@@ -112,10 +111,11 @@ function parseRequest (req, res, data) {
 }
 
 function sizeof (str, charset) {
-  var total = 0,
-    charCode,
-    i,
-    len;
+  var total = 0;
+  var charCode;
+  var i;
+  var len;
+
   charset = charset ? charset.toLowerCase() : '';
   if (charset === 'utf-16' || charset === 'utf16') {
     for (i = 0, len = str.length; i < len; i++) {
