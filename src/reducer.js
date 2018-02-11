@@ -15,7 +15,7 @@ const filterType = {
   'All': [
     'css', 'file', 'html', 'javascript',
     'jpg', 'png', 'pdf', 'json', 'svg', 'gif', 'ico',
-    'txt', 'xml', 'zip'
+    'txt', 'xml', 'zip','text'
   ],
   'JS': ['javascript'],
   'CSS': ['css'],
@@ -30,7 +30,7 @@ function HomeReducer (state = initState, action) {
     case Actions.ON_ARRIVE:
       action.data.fileType = getFileType(action.data);
       let needPush = filterType[state.showType].includes(action.data.fileType); //过滤文件类型
-      if (needPush && action.data.path.includes(state.fileFilterKey)) { //过滤关键字
+      if (needPush && action.data.url.path.includes(state.fileFilterKey)) { //过滤关键字
         return Object.assign({}, state, {
           requests: state.requests.concat([action.data]).slice(-200),
           resource: state.resource.concat([action.data]).slice(-200)
@@ -44,7 +44,7 @@ function HomeReducer (state = initState, action) {
     case Actions.CLEAR:
       return initState;
     case Actions.SEARCH:
-      let target = state.resource.filter(req => req.path.includes(action.keys));
+      let target = state.resource.filter(req => req.url.path.includes(action.keys));
       let result = target.filter(item => filterType[state.showType].includes(item.fileType));
 
       return Object.assign({}, state, {
@@ -61,7 +61,7 @@ function HomeReducer (state = initState, action) {
 
 
 function getFileType (t) {
-  let {resHeaders={}, socketData='', statusCode, url, method, hostname, port, path, time} = t;
+  let {resHeaders={}} = t;
   let contentType = resHeaders['content-type'] || '';
   let fileType = contentType.split(';')[0].split('/')[1] || '';
   if (t.type === 'connect') {
@@ -83,7 +83,7 @@ function getFileType (t) {
   }
 
   if (files.indexOf(fileType) === -1) {
-    fileType = 'file';
+    fileType = 'text';
   }
 
   return fileType;

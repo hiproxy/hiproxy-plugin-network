@@ -44,7 +44,7 @@ export default class Dialog extends Component {
       if (cache) {
         return this.setState({
           responseBody: cache,
-          tab: 'headers',
+          //tab: 'headers',
           viewParsed: true
         })
       }
@@ -53,13 +53,13 @@ export default class Dialog extends Component {
           .then((body)=>{
             this.setState({
               responseBody: body,
-              tab: 'headers',
+              //tab: 'headers',
               viewParsed: true
             })
           });
     } else {
       this.setState({
-        tab: 'headers',
+        //tab: 'headers',
         viewParsed: true
       })
     }
@@ -128,17 +128,7 @@ export default class Dialog extends Component {
         </section>;
       } else if (tab === 'response') {
         // 获取content-type
-        let {resHeaders} = t;
-        let contentType = resHeaders['content-type'] || '';
-        let fileType = contentType.split(';')[0].split('/')[1] || '';
-
-        fileType = fileType.trim();
-
-        if (fileType === 'x-javascript') {
-          fileType = 'javascript';
-        } else if (fileType === 'x-ico' || fileType === 'x-icon') {
-          fileType = 'ico';
-        }
+        let {resHeaders, fileType} = t;
 
         let targetURL = t.protocol + '//' + t.hostname + (t.port ? ':' + t.port : '') + t.path;
 

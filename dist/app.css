@@ -211,22 +211,22 @@ ul , li{max-height:1000000px;}
     background: #f5f5f5;
 }
 
-.content {
+.bars .content {
     display: flex;
     align-items: center;
     margin:0;
 }
-.content .item{
+.bars .content .item{
     display: block;
     margin: 0 6px;
 }
-.content .item.checked {
+.bars .content .item.checked {
     background: #b5b3b3;
     color: #fff;
     padding: 0 2px;
     border-radius: 6px;
 }
-.content .item .filter {
+.bars .content .item .filter {
     margin: 6px 2px;
     outline: none;
 }/*!

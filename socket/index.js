@@ -30,8 +30,6 @@ function SocketServer () {
       eventBound = true;
 
       self.on('response', function (req, res) {
-        console.log('on response plugin::', req.requestId);
-
         if (!streamArray[req.requestId]) {
           streamArray[req.requestId] = '';
         }
@@ -45,7 +43,6 @@ function SocketServer () {
           me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]));
         }
 
-        delete streamArray[req.requestId];
       });
 
       self.on('data', function (data, req, res) {

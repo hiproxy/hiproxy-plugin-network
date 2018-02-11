@@ -128,8 +128,6 @@ export const Tables = (props) => {
     let contentType = resHeaders['content-type'] || '';
     let length = resHeaders['content-length'] || socketData.length;
 
-    console.log('t', t);
-
     if (t.type === 'connect') {
       return {
         key: index,
@@ -148,7 +146,7 @@ export const Tables = (props) => {
     }
 
     let {host, protocol=''} = url;
-    
+
     return {
       key: index,
       name: [t.url.path, fileType],
