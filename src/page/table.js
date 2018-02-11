@@ -105,12 +105,20 @@ const columns = [/*{
   title: 'Size',
   dataIndex: 'size',
   key: 'size',
-  width: 50
+  width: 50,
+  sorter: (a, b) => a.size - b.size,
+  render: (val, record) => {
+    return getSizeLabel(val);
+  }
 },{
   title: 'Time',
   dataIndex: 'time',
   key: 'time',
-  width: 50
+  width: 50,
+  sorter: (a, b) => a.time - b.time,
+  render: (val, record) => {
+    return getTimeLabel(val);
+  }
 }];
 
 const files = [
@@ -176,8 +184,8 @@ export const Tables = (props) => {
       targetAddress: hostname + (port ? ':' + port : ''),
       targetPath: path,
       type: getContentType(contentType),
-      size: getSizeLabel(length),
-      time: getTimeLabel(time)
+      size: length, //getSizeLabel(length),
+      time: time //getTimeLabel(time)
     }
   });
 
