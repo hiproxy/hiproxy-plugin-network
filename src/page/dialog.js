@@ -39,11 +39,32 @@ export default class Dialog extends Component {
     document.onmouseup = this.onMouseup.bind(this);
   }
 
-  componentWillReceiveProps () {
-    this.setState({
-      //tab: 'headers',
-      viewParsed: true
-    });
+  componentWillReceiveProps (nextProps, state) {
+    if (nextProps.requestDetail && state.tab == 'response') {
+      let cache = getCacheBody(nextProps.requestDetail.id);
+      if (cache) {
+        return this.setState({
+          responseBody: cache,
+          tab: 'headers',
+          viewParsed: true
+        })
+      }
+      fetch('/fetchresponse?reqId='+nextProps.requestDetail.id)
+          .then(data => data.text())
+          .then((body)=>{
+            this.setState({
+              responseBody: body,
+              tab: 'headers',
+              viewParsed: true
+            })
+          });
+    } else {
+      this.setState({
+        tab: 'headers',
+        viewParsed: true
+      })
+    }
+
   }
 
   componentDidUpdate () {
@@ -82,11 +103,12 @@ export default class Dialog extends Component {
   render () {
     const { showRequestDetail, requestDetail, onClose } = this.props;
     const tab = this.state.tab;
+    let responseBody = this.state.responseBody;
+
     if (!showRequestDetail) {
       return null;
     }
     const t = requestDetail;
-    
 
     const content = () => {
       if (tab === 'headers') {
@@ -125,14 +147,14 @@ export default class Dialog extends Component {
           if (t.originLength > 1 * 1024 * 1024) {
             return <div style={{padding: '10px'}}>文件内容太长，<a href={targetURL} target="_blank">点击此处</a>在新窗口中打开。</div>
           } else {
-            let data = t.socketData;
+            let data = responseBody;
 
             if (fileType === 'json') {
               try {
-                data = JSON.stringify(JSON.parse(t.socketData),null,2);
+                data = JSON.stringify(JSON.parse(responseBody),null,2);
               } catch (err) {
                 // ...
-                data = t.socketData;
+                data = responseBody;
               }
             }
             return (
@@ -157,9 +179,9 @@ export default class Dialog extends Component {
         <header>
           <div className="close" onClick={this.close.bind(this)}>&times;</div>
           <div className={tab === 'headers' ? 'tab active' : 'tab'}
-            onClick={this.switchTab.bind(this, 'headers')}>Headers</div>
+            onClick={this.switchTab.bind(this, 'headers', t.id)}>Headers</div>
           <div className={tab === 'response' ? 'tab active' : 'tab'}
-            onClick={this.switchTab.bind(this, 'response')}>Response</div>
+            onClick={this.switchTab.bind(this, 'response', t.id)}>Response</div>
         </header>
         {content()}
       </div>
@@ -206,8 +228,28 @@ export default class Dialog extends Component {
     onClose && onClose();
   }
 
-  switchTab (tab) {
-    this.setState({tab});
+  switchTab (tab, id) {
+    let cache = getCacheBody(id);
+    if (cache) {
+      return this.setState({
+        responseBody: cache,
+        tab
+      })
+    }
+
+    if (tab === 'response') {
+      fetch('/fetchresponse?reqId='+id)
+          .then(data => data.text())
+          .then((body)=>{
+            cacheBody(id, body)
+            this.setState({
+              responseBody: body,
+              tab
+            })
+          });
+    } else {
+      this.setState({tab});
+    }
   }
 
   showRequestDetail (item) {
@@ -297,4 +339,12 @@ function getBodyType (ctx) {
   }
 
   return null;
+}
+
+function cacheBody (id, val) {
+  sessionStorage.setItem(id, val)
+}
+
+function getCacheBody (id) {
+  return sessionStorage.getItem(id);
 }

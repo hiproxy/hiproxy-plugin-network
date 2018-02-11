@@ -121,20 +121,12 @@ const columns = [/*{
   }
 }];
 
-const files = [
-  'css', 'file', 'html', 'javascript',
-  'jpg', 'png', 'pdf', 'json', 'svg', 'gif', 'ico',
-  'txt', 'xml', 'zip'
-];
 
 export const Tables = (props) => {
   const dataSource = props.data && props.data.map( (t, index) => {
-    let {resHeaders={}, socketData='', statusCode, url, method, hostname, port, path, time} = t;
+    let {resHeaders={}, socketData='', statusCode, url, method, hostname, port, path, time, fileType} = t;
     let contentType = resHeaders['content-type'] || '';
-    let fileType = contentType.split(';')[0].split('/')[1] || '';
     let length = resHeaders['content-length'] || socketData.length;
-
-    // console.log('t', t);
 
     if (t.type === 'connect') {
       return {
@@ -151,24 +143,6 @@ export const Tables = (props) => {
         size: 'N/A',
         time: 'N/A'
       }
-    }
-
-    fileType = fileType.trim();
-
-    if (fileType.indexOf('+')) {
-      fileType = fileType.split('+')[0];
-    }
-
-    if (fileType === 'jpeg') {
-      fileType = 'jpg';
-    } else if (fileType === 'x-javascript') {
-      fileType = 'javascript';
-    } else if (fileType === 'x-ico' || fileType === 'x-icon') {
-      fileType = 'ico';
-    }
-
-    if (files.indexOf(fileType) === -1) {
-      fileType = 'file';
     }
 
     let {host, protocol=''} = url;

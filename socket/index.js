@@ -41,7 +41,7 @@ function SocketServer () {
             me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]))
           }
   
-          delete streamArray[req.requestId];
+          //delete streamArray[req.requestId];
         }
       });
   
@@ -71,6 +71,8 @@ function SocketServer () {
           })
         }
       });
+    } else {
+      streamArray = {};
     }
 
     socketObj.emit('pageReady', getPageData());
@@ -79,6 +81,9 @@ function SocketServer () {
 
 SocketServer.prototype = {
   constructor: SocketServer,
+  getSocketData: function(reqId) {
+    return streamArray[reqId];
+  },
   __proto__: EventEmitter.prototype
 };
 
@@ -96,7 +101,6 @@ function getPageData () {
 function parseRequest (req, res, data) {
   var result = JSON.parse(JSON.stringify(req.proxyOptions));
 
-  result.socketData = data;
   result.resContentType = res.headers['content-type'] || '';
   result.reqContentType = result.headers['content-type'] || '';
   result.id = req.requestId;
