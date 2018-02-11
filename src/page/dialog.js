@@ -38,8 +38,8 @@ export default class Dialog extends Component {
     document.onmouseup = this.onMouseup.bind(this);
   }
 
-  componentWillReceiveProps (nextProps, state) {
-    if (nextProps.requestDetail && state.tab == 'response') {
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.requestDetail && this.state.tab == 'response') {
       let cache = getCacheBody(nextProps.requestDetail.id);
       if (cache) {
         return this.setState({

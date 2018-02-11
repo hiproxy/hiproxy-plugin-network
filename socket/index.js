@@ -47,7 +47,6 @@ function SocketServer () {
 
       self.on('data', function (data, req, res) {
         var reqId = req.requestId;
-
         if (!streamArray[reqId] &&
             res.headers &&
             res.headers['content-type'] &&
