@@ -175,14 +175,14 @@ export const Tables = (props) => {
 
     return {
       key: index,
-      name: [t.path, fileType],
+      name: [t.url.path, fileType],
       id: index,
       method: method,
       protocol: protocol.replace(':', '').toUpperCase(),
       status: statusCode,
       address: host,
       targetAddress: hostname + (port ? ':' + port : ''),
-      targetPath: path,
+      targetPath: path || '',
       type: getContentType(contentType),
       size: length, // getSizeLabel(length),
       time: time // getTimeLabel(time)

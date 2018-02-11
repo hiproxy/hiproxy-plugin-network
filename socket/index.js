@@ -30,18 +30,22 @@ function SocketServer () {
       eventBound = true;
 
       self.on('response', function (req, res) {
-        if (streamArray[req.requestId]) {
-          // gzip过后,content-length没了,所以计算一下
-          if (res.headers['content-encoding'] === 'gzip') {
-            res.headers['content-length'] = sizeof(streamArray[req.requestId], 'utf-8');
-          }
+        console.log('on response plugin::', req.requestId);
 
-          for (var key in me.sockets) {
-            me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]));
-          }
-
-          delete streamArray[req.requestId];
+        if (!streamArray[req.requestId]) {
+          streamArray[req.requestId] = '';
         }
+        
+        // gzip过后,content-length没了,所以计算一下
+        if (res.headers && res.headers['content-encoding'] === 'gzip') {
+          res.headers['content-length'] = sizeof(streamArray[req.requestId], 'utf-8');
+        }
+
+        for (var key in me.sockets) {
+          me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]));
+        }
+
+        delete streamArray[req.requestId];
       });
 
       self.on('data', function (data, req, res) {
@@ -94,6 +98,8 @@ function getPageData () {
 
 function parseRequest (req, res, data) {
   var result = JSON.parse(JSON.stringify(req.proxyOptions));
+
+  res.headers = res.headers || {};
 
   result.socketData = data;
   result.resContentType = res.headers['content-type'] || '';

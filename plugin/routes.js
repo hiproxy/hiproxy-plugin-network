@@ -27,6 +27,7 @@ module.exports = [
     render: function (route, request, response) {
       var pageName = route._ || 'index.html';
       var filePath = path.join(__dirname, '..', pageName);
+      var hiproxyServer = global.hiproxyServer;
 
       if (pageName === 'index.html') {
         if (!socketInstance) {
@@ -35,13 +36,14 @@ module.exports = [
           hiproxyServer.on('data', function (data, req, res) {
             if (res && res.headers &&
                 res.headers['content-type'] &&
-                res.headers['content-type'].indexOf(/(image|ico|bmp)/) != -1) {
+                res.headers['content-type'].indexOf(/(image|ico|bmp)/) !== -1) {
               data = '';
             }
             socketInstance.emit('data', data.toString(), req, res);
           });
 
           hiproxyServer.on('response', function (req, res) {
+            console.log('hiproxy response:', req.url);
             socketInstance.emit('response', req, res);
           });
 
