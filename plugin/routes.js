@@ -23,6 +23,13 @@ module.exports = [
     }
   },
   {
+    route: '/fetchresponse',
+    render: function (route, request, response) {
+      var reqId = request.url.split('reqId=').slice(1)[0];
+      response.end(socketInstance.getSocketData(reqId) || '暂无该条数据', 'utf8');
+    }
+  },
+  {
     route: '/devtools/(*)',
     render: function (route, request, response) {
       var pageName = route._ || 'index.html';

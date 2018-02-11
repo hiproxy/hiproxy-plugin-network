@@ -74,6 +74,8 @@ function SocketServer () {
           });
         }
       });
+    } else {
+      streamArray = {};
     }
 
     socketObj.emit('pageReady', getPageData());
@@ -82,6 +84,9 @@ function SocketServer () {
 
 SocketServer.prototype = {
   constructor: SocketServer,
+  getSocketData: function(reqId) {
+    return streamArray[reqId];
+  },
   __proto__: EventEmitter.prototype
 };
 
@@ -101,7 +106,7 @@ function parseRequest (req, res, data) {
 
   res.headers = res.headers || {};
 
-  result.socketData = data;
+  result.socketData = '';
   result.resContentType = res.headers['content-type'] || '';
   result.reqContentType = result.headers['content-type'] || '';
   result.id = req.requestId;

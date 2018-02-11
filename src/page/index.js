@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { onArrive, clearAll } from '../action';
+import { onArrive, clearAll, filterType, filterKeys } from '../action';
 import {Tables} from './table';
 import Dialog from './dialog';
 import io from 'socket.io-client';
 import { Menu, Icon, Row, Col } from 'antd';
+const filters = ['All','JS','XHR','CSS','Img','Other'];
 
 class Home extends Component {
   constructor (props) {
@@ -12,7 +13,9 @@ class Home extends Component {
 
     this.state = {
       showRequestDetail: false,
-      requestDetail: null
+      requestDetail: null,
+      check: 'All',
+      keys: ''
     };
   }
 
@@ -70,7 +73,7 @@ class Home extends Component {
   }
 
   render () {
-    const { proxyPath, sslPath, httpPort } = this.state || {};
+    const { proxyPath, sslPath, httpPort, check } = this.state || {};
     const _url = 'http://' + location.hostname + ':' + httpPort;
 
     return <div>
@@ -81,8 +84,23 @@ class Home extends Component {
         <Menu.Item><a href={_url + sslPath} ><Icon type='cloud-download' />SSL Certificate</a></Menu.Item>
         <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target='_blank'><Icon type='github' />GitHub</a></Menu.Item>
       </Menu>
-      <Tables
-        data={this.props.requests}
+      <section className="bars">
+        <ul className="content">
+          <li className="item"><input
+              className="filter"
+              placeholder="filter"
+              keys={this.state.keys}
+              onChange={this.filterKeys.bind(this)}/></li>
+          {
+              filters.map( item => {
+                let cls = item === check ? 'item checked':'item';
+                 return <li key={item} className={cls} onClick={this.switchFileType.bind(this, item)}>{item}</li>
+              })
+          }
+        </ul>
+      </section>
+      <Tables 
+        data={this.props.requests} 
         showRequestDetail={this.showRequestDetail.bind(this)}
         currIndex={this.state.currIndex}
       />
@@ -94,7 +112,24 @@ class Home extends Component {
     </div>;
   }
 
-  showRequestDetail (item) {
+  filterKeys (e) {
+    let val = e.currentTarget.value;
+    //this.filterKeys(val);
+    this.setState({
+      keys: val
+    },this.props.filterKeys(val))
+  }
+
+  switchFileType (type) {
+    let {check} = this.state;
+    if(type !== check) {
+      this.setState({
+        check: type
+      }, this.props.filterType(type))
+    }
+  }
+
+  showRequestDetail (item){
     let {id, key} = item;
 
     this.isClick = true;
@@ -121,7 +156,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   onArrive,
-  clearAll
+  clearAll,
+  filterType,
+  filterKeys
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
