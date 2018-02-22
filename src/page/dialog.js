@@ -40,23 +40,25 @@ export default class Dialog extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.requestDetail && this.state.tab == 'response') {
-      let cache = getCacheBody(nextProps.requestDetail.id);
-      if (cache) {
-        return this.setState({
-          responseBody: cache,
-          // tab: 'headers',
-          viewParsed: true
-        });
-      }
-      fetch('/fetchresponse?reqId=' + nextProps.requestDetail.id)
-        .then(data => data.text())
-        .then((body) => {
-          this.setState({
-            responseBody: body,
+      if (nextProps.requestDetail.id !== this.props.requestDetail.id) {
+        let cache = getCacheBody(nextProps.requestDetail.id);
+        if (cache) {
+          return this.setState({
+            responseBody: cache,
             // tab: 'headers',
             viewParsed: true
           });
-        });
+        }
+        fetch('/fetchresponse?reqId=' + nextProps.requestDetail.id)
+          .then(data => data.text())
+          .then((body) => {
+            this.setState({
+              responseBody: body,
+              // tab: 'headers',
+              viewParsed: true
+            });
+          });
+      }
     } else {
       this.setState({
         // tab: 'headers',
