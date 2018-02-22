@@ -45,7 +45,7 @@ function HomeReducer (state = initState, action) {
       return initState;
 
     case Actions.SEARCH:
-      let target = state.resource.filter(req => req.url.path.includes(action.keys));
+      let target = state.resource.filter(req => req.url.href.includes(action.keys));
       let result = target.filter(item => filterType[state.showType].includes(item.fileType));
 
       return Object.assign({}, state, {
