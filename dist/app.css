@@ -45,6 +45,15 @@ ul , li{max-height:1000000px;}
     cursor: default;
 }
 
+#app .app-body {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
 .dialog {
     position: absolute;
     width: 900px;
@@ -125,6 +134,11 @@ ul , li{max-height:1000000px;}
 
 .dialog ul.list {
     margin-left: 15px;
+}
+
+.req-table {
+    flex: 1;
+    overflow: hidden;
 }
 
 .ant-table {

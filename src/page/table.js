@@ -165,11 +165,12 @@ export const Tables = (props) => {
   return (
     <Table
       bordered
+      className="req-table"
       dataSource={dataSource}
       pagination={false}
       columns={columns}
       onRowClick={props.showRequestDetail}
-      scroll={{ y: window.innerHeight - 100 }}
+      scroll={{ y: window.innerHeight - 123 }}
       rowClassName={(record, index) => 'request-row' + (props.currIndex === index ? ' active' : '')}
     />
   );
