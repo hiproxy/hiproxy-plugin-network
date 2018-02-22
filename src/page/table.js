@@ -123,15 +123,15 @@ const columns = [/* {
 
 export const Tables = (props) => {
   const dataSource = props.data && props.data.map((t, index) => {
-    let {resHeaders = {}, socketData = '', statusCode, url, method, hostname, port, path, time, fileType} = t;
+    let {id, resHeaders = {}, socketData = '', statusCode, url, method, hostname, port, path, time, fileType} = t;
     let contentType = resHeaders['content-type'] || '';
     let length = resHeaders['content-length'] || socketData.length;
 
     if (t.type === 'connect') {
       return {
-        key: index,
+        key: id,
         name: ['UNKNOW', 'ssl-error'],
-        id: index,
+        id: id,
         method: 'CONNECT',
         protocol: 'HTTPS',
         status: '',
@@ -147,9 +147,9 @@ export const Tables = (props) => {
     let {host, protocol = ''} = url;
 
     return {
-      key: index,
+      key: id,
       name: [t.url.path, fileType],
-      id: index,
+      id: id,
       method: method,
       protocol: protocol.replace(':', '').toUpperCase(),
       status: statusCode,
@@ -171,7 +171,7 @@ export const Tables = (props) => {
       columns={columns}
       onRowClick={props.showRequestDetail}
       scroll={{ y: window.innerHeight - 123 }}
-      rowClassName={(record, index) => 'request-row' + (props.currIndex === index ? ' active' : '')}
+      rowClassName={(record, index) => 'request-row' + (props.currIndex === record.id ? ' active' : '')}
     />
   );
 };

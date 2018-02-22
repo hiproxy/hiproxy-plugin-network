@@ -15,7 +15,8 @@ class Home extends Component {
       showRequestDetail: false,
       requestDetail: null,
       check: 'All',
-      keys: ''
+      keys: '',
+      hideConnectUrls: true
     };
   }
 
@@ -49,11 +50,11 @@ class Home extends Component {
     });
 
     socket.on('connectreq', data => {
-      // if (data.hostname === location.hostname && data.port === '9998') {
-      //   // 忽略插件本身的请求
-      // } else {
-      //   this.props.onArrive(data);
-      // }
+      if (data.hostname === location.hostname && data.port === '9998') {
+        // 忽略插件本身的请求
+      } else {
+        this.props.onArrive(data);
+      }
     });
   }
 
@@ -91,6 +92,16 @@ class Home extends Component {
             placeholder='filter'
             keys={this.state.keys}
             onChange={this.filterKeys.bind(this)} /></li>
+          <li className='item'>
+            <label className='chebox-label'>
+              <input
+                type='checkbox'
+                className='checkbox'
+                checked={this.state.hideConnectUrls}
+                onChange={this.changeHideConnectUrls.bind(this)}
+              /> Hide CONNECT URLs
+            </label>
+          </li>
           {
             filters.map(item => {
               let cls = item === check ? 'item checked' : 'item';
@@ -100,7 +111,7 @@ class Home extends Component {
         </ul>
       </section>
       <Tables
-        data={this.props.requests}
+        data={this.getRequestsData()}
         showRequestDetail={this.showRequestDetail.bind(this)}
         currIndex={this.state.currIndex}
       />
@@ -110,6 +121,15 @@ class Home extends Component {
         onClose={this.onClose.bind(this)}
       />
     </div>;
+  }
+
+  getRequestsData () {
+    let reqs = this.props.requests;
+    if (this.state.hideConnectUrls === true) {
+      reqs = reqs.filter(req => req.type !== 'connect');
+    }
+
+    return reqs.sort((a, b) => a.startTime - b.startTime);
   }
 
   filterKeys (e) {
@@ -136,7 +156,7 @@ class Home extends Component {
 
     this.setState({
       showRequestDetail: true,
-      requestDetail: this.props.requests[item.key],
+      requestDetail: this.props.requests.filter(req => req.id === id)[0] || {},
       currIndex: id
     });
   }
@@ -145,6 +165,12 @@ class Home extends Component {
     this.setState({
       currIndex: -1,
       showRequestDetail: false
+    });
+  }
+
+  changeHideConnectUrls () {
+    this.setState({
+      hideConnectUrls: !this.state.hideConnectUrls
     });
   }
 }

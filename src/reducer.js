@@ -15,7 +15,8 @@ const filterType = {
   'All': [
     'css', 'file', 'html', 'javascript',
     'jpg', 'png', 'pdf', 'json', 'svg', 'gif', 'ico',
-    'txt', 'xml', 'zip', 'text'
+    'txt', 'xml', 'zip', 'text',
+    'ssl-error'
   ],
   'JS': ['javascript'],
   'CSS': ['css'],

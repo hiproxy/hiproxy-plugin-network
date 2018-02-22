@@ -76,7 +76,11 @@ function SocketServer () {
           me.sockets[key].emit('connectreq', {
             type: 'connect',
             hostname: hostname,
-            port: port
+            port: port,
+            method: 'CONNECT',
+            headers: {},
+            body: '',
+            url: url.parse('https://' + hostname + (port ? ':' + port : ':443'))
           });
         }
       });
@@ -123,6 +127,7 @@ function parseRequest (req, res, data) {
   result.url = url.parse(req.url);
   result.body = req.body;
   result.querystring = (result.path || '').split('?').slice(1).join('?');
+  result.startTime = req._startTime;
 
   return JSON.stringify(result);
 }
