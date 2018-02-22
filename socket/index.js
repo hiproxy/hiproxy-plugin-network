@@ -80,6 +80,8 @@ function SocketServer () {
             method: 'CONNECT',
             headers: {},
             body: '',
+            id: request.requestId,
+            startTime: request._startTime,
             url: url.parse('https://' + hostname + (port ? ':' + port : ':443'))
           });
         }
