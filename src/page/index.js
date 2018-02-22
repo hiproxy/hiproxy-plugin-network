@@ -5,7 +5,7 @@ import {Tables} from './table';
 import Dialog from './dialog';
 import io from 'socket.io-client';
 import { Menu, Icon, Row, Col } from 'antd';
-const filters = ['All','JS','XHR','CSS','Img','Other'];
+const filters = ['All', 'JS', 'XHR', 'CSS', 'Img', 'Other'];
 
 class Home extends Component {
   constructor (props) {
@@ -84,23 +84,23 @@ class Home extends Component {
         <Menu.Item><a href={_url + sslPath} ><Icon type='cloud-download' />SSL Certificate</a></Menu.Item>
         <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target='_blank'><Icon type='github' />GitHub</a></Menu.Item>
       </Menu>
-      <section className="bars">
-        <ul className="content">
-          <li className="item"><input
-              className="filter"
-              placeholder="filter"
-              keys={this.state.keys}
-              onChange={this.filterKeys.bind(this)}/></li>
+      <section className='bars'>
+        <ul className='content'>
+          <li className='item'><input
+            className='filter'
+            placeholder='filter'
+            keys={this.state.keys}
+            onChange={this.filterKeys.bind(this)} /></li>
           {
-              filters.map( item => {
-                let cls = item === check ? 'item checked':'item';
-                 return <li key={item} className={cls} onClick={this.switchFileType.bind(this, item)}>{item}</li>
-              })
+            filters.map(item => {
+              let cls = item === check ? 'item checked' : 'item';
+              return <li key={item} className={cls} onClick={this.switchFileType.bind(this, item)}>{item}</li>;
+            })
           }
         </ul>
       </section>
-      <Tables 
-        data={this.props.requests} 
+      <Tables
+        data={this.props.requests}
         showRequestDetail={this.showRequestDetail.bind(this)}
         currIndex={this.state.currIndex}
       />
@@ -114,22 +114,22 @@ class Home extends Component {
 
   filterKeys (e) {
     let val = e.currentTarget.value;
-    //this.filterKeys(val);
+    // this.filterKeys(val);
     this.setState({
       keys: val
-    },this.props.filterKeys(val))
+    }, this.props.filterKeys(val));
   }
 
   switchFileType (type) {
     let {check} = this.state;
-    if(type !== check) {
+    if (type !== check) {
       this.setState({
         check: type
-      }, this.props.filterType(type))
+      }, this.props.filterType(type));
     }
   }
 
-  showRequestDetail (item){
+  showRequestDetail (item) {
     let {id, key} = item;
 
     this.isClick = true;

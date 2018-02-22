@@ -44,26 +44,25 @@ export default class Dialog extends Component {
       if (cache) {
         return this.setState({
           responseBody: cache,
-          //tab: 'headers',
+          // tab: 'headers',
           viewParsed: true
-        })
+        });
       }
-      fetch('/fetchresponse?reqId='+nextProps.requestDetail.id)
-          .then(data => data.text())
-          .then((body)=>{
-            this.setState({
-              responseBody: body,
-              //tab: 'headers',
-              viewParsed: true
-            })
+      fetch('/fetchresponse?reqId=' + nextProps.requestDetail.id)
+        .then(data => data.text())
+        .then((body) => {
+          this.setState({
+            responseBody: body,
+            // tab: 'headers',
+            viewParsed: true
           });
+        });
     } else {
       this.setState({
-        //tab: 'headers',
+        // tab: 'headers',
         viewParsed: true
-      })
+      });
     }
-
   }
 
   componentDidUpdate () {
@@ -223,19 +222,19 @@ export default class Dialog extends Component {
       return this.setState({
         responseBody: cache,
         tab
-      })
+      });
     }
 
     if (tab === 'response') {
-      fetch('/fetchresponse?reqId='+id)
-          .then(data => data.text())
-          .then((body)=>{
-            cacheBody(id, body)
-            this.setState({
-              responseBody: body,
-              tab
-            })
+      fetch('/fetchresponse?reqId=' + id)
+        .then(data => data.text())
+        .then((body) => {
+          cacheBody(id, body);
+          this.setState({
+            responseBody: body,
+            tab
           });
+        });
     } else {
       this.setState({tab});
     }
@@ -331,7 +330,7 @@ function getBodyType (ctx) {
 }
 
 function cacheBody (id, val) {
-  sessionStorage.setItem(id, val)
+  sessionStorage.setItem(id, val);
 }
 
 function getCacheBody (id) {

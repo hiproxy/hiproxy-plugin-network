@@ -121,10 +121,9 @@ const columns = [/* {
     }
   }];
 
-
 export const Tables = (props) => {
-  const dataSource = props.data && props.data.map( (t, index) => {
-    let {resHeaders={}, socketData='', statusCode, url, method, hostname, port, path, time, fileType} = t;
+  const dataSource = props.data && props.data.map((t, index) => {
+    let {resHeaders = {}, socketData = '', statusCode, url, method, hostname, port, path, time, fileType} = t;
     let contentType = resHeaders['content-type'] || '';
     let length = resHeaders['content-length'] || socketData.length;
 
@@ -145,7 +144,7 @@ export const Tables = (props) => {
       };
     }
 
-    let {host, protocol=''} = url;
+    let {host, protocol = ''} = url;
 
     return {
       key: index,

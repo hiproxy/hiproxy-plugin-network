@@ -15,22 +15,21 @@ const filterType = {
   'All': [
     'css', 'file', 'html', 'javascript',
     'jpg', 'png', 'pdf', 'json', 'svg', 'gif', 'ico',
-    'txt', 'xml', 'zip','text'
+    'txt', 'xml', 'zip', 'text'
   ],
   'JS': ['javascript'],
   'CSS': ['css'],
   'XHR': ['json'],
-  'Img': ['jpg','png','gif','ico'],
-  "Other": ['txt', 'xml', 'zip','svg','pdf']
+  'Img': ['jpg', 'png', 'gif', 'ico'],
+  'Other': ['txt', 'xml', 'zip', 'svg', 'pdf']
 };
-
 
 function HomeReducer (state = initState, action) {
   switch (action.type) {
     case Actions.ON_ARRIVE:
       action.data.fileType = getFileType(action.data);
-      let needPush = filterType[state.showType].includes(action.data.fileType); //过滤文件类型
-      if (needPush && action.data.url.path.includes(state.fileFilterKey)) { //过滤关键字
+      let needPush = filterType[state.showType].includes(action.data.fileType); // 过滤文件类型
+      if (needPush && action.data.url.path.includes(state.fileFilterKey)) { // 过滤关键字
         return Object.assign({}, state, {
           requests: state.requests.concat([action.data]).slice(-200),
           resource: state.resource.concat([action.data]).slice(-200)
@@ -53,15 +52,14 @@ function HomeReducer (state = initState, action) {
       });
     case Actions.FILTER:
       let requests = state.resource.filter(item => filterType[action.data].includes(item.fileType));
-      return Object.assign({}, state, {showType: action.data}, {requests})
+      return Object.assign({}, state, {showType: action.data}, {requests});
     default:
       return state;
   }
 }
 
-
 function getFileType (t) {
-  let {resHeaders={}} = t;
+  let {resHeaders = {}} = t;
   let contentType = resHeaders['content-type'] || '';
   let fileType = contentType.split(';')[0].split('/')[1] || '';
   if (t.type === 'connect') {

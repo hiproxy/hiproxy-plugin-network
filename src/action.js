@@ -36,6 +36,6 @@ export function filterKeys (keys) {
     dispatch({
       type: Actions.SEARCH,
       keys: keys
-    })
-  }
+    });
+  };
 }

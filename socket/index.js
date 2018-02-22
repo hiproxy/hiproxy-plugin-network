@@ -33,7 +33,7 @@ function SocketServer () {
         if (!streamArray[req.requestId]) {
           streamArray[req.requestId] = '';
         }
-        
+
         // gzip过后,content-length没了,所以计算一下
         if (res.headers && res.headers['content-encoding'] === 'gzip') {
           res.headers['content-length'] = sizeof(streamArray[req.requestId], 'utf-8');
@@ -42,7 +42,6 @@ function SocketServer () {
         for (var key in me.sockets) {
           me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]));
         }
-
       });
 
       self.on('data', function (data, req, res) {
@@ -80,7 +79,7 @@ function SocketServer () {
 
 SocketServer.prototype = {
   constructor: SocketServer,
-  getSocketData: function(reqId) {
+  getSocketData: function (reqId) {
     return streamArray[reqId];
   },
   __proto__: EventEmitter.prototype
