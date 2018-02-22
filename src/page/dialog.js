@@ -6,16 +6,20 @@ let maxWidth, minWidth;
 let shouldMove = false;
 let throttle = function (fn, delay, mustRunDelay) {
   var timer = null;
-  var t_start;
+  var tStart;
+
   return function () {
-    var context = this, args = arguments, t_curr = +new Date();
+    var context = this;
+    var args = arguments;
+    var tCurr = +new Date();
+
     clearTimeout(timer);
-    if (!t_start) {
-      t_start = t_curr;
+    if (!tStart) {
+      tStart = tCurr;
     }
-    if (t_curr - t_start >= mustRunDelay) {
+    if (tCurr - tStart >= mustRunDelay) {
       fn.apply(context, args);
-      t_start = t_curr;
+      tStart = tCurr;
     } else {
       timer = setTimeout(function () {
         fn.apply(context, args);
@@ -68,7 +72,7 @@ export default class Dialog extends Component {
   }
 
   componentDidUpdate () {
-    var block = document.getElementById('js-code');
+    // var block = document.getElementById('js-code');
     // var text = block && block.textContent || '';
     // block && text.length < 20 * 1024 && hljs.highlightBlock(block);
   }
@@ -286,7 +290,6 @@ function getQueryObjFromURL (params) {
 }
 
 function getBody (t) {
-  let isJson = false;
   let body = t.body;
   let querystring = t.querystring;
   let data = null;
@@ -318,7 +321,7 @@ function getBodyType (ctx) {
     return 'Query String Paramenters';
   }
 
-  if (method == 'post') {
+  if (method === 'post') {
     let isJson = false;
     try {
       JSON.parse(ctx.body);

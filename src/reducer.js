@@ -39,9 +39,10 @@ function HomeReducer (state = initState, action) {
           resource: state.resource.concat([action.data]).slice(-200)
         });
       }
-      break;
+
     case Actions.CLEAR:
       return initState;
+
     case Actions.SEARCH:
       let target = state.resource.filter(req => req.url.path.includes(action.keys));
       let result = target.filter(item => filterType[state.showType].includes(item.fileType));
@@ -50,9 +51,11 @@ function HomeReducer (state = initState, action) {
         requests: result,
         fileFilterKey: action.keys
       });
+
     case Actions.FILTER:
       let requests = state.resource.filter(item => filterType[action.data].includes(item.fileType));
       return Object.assign({}, state, {showType: action.data}, {requests});
+
     default:
       return state;
   }
