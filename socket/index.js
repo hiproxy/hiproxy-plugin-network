@@ -11,6 +11,7 @@ var skt = require('socket.io');
 var zlib = require('zlib');
 var socketObj = null;
 var streamArray = {};
+var PORT = 9998;
 
 function SocketServer () {
   var app = http.createServer();
@@ -19,7 +20,7 @@ function SocketServer () {
   var eventBound = false;
 
   EventEmitter.call(this);
-  app.listen(9998);
+  app.listen(PORT);
 
   io.on('connection', function (socket) {
     socketObj = socket;
@@ -30,6 +31,7 @@ function SocketServer () {
       eventBound = true;
 
       self.on('response', function (req, res) {
+        var hiproxy = global.hiproxyServer;
         if (!streamArray[req.requestId]) {
           streamArray[req.requestId] = '';
         }
@@ -37,6 +39,15 @@ function SocketServer () {
         // gzip过后,content-length没了,所以计算一下
         if (res.headers && res.headers['content-encoding'] === 'gzip') {
           res.headers['content-length'] = sizeof(streamArray[req.requestId], 'utf-8');
+        }
+
+        var urlInfo = url.parse(req.url);
+        var reqPort = Number(urlInfo.port);
+
+        // 忽略hiproxy以及插件的请求，不发送到浏览器端
+        if (urlInfo.hostname === '127.0.0.1' && (reqPort === PORT || reqPort === hiproxy.httpPort || reqPort === hiproxy.httpsPort)) {
+          // console.log('hiproxy或者其插件的请求，已经忽略：', req.url);
+          return;
         }
 
         for (var key in me.sockets) {

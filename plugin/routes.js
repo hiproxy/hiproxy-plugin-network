@@ -50,7 +50,6 @@ module.exports = [
           });
 
           hiproxyServer.on('response', function (req, res) {
-            console.log('hiproxy response:', req.url);
             socketInstance.emit('response', req, res);
           });
 
