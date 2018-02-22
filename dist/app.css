@@ -242,6 +242,7 @@ ul , li{max-height:1000000px;}
 }
 .bars .content .item .filter {
     margin: 6px 2px;
+    padding: 0 2px;
     outline: none;
 }/*!
  * 
