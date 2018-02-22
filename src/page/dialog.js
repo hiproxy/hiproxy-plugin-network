@@ -151,7 +151,7 @@ export default class Dialog extends Component {
               </pre>
             );
           }
-        } else if (/^(png|jpg|jpeg|gif|ico|svg\+xml)$/.test(fileType)) {
+        } else if (/^(png|jpg|jpeg|gif|ico|svg)$/.test(fileType)) {
           return <div className='content'><img src={targetURL} /></div>;
         } else {
           return <div style={{padding: '10px'}}>暂时不支持此类型文件预览，<a href={targetURL} target='_blank'>点击此处</a>在新窗口中打开。</div>;

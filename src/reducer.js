@@ -20,8 +20,8 @@ const filterType = {
   'JS': ['javascript'],
   'CSS': ['css'],
   'XHR': ['json'],
-  'Img': ['jpg', 'png', 'gif', 'ico'],
-  'Other': ['txt', 'xml', 'zip', 'svg', 'pdf']
+  'Img': ['jpg', 'png', 'gif', 'svg', 'ico'],
+  'Other': ['txt', 'xml', 'zip', 'pdf']
 };
 
 function HomeReducer (state = initState, action) {
