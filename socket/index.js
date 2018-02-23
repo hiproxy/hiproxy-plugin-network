@@ -114,9 +114,10 @@ function getPageData () {
 }
 
 function parseRequest (req, res, data) {
-  var result = JSON.parse(JSON.stringify(req.proxyOptions));
+  var result = JSON.parse(JSON.stringify(req.proxyOptions || {}));
 
   res.headers = res.headers || {};
+  result.headers = result.headers || {};
 
   result.socketData = '';
   result.resContentType = res.headers['content-type'] || '';
