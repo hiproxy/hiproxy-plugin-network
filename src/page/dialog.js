@@ -53,15 +53,25 @@ export default class Dialog extends Component {
             viewParsed: true
           });
         }
-        fetch('/fetchresponse?reqId=' + nextProps.requestDetail.id)
-          .then(data => data.text())
-          .then((body) => {
-            this.setState({
-              responseBody: body,
-              // tab: 'headers',
-              viewParsed: true
-            });
+        if (nextProps.requestDetail.originLength <= 1 * 1024 * 1024) {
+          fetch('/fetchresponse?reqId=' + nextProps.requestDetail.id)
+              .then(data => data.text())
+              .then((body) => {
+                cacheBody(nextProps.requestDetail.id, body);
+                this.setState({
+                  responseBody: body,
+                  // tab: 'headers',
+                  viewParsed: true
+                });
+              });
+        } else {
+          this.setState({
+            responseBody: '',
+            // tab: 'headers',
+            viewParsed: true
           });
+        }
+
       }
     } else {
       this.setState({
@@ -173,9 +183,9 @@ export default class Dialog extends Component {
         <header>
           <div className='close' onClick={this.close.bind(this)}>&times;</div>
           <div className={tab === 'headers' ? 'tab active' : 'tab'}
-            onClick={this.switchTab.bind(this, 'headers', t.id)}>Headers</div>
+            onClick={this.switchTab.bind(this, 'headers', t.id, t.originLength)}>Headers</div>
           <div className={tab === 'response' ? 'tab active' : 'tab'}
-            onClick={this.switchTab.bind(this, 'response', t.id)}>Response</div>
+            onClick={this.switchTab.bind(this, 'response', t.id, t.originLength)}>Response</div>
         </header>
         {content()}
       </div>
@@ -222,7 +232,7 @@ export default class Dialog extends Component {
     onClose && onClose();
   }
 
-  switchTab (tab, id) {
+  switchTab (tab, id, len) {
     let cache = getCacheBody(id);
     if (cache) {
       return this.setState({
@@ -232,15 +242,23 @@ export default class Dialog extends Component {
     }
 
     if (tab === 'response') {
-      fetch('/fetchresponse?reqId=' + id)
-        .then(data => data.text())
-        .then((body) => {
-          cacheBody(id, body);
-          this.setState({
-            responseBody: body,
-            tab
-          });
-        });
+      if (len <= 1 * 1024 * 1024) {
+        fetch('/fetchresponse?reqId=' + id)
+            .then(data => data.text())
+            .then((body) => {
+              cacheBody(id, body);
+              this.setState({
+                responseBody: body,
+                tab
+              });
+            });
+      } else {
+        this.setState({
+          responseBody: '',
+          tab
+        })
+      }
+
     } else {
       this.setState({tab});
     }
