@@ -276,7 +276,7 @@ function parseData (data) {
   let result = [];
 
   for (let key in data) {
-    result.push(<li key={key}><strong>{key}</strong> : {data[key]}</li>);
+    result.push(<li key={key}><strong>{key}</strong>: {data[key]}</li>);
   }
 
   return result;
