@@ -80,7 +80,7 @@ class Home extends Component {
     return <div className="app-body">
       <Menu mode='horizontal' selectedKeys={['1']} theme='dark'>
         <Menu.Item key='mail'>hiproxy-plugin-devtools</Menu.Item>
-        <Menu.Item><a onClick={this.props.clearAll}><Icon type='delete' />Clear</a></Menu.Item>
+        <Menu.Item><a onClick={()=>{this.props.clearAll();this.onClose();}}><Icon type='delete' />Clear</a></Menu.Item>
         <Menu.Item><a href={_url + proxyPath}><Icon type='file-text' />PAC File</a></Menu.Item>
         <Menu.Item><a href={_url + sslPath} ><Icon type='cloud-download' />SSL Certificate</a></Menu.Item>
         <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target='_blank'><Icon type='github' />GitHub</a></Menu.Item>
