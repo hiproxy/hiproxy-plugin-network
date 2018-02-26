@@ -40,9 +40,9 @@ class Home extends Component {
         return;
       }
 
-      obj.originLength = socketData.length;
+      //obj.originLength = socketData.length;
 
-      if (socketData.length > maxLen) {
+      if (obj.originLength > maxLen) {
         obj.socketData = '内容太长，无法查看！';
       }
 

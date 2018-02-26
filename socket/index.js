@@ -118,7 +118,7 @@ function parseRequest (req, res, data) {
 
   res.headers = res.headers || {};
   result.headers = result.headers || {};
-
+  result.originLength = data.length;
   result.socketData = '';
   result.resContentType = res.headers['content-type'] || '';
   result.reqContentType = result.headers['content-type'] || '';
