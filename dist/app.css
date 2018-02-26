@@ -35,6 +35,7 @@ body{
     font-size: 14px;
     line-height: 1.5;
     font-family: PingFang SC, Helvetica Neue, Helvetica, Microsoft YaHei, STHeiTi, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 ul , li{max-height:1000000px;}
