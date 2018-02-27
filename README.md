@@ -1,6 +1,6 @@
 # hiproxy-plugin-devtools
 
- hiproxy插件,实时打印hiproxy代理请求的日志信息
+ hiproxy插件，实时打印hiproxy代理请求的信息。
 
  ![](https://github.com/hiproxy/hiproxy-plugin-devtools/blob/master/demo.jpg)
  
@@ -22,7 +22,9 @@
 - [x] 支持排序、过滤
 - [ ] 支持代码格式化
 - [x] 支持`JSON`数据格式预览
-- [ ] `CONNECT`请求
-- [ ] 资源分类
+- [x] `CONNECT`请求
+- [x] 资源分类
+- [ ] 扫码下载证书
+- [ ] 支持hiproxy指令输出内容展示
 
 
