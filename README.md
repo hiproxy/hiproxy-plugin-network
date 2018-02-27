@@ -7,7 +7,9 @@
  
 ## 安装
 
- npm i hiproxy-plugin-devtools -g
+```bash
+npm i hiproxy-plugin-devtools -g
+```
  
  
 ## 使用
