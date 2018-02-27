@@ -2,7 +2,7 @@
 
  hiproxy插件，实时打印hiproxy代理请求的信息。
 
- ![](https://github.com/hiproxy/hiproxy-plugin-devtools/blob/master/demo.jpg)
+ ![](https://github.com/hiproxy/hiproxy-plugin-devtools/blob/master/devtools.gif)
  
  
 ## 安装
