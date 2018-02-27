@@ -19,7 +19,8 @@ class Home extends Component {
       requestDetail: null,
       check: 'All',
       keys: '',
-      hideConnectUrls: true
+      hideConnectUrls: true,
+      showQRCode: false
     };
   }
 
@@ -77,7 +78,7 @@ class Home extends Component {
   }
 
   render () {
-    const { proxyPath, sslPath, httpPort, check } = this.state || {};
+    const { proxyPath, sslPath, httpPort, check, showQRCode } = this.state || {};
     const _url = 'http://' + location.hostname + ':' + httpPort;
 
     return <div className="app-body">
@@ -85,9 +86,13 @@ class Home extends Component {
         <Menu.Item key='mail'>hiproxy-plugin-devtools</Menu.Item>
         <Menu.Item><a onClick={()=>{this.props.clearAll();this.onClose();}}><Icon type='delete' />Clear</a></Menu.Item>
         <Menu.Item><a href={_url + proxyPath}><Icon type='file-text' />PAC File</a></Menu.Item>
-        <Menu.Item><a href={_url + sslPath} ><Icon type='cloud-download' />SSL Certificate</a></Menu.Item>
+        <Menu.Item><a href={_url + sslPath}
+                      onMouseLeave={this.hideQRCode.bind(this)}
+                      onMouseMove={this.showQRCode.bind(this)}
+                      onMouseEnter={this.showQRCode.bind(this)}><Icon type='cloud-download' />SSL Certificate</a></Menu.Item>
         <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target='_blank'><Icon type='github' />GitHub</a></Menu.Item>
       </Menu>
+      {showQRCode ? <img className="qrcode" src={jrQrcode.getQrBase64(_url + sslPath)} />:null}
       <section className='bars'>
         <ul className='content'>
           <li className='item'><input
@@ -124,6 +129,18 @@ class Home extends Component {
         onClose={this.onClose.bind(this)}
       />
     </div>;
+  }
+
+  showQRCode () {
+    this.setState({
+      showQRCode: true
+    })
+  }
+
+  hideQRCode () {
+    this.setState({
+      showQRCode: false
+    })
   }
 
   getRequestsData () {

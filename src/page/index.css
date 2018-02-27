@@ -246,3 +246,11 @@ ul , li{max-height:1000000px;}
     padding: 0 2px;
     outline: none;
 }
+.qrcode {
+    width: 126px;
+    height: 126px;
+    position: absolute;
+    top: 39px;
+    z-index: 99;
+    left: 414px;
+}
