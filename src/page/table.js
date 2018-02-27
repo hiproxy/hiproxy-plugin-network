@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import Table from 'antd/es/Table';
 import FileIcon from 'react-file-icon';
 
 var source = {

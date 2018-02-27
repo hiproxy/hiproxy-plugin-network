@@ -1,6 +1,8 @@
 # hiproxy-plugin-devtools
 
  hiproxy插件,实时打印hiproxy代理请求的日志信息
+
+ ![](https://github.com/alibaba/anyproxy/blob/master/demo.jpg)
  
  
 ## 安装

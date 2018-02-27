@@ -4,7 +4,10 @@ import { onArrive, clearAll, filterType, filterKeys } from '../action';
 import {Tables} from './table';
 import Dialog from './dialog';
 import io from 'socket.io-client';
-import { Menu, Icon, Row, Col } from 'antd';
+import Menu from 'antd/es/Menu';
+import Icon from 'antd/es/Icon';
+import Row from 'antd/es/Row';
+import Col from 'antd/es/Col';
 const filters = ['All', 'JS', 'XHR', 'CSS', 'Img', 'Other'];
 
 class Home extends Component {

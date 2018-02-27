@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const isDev = process.env.NODE_ENV !== 'production';
 
 module.exports = {
@@ -44,17 +44,11 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     }),
-    process.env.NODE_ENV === 'production' ? new UglifyJsPlugin() : function () {}
+    process.env.NODE_ENV === 'production' ? new UglifyJsPlugin() : function () {},
+    new BundleAnalyzerPlugin()
   ],
 
   resolve: {
-    extensions: ['.js', '.jsx'],
-    alias: isDev ? {} : {
-      'react': __dirname + '/source/scripts/react.min.js',
-      'redux': __dirname + '/source/scripts/redux.min.js',
-      'react-dom': __dirname + '/source/scripts/react-dom.min.js',
-      'react-redux': __dirname + '/source/scripts/react-redux.min.js',
-      'redux-thunk': __dirname + '/source/scripts/redux-thunk.min.js'
-    }
+    extensions: ['.js', '.jsx']
   }
 };
