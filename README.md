@@ -1,20 +1,20 @@
-# hiproxy-plugin-devtools
+# hiproxy-plugin-network
 
- hiproxy插件，实时打印hiproxy代理请求的信息。
+ hiproxy网络请求插件，可以查看hiproxy代理请求的详细信息。
 
- ![](https://github.com/hiproxy/hiproxy-plugin-devtools/blob/master/devtools.gif)
+ ![](https://github.com/hiproxy/hiproxy-plugin-network/blob/master/network.gif)
  
  
 ## 安装
 
 ```bash
-npm i hiproxy-plugin-devtools -g
+npm i hiproxy-plugin-network -g
 ```
  
  
 ## 使用
 
- 启动hiproxy, 访问页面 http://127.0.0.1:5525/devtools
+ 启动hiproxy, 访问页面 http://127.0.0.1:5525/network
 
 ## TODO
 

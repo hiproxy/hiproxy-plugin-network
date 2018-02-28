@@ -1,7 +1,7 @@
 {
-  "name": "hiproxy-plugin-devtools",
+  "name": "hiproxy-plugin-network",
   "version": "1.1.1",
-  "description": "hiproxy plugin devtools",
+  "description": "hiproxy network plugin",
   "main": "index.js",
   "scripts": {
     "start": "webpack -w",
@@ -10,18 +10,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hiproxy/hiproxy-plugin-devtools.git"
+    "url": "git+https://github.com/hiproxy/hiproxy-plugin-network.git"
   },
   "keywords": [
-    "devtools",
+    "network",
+    "plugin",
     "hiproxy"
   ],
   "author": "huazihear",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hiproxy/hiproxy-plugin-devtools/issues"
+    "url": "https://github.com/hiproxy/hiproxy-plugin-network/issues"
   },
-  "homepage": "https://github.com/hiproxy/hiproxy-plugin-devtools#readme",
+  "homepage": "https://github.com/hiproxy/hiproxy-plugin-network#readme",
   "dependencies": {
     "mustache": "^2.3.0",
     "simple-mime": "^0.1.0",
