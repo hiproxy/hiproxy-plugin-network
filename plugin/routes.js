@@ -13,10 +13,10 @@ process.on('uncaughtException', function (err) {
 
 module.exports = [
   {
-    route: '/devtools',
+    route: '/network',
     render: function (route, request, response) {
       response.writeHead(301, {
-        Location: '/devtools/'
+        Location: '/network/'
       });
 
       response.end();
@@ -30,7 +30,7 @@ module.exports = [
     }
   },
   {
-    route: '/devtools/(*)',
+    route: '/network/(*)',
     render: function (route, request, response) {
       var pageName = route._ || 'index.html';
       var filePath = path.join(__dirname, '..', pageName);
@@ -83,7 +83,7 @@ function render (file, res, data) {
 
     res.writeHead(statusCode, {
       'Content-Type': 'text/html',
-      'Powder-By': 'hiproxy-plugin-devtools'
+      'Powder-By': 'hiproxy-plugin-network'
     });
 
     res.end(content);

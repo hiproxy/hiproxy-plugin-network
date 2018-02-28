@@ -37,7 +37,7 @@ class Home extends Component {
       var obj = JSON.parse(data);
       var socketData = obj.socketData || '';
       var path = obj.path;
-      var isSocketIOURL = /^\/(socket\.io|devtools)/.test(path);
+      var isSocketIOURL = /^\/(socket\.io|network)/.test(path);
 
       if (isSocketIOURL) {
         console.warn('socket.io本身的请求，忽略');
@@ -83,14 +83,14 @@ class Home extends Component {
 
     return <div className="app-body">
       <Menu mode='horizontal' selectedKeys={['1']} theme='dark'>
-        <Menu.Item key='mail'>hiproxy-plugin-devtools</Menu.Item>
+        <Menu.Item key='mail'>hiproxy-plugin-network</Menu.Item>
         <Menu.Item><a onClick={()=>{this.props.clearAll();this.onClose();}}><Icon type='delete' />Clear</a></Menu.Item>
         <Menu.Item><a href={_url + proxyPath}><Icon type='file-text' />PAC File</a></Menu.Item>
         <Menu.Item><a href={_url + sslPath}
                       onMouseLeave={this.hideQRCode.bind(this)}
                       onMouseMove={this.showQRCode.bind(this)}
                       onMouseEnter={this.showQRCode.bind(this)}><Icon type='cloud-download' />SSL Certificate</a></Menu.Item>
-        <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-devtools' target='_blank'><Icon type='github' />GitHub</a></Menu.Item>
+        <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-network' target='_blank'><Icon type='github' />GitHub</a></Menu.Item>
       </Menu>
       {showQRCode ? <img className="qrcode" src={jrQrcode.getQrBase64(_url + sslPath)} />:null}
       <section className='bars'>
