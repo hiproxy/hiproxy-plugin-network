@@ -8,6 +8,9 @@ import Menu from 'antd/es/Menu';
 import Icon from 'antd/es/Icon';
 import Row from 'antd/es/Row';
 import Col from 'antd/es/Col';
+
+import QRCode from './qrcode';
+
 const filters = ['All', 'JS', 'XHR', 'CSS', 'Img', 'Other'];
 
 class Home extends Component {
@@ -92,7 +95,7 @@ class Home extends Component {
                       onMouseEnter={this.showQRCode.bind(this)}><Icon type='cloud-download' />SSL Certificate</a></Menu.Item>
         <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-network' target='_blank'><Icon type='github' />GitHub</a></Menu.Item>
       </Menu>
-      {showQRCode ? <img className="qrcode" src={jrQrcode.getQrBase64(_url + sslPath)} />:null}
+      <QRCode onMouseLeave={this.hideQRCode.bind(this)} onMouseEnter={this.showQRCode.bind(this)} visible={showQRCode} url={_url + sslPath} />
       <section className='bars'>
         <ul className='content'>
           <li className='item'><input
@@ -132,15 +135,22 @@ class Home extends Component {
   }
 
   showQRCode () {
+    clearTimeout(this.hideTimer);
+
     this.setState({
       showQRCode: true
-    })
+    });
   }
 
   hideQRCode () {
-    this.setState({
-      showQRCode: false
-    })
+    if (window.isHoverQrCode) {
+      return;
+    }
+    this.hideTimer = setTimeout(() => {
+      this.setState({
+        showQRCode: false
+      });
+    }, 200);
   }
 
   getRequestsData () {

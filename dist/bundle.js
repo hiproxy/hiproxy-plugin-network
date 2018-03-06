@@ -12025,7 +12025,7 @@ var _page = __webpack_require__(194);
 
 var _page2 = _interopRequireDefault(_page);
 
-__webpack_require__(388);
+__webpack_require__(389);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31252,6 +31252,10 @@ var _Col = __webpack_require__(387);
 
 var _Col2 = _interopRequireDefault(_Col);
 
+var _qrcode = __webpack_require__(388);
+
+var _qrcode2 = _interopRequireDefault(_qrcode);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31410,7 +31414,7 @@ var Home = function (_Component) {
             )
           )
         ),
-        showQRCode ? _react2.default.createElement('img', { className: 'qrcode', src: jrQrcode.getQrBase64(_url + sslPath) }) : null,
+        _react2.default.createElement(_qrcode2.default, { onMouseLeave: this.hideQRCode.bind(this), onMouseEnter: this.showQRCode.bind(this), visible: showQRCode, url: _url + sslPath }),
         _react2.default.createElement(
           'section',
           { className: 'bars' },
@@ -31466,6 +31470,8 @@ var Home = function (_Component) {
   }, {
     key: 'showQRCode',
     value: function showQRCode() {
+      clearTimeout(this.hideTimer);
+
       this.setState({
         showQRCode: true
       });
@@ -31473,9 +31479,16 @@ var Home = function (_Component) {
   }, {
     key: 'hideQRCode',
     value: function hideQRCode() {
-      this.setState({
-        showQRCode: false
-      });
+      var _this4 = this;
+
+      if (window.isHoverQrCode) {
+        return;
+      }
+      this.hideTimer = setTimeout(function () {
+        _this4.setState({
+          showQRCode: false
+        });
+      }, 200);
     }
   }, {
     key: 'getRequestsData',
@@ -57514,6 +57527,85 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 388 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @file 根证书二维码
+ * @author zdying
+ */
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (_ref) {
+  var visible = _ref.visible,
+      url = _ref.url,
+      onMouseEnter = _ref.onMouseEnter,
+      onMouseLeave = _ref.onMouseLeave;
+
+  if (!visible) {
+    return null;
+  }
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'qrcode', onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave },
+    _react2.default.createElement('img', { src: window.jrQrcode.getQrBase64(url) }),
+    _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        'h3',
+        null,
+        'Download the root certificate'
+      ),
+      _react2.default.createElement(
+        'p',
+        null,
+        '1. Scan the QR code to download the root certificate.'
+      ),
+      _react2.default.createElement(
+        'p',
+        null,
+        '2. Or ',
+        _react2.default.createElement(
+          'a',
+          { href: url },
+          'click here'
+        ),
+        ' to download directly.'
+      ),
+      _react2.default.createElement(
+        'p',
+        null,
+        _react2.default.createElement(
+          'strong',
+          null,
+          'Tips'
+        ),
+        ': You can ',
+        _react2.default.createElement(
+          'a',
+          { href: 'http://hiproxy.org/configuration/ssl_certificate.html', target: '_blank' },
+          'click here'
+        ),
+        ' to see how to install the configuration certificate'
+      )
+    )
+  );
+};
+
+/***/ }),
+/* 389 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
