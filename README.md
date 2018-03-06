@@ -2,7 +2,7 @@
 
  hiproxy网络请求插件，可以查看hiproxy代理请求的详细信息。
 
- ![](https://github.com/hiproxy/hiproxy-plugin-network/blob/master/network.gif)
+ ![](https://raw.githubusercontent.com/hiproxy/hiproxy-plugin-network/master/network.gif)
  
  
 ## 安装

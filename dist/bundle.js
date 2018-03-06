@@ -31089,9 +31089,9 @@ var files = ['css', 'file', 'html', 'javascript', 'jpg', 'png', 'pdf', 'json', '
 
 var filterType = {
   'All': ['css', 'file', 'html', 'javascript', 'jpg', 'png', 'pdf', 'json', 'svg', 'gif', 'ico', 'txt', 'xml', 'zip', 'text', 'ssl-error'],
+  'Doc': ['html'],
   'JS': ['javascript'],
   'CSS': ['css'],
-  'XHR': ['json'],
   'Img': ['jpg', 'png', 'gif', 'svg', 'ico'],
   'Other': ['txt', 'xml', 'zip', 'pdf']
 };
@@ -31264,7 +31264,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var filters = ['All', 'JS', 'XHR', 'CSS', 'Img', 'Other'];
+var filters = ['All', 'Doc', 'JS', 'CSS', 'Img', 'Other'];
 
 var Home = function (_Component) {
   _inherits(Home, _Component);

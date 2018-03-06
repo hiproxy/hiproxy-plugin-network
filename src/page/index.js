@@ -11,7 +11,7 @@ import Col from 'antd/es/Col';
 
 import QRCode from './qrcode';
 
-const filters = ['All', 'JS', 'XHR', 'CSS', 'Img', 'Other'];
+const filters = ['All', 'Doc', 'JS', 'CSS', 'Img', 'Other'];
 
 class Home extends Component {
   constructor (props) {

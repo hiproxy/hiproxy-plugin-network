@@ -18,9 +18,9 @@ const filterType = {
     'txt', 'xml', 'zip', 'text',
     'ssl-error'
   ],
+  'Doc': ['html'],
   'JS': ['javascript'],
   'CSS': ['css'],
-  'XHR': ['json'],
   'Img': ['jpg', 'png', 'gif', 'svg', 'ico'],
   'Other': ['txt', 'xml', 'zip', 'pdf']
 };
