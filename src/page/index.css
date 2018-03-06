@@ -246,11 +246,30 @@ ul , li{max-height:1000000px;}
     padding: 0 2px;
     outline: none;
 }
+
 .qrcode {
-    width: 126px;
-    height: 126px;
+    max-width: 585px;
+    padding: 15px;
     position: absolute;
-    top: 39px;
+    top: 46px;
     z-index: 99;
     left: 414px;
+    display: flex;
+    flex-direction: row;
+    background: #f1f1f1;
+    box-shadow: 0 3px 15px rgba(0,0,0,.3);
+}
+
+.qrcode p {
+    margin-bottom: .55em;
+}
+
+.qrcode .tips {
+    color: orange;
+}
+
+.qrcode img {
+    width: 140px;
+    height: 140px;
+    margin-right: 10px;
 }
