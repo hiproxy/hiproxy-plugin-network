@@ -30,7 +30,7 @@ function SocketServer () {
     if (!eventBound) {
       eventBound = true;
 
-      self.on('response', function (req, res) {
+      self.on('response', function (req, res, proxy) {
         var hiproxy = global.hiproxyServer;
         if (!streamArray[req.requestId]) {
           streamArray[req.requestId] = '';
@@ -55,7 +55,7 @@ function SocketServer () {
         }
 
         for (var key in me.sockets) {
-          me.sockets[key].emit('data', parseRequest(req, res, streamArray[req.requestId]));
+          me.sockets[key].emit('data', parseRequest(req, res, proxy, streamArray[req.requestId]));
         }
       });
 
@@ -117,8 +117,8 @@ function getPageData () {
   };
 }
 
-function parseRequest (req, res, data) {
-  var result = JSON.parse(JSON.stringify(req.proxyOptions || {}));
+function parseRequest (req, res, proxy, data) {
+  var result = JSON.parse(JSON.stringify(proxy || {}));
 
   res.headers = res.headers || {};
   result.headers = result.headers || {};

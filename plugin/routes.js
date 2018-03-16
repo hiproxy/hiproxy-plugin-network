@@ -40,7 +40,12 @@ module.exports = [
         if (!socketInstance) {
           socketInstance = new Socket();
 
-          hiproxyServer.on('data', function (data, req, res) {
+          hiproxyServer.on('data', function (detail) {
+            var data = detail.data;
+            var req = detail.request;
+            var res = detail.response;
+            // var proxy = detail.proxy;
+
             if (res && res.headers &&
                 res.headers['content-type'] &&
                 res.headers['content-type'].indexOf(/(image|ico|bmp)/) !== -1) {
@@ -49,8 +54,12 @@ module.exports = [
             socketInstance.emit('data', data.toString(), req, res);
           });
 
-          hiproxyServer.on('response', function (req, res) {
-            socketInstance.emit('response', req, res);
+          hiproxyServer.on('response', function (detail) {
+            // var data = detail.data;
+            var req = detail.request;
+            var res = detail.response;
+            var proxy = detail.proxy;
+            socketInstance.emit('response', req, res, proxy);
           });
 
           hiproxyServer.on('connect', function (request, socket, head) {
