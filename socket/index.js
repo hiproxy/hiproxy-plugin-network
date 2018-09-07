@@ -43,14 +43,19 @@ function SocketServer () {
 
         var urlInfo = url.parse(req.url);
         var reqPort = Number(urlInfo.port);
-
+        
         if (!urlInfo.hostname) {
           return;
         }
 
         // 忽略hiproxy以及插件的请求，不发送到浏览器端
         if (urlInfo.hostname === '127.0.0.1' && (reqPort === PORT || reqPort === hiproxy.httpPort || reqPort === hiproxy.httpsPort)) {
-          // console.log('hiproxy或者其插件的请求，已经忽略：', req.url);
+          log.debug('hiproxy or plugin requests, ignore', req.url);
+          return;
+        }
+
+        if (urlInfo.hostname === 'hi.proxy') {
+          log.debug('hi.proxy request, ignore', req.url);
           return;
         }
 
