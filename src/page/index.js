@@ -29,7 +29,8 @@ class Home extends Component {
 
   componentDidMount () {
     window.ios = io;
-    const socket = io.connect('http://' + location.hostname + ':9998');
+    const socket = io.connect('http://127.0.0.1:9998');
+    // const socket = io.connect('http://' + location.hostname + ':9998');
     socket.on('pageReady', (data) => {
       this.setState(data);
     });
@@ -158,7 +159,7 @@ class Home extends Component {
     if (this.state.hideConnectUrls === true) {
       reqs = reqs.filter(req => req.type !== 'connect');
     }
-
+  
     return reqs.sort((a, b) => a.startTime - b.startTime);
   }
 
