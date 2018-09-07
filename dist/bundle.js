@@ -31291,7 +31291,8 @@ var Home = function (_Component) {
       var _this2 = this;
 
       window.ios = _socket2.default;
-      var socket = _socket2.default.connect('http://' + location.hostname + ':9998');
+      var socket = _socket2.default.connect('http://127.0.0.1:9998');
+      // const socket = io.connect('http://' + location.hostname + ':9998');
       socket.on('pageReady', function (data) {
         _this2.setState(data);
       });
@@ -52799,13 +52800,16 @@ function parseData(data) {
   var result = [];
 
   for (var key in data) {
+    var keyLabel = key.replace(/^\w|-\w/g, function (match) {
+      return match.toUpperCase();
+    });
     result.push(_react2.default.createElement(
       'li',
       { key: key },
       _react2.default.createElement(
         'strong',
         null,
-        key
+        keyLabel
       ),
       ': ',
       data[key]
