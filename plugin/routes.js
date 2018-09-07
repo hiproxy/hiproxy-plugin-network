@@ -42,8 +42,8 @@ module.exports = [
 
           hiproxyServer.on('data', function (detail) {
             var data = detail.data;
-            var req = detail.request;
-            var res = detail.response;
+            var req = detail.req;
+            var res = detail.res;
             // var proxy = detail.proxy;
 
             if (res && res.headers &&
@@ -56,8 +56,8 @@ module.exports = [
 
           hiproxyServer.on('response', function (detail) {
             // var data = detail.data;
-            var req = detail.request;
-            var res = detail.response;
+            var req = detail.req;
+            var res = detail.res;
             var proxy = detail.proxy;
             socketInstance.emit('response', req, res, proxy);
           });
