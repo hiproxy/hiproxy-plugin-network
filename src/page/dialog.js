@@ -276,7 +276,8 @@ function parseData (data) {
   let result = [];
 
   for (let key in data) {
-    result.push(<li key={key}><strong>{key}</strong>: {data[key]}</li>);
+    let keyLabel = key.replace(/^\w|-\w/g, match => match.toUpperCase());
+    result.push(<li key={key}><strong>{keyLabel}</strong>: {data[key]}</li>);
   }
 
   return result;
