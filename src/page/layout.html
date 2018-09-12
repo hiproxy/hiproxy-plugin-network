@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Network plugin for hiproxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="layout.css" />
+  <script src="main.js"></script>
+</head>
+<body>
+  <header>
+    <div class="menu">
+      <h1><i class="icon-globe"></i>Network</h1>
+      <!-- <h1>Network plugin for hiproxy</h1> -->
+      <ul class="nav">
+        <li class="item">
+          <i class="icon-grid"></i>
+          <a href="###">Home</a>
+        </li>
+        <li class="item">
+          <i class="icon-trash"></i>
+          <a href="###">Clear All</a>
+        </li>
+        <li class="item">
+          <i class="icon-file-text"></i>
+          <a href="###">PAC File</a>
+        </li>
+        <li class="item">
+          <i class="icon-shield"></i>
+          <a href="###">SSL Certificate</a>
+        </li>
+        <li class="item">
+          <i class="icon-github"></i>
+          <a href="###">Github</a>
+        </li>
+      </ul>
+    </div>
+    <div class="filters">
+      <span class="group">
+        <input class="filter-input" type="text" placeholder="Filter" />
+      </span>
+      <span class="group">
+        <input class="filter-checkbox" type="checkbox" /> Hide data URLs
+      </span>
+      <ul class="group file-types">
+        <li class="item">All</li>
+        <li class="item active">Doc</li>
+        <li class="item">Media</li>
+        <li class="item">XHR</li>
+        <li class="item">Image</li>
+        <li class="item">Font</li>
+        <li class="item">Other</li>
+      </ul>
+    </div>
+  </header>
+  <section class="body">
+    <table class="network-table" id="js-network-table">
+      <col width="20%" />
+      <col width="auto" />
+      <col width="" />
+      <col width="" />
+      <col width="" />
+      <col width="13%" />
+      <col width="15%" />
+      <col width="" />
+      <col width="" />
+      <col width="" />
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Method</th>
+          <th>Status</th>
+          <th>Scheme</th>
+          <th>Domain</th>
+          <th>Target Address</th>
+          <th>Target Path</th>
+          <th>Type</th>
+          <th>Size</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>/suggest?queryWord=%E5%8C%97%E4%BA%AC&__m__=90d9c4dbc2ea24c85a1b5ba479027fbe<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+        <tr>
+          <td>index.html<br/><span class="text-gray">/home/</span></td>
+          <td>GET</td>
+          <td>200<br/><span class="text-gray">OK</span></td>
+          <td>HTTPS</td>
+          <td>qunar.com</td>
+          <td>beta.qunar.com</td>
+          <td>/index/index.html</td>
+          <td>text/html</td>
+          <td>21K</td>
+          <td>300ms</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</body>
+</html>
