@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Network plugin for hiproxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="../../source/style.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="layout.css" />
+  <script src="../../source/jquery-3.3.1.min.js"></script>
+  <script src="../../source/socket.io-2.1.1.min.js"></script>
+  <script src="index.js"></script>
+  <script src="main.js"></script>
+</head>
+<body>
+  <header>
+    <div class="menu">
+      <h1><i class="icon-globe"></i>Network</h1>
+      <!-- <h1>Network plugin for hiproxy</h1> -->
+      <ul class="nav">
+        <li class="item">
+          <i class="icon-grid"></i>
+          <a href="###">Home</a>
+        </li>
+        <li class="item">
+          <i class="icon-trash"></i>
+          <a href="###">Clear All</a>
+        </li>
+        <li class="item">
+          <i class="icon-file-text"></i>
+          <a href="###">PAC File</a>
+        </li>
+        <li class="item">
+          <i class="icon-shield"></i>
+          <a href="###">SSL Certificate</a>
+        </li>
+        <li class="item">
+          <i class="icon-book-open"></i>
+          <a href="###">Documentation</a>
+        </li>
+        <li class="item">
+          <i class="icon-github"></i>
+          <a href="###">Github</a>
+        </li>
+      </ul>
+    </div>
+    <div class="filters">
+      <span class="group">
+        <input class="filter-input" type="text" placeholder="Filter" />
+      </span>
+      <span class="group">
+        <label>
+          <input class="filter-checkbox" type="checkbox" /> Hide data URLs
+        </label>
+      </span>
+      <ul class="group file-types">
+        <li class="item">All</li>
+        <li class="item active">Doc</li>
+        <li class="item">Media</li>
+        <li class="item">XHR</li>
+        <li class="item">Image</li>
+        <li class="item">Font</li>
+        <li class="item">Other</li>
+      </ul>
+    </div>
+  </header>
+  <section class="body" id="js-body">
+    <table class="network-table" id="js-network-table">
+      <col width="20%" />
+      <col width="6%" />
+      <col width="6%" />
+      <col width="6%" />
+      <col width="13%" />
+      <col width="13%" />
+      <col width="18%" />
+      <col width="8%" />
+      <col width="5%" />
+      <col width="5%" />
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Method</th>
+          <th>Status</th>
+          <th>Scheme</th>
+          <th>
+            <div class="header-cell">
+                <span class="table-label">Domain</span>
+                <span class="sort-arrow">
+                  <i class="up active icon-arrow_drop_up"></i>
+                  <i class="down icon-arrow_drop_down"></i>
+                </span>
+            </div>
+          </th>
+          <th>Target Address</th>
+          <th>Target Path</th>
+          <th>Type</th>
+          <th>
+            <div class="header-cell">
+                <span class="table-label">Size</span>
+                <span class="sort-arrow">
+                  <i class="up icon-arrow_drop_up"></i>
+                  <i class="down icon-arrow_drop_down"></i>
+                </span>
+            </div>
+          </th>
+          <th>
+            <div class="header-cell">
+                <span class="table-label">Time</span>
+                <span class="sort-arrow">
+                  <i class="up icon-arrow_drop_up"></i>
+                  <i class="down icon-arrow_drop_down"></i>
+                </span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="js-table-body">
+      </tbody>
+    </table>
+  </section>
+</body>
+</html>

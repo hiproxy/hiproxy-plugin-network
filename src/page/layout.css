@@ -15,6 +15,11 @@ body {
   flex-direction: column;
 }
 
+*::selection {
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+}
+
 header {
   height: 82px;
   border-bottom: 1px solid #e8e8e8;
@@ -88,6 +93,10 @@ header .filters {
 header .filter-input {
   height: 25px;
   box-sizing: border-box;
+  border-radius: 1px;
+  border: 1px solid #d9d9d9;
+  padding: 0 2px;
+  outline: none;
 }
 
 header .file-types {
@@ -163,6 +172,7 @@ table th, td {
   text-overflow: ellipsis;
   white-space: nowrap;
   padding-left: 5px;
+  padding-right: 5px;
   box-sizing: border-box;
 }
 
@@ -172,4 +182,69 @@ table tbody tr:first-child td {
 
 table .text-gray {
   color: #838383;
+}
+
+/* others */
+.header-cell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sort-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 5px;
+  font-size: 18px;
+  color: #969696;
+}
+
+.sort-arrow i {
+  height: 6px;
+  overflow: hidden;
+}
+
+.sort-arrow i:hover, .sort-arrow i.active {
+  color: #000000;
+}
+
+.sort-arrow .up {
+  margin: 1px;
+}
+
+.sort-arrow .down {
+  margin: 1px;
+}
+
+
+.sort-arrow .up:before {
+  position: relative;
+  bottom: 6px;
+}
+
+.sort-arrow .down:before {
+  position: relative;
+  top: -8px;
+}
+
+.network-name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.network-name .file-type-img {
+  width: 35px;
+  height: 35px;
+  margin-left: -2px;
+  margin-right: 3px;
+}
+
+.network-name .url-path {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -1,47 +1,30 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { onArrive, clearAll, filterType, filterKeys } from '../action';
-import {Tables} from './table';
-import Dialog from './dialog';
-import io from 'socket.io-client';
-import Menu from 'antd/es/Menu';
-import Icon from 'antd/es/Icon';
-import Row from 'antd/es/Row';
-import Col from 'antd/es/Col';
+/**
+ * @file home page module
+ * @author zdying
+ */
 
-import QRCode from './qrcode';
+let tableData = [];
 
-const filters = ['All', 'Doc', 'JS', 'CSS', 'Img', 'Other'];
+window.modPage = {
+  init: function () {
+    this.initSocket();
+  },
 
-class Home extends Component {
-  constructor (props) {
-    super(props);
+  initSocket: function () {
+    let socket = io('http://127.0.0.1:9998');
 
-    this.state = {
-      showRequestDetail: false,
-      requestDetail: null,
-      check: 'All',
-      keys: '',
-      hideConnectUrls: true,
-      showQRCode: false
-    };
-  }
-
-  componentDidMount () {
-    window.ios = io;
-    const socket = io.connect('http://127.0.0.1:9998');
-    // const socket = io.connect('http://' + location.hostname + ':9998');
     socket.on('pageReady', (data) => {
-      this.setState(data);
+      // this.setState(data);
+      console.log('page ready:', data);
     });
 
     socket.on('data', data => {
-      var length = data.toString().length;
-      var maxLen = 1 * 1024 * 1024;
-      var obj = JSON.parse(data);
-      var socketData = obj.socketData || '';
-      var path = obj.path;
-      var isSocketIOURL = /^\/(socket\.io|network)/.test(path);
+      let length = data.toString().length;
+      let maxLen = 1 * 1024 * 1024;
+      let obj = JSON.parse(data);
+      let socketData = obj.socketData || '';
+      let path = obj.path;
+      let isSocketIOURL = /^\/(socket\.io|network)/.test(path);
 
       if (isSocketIOURL) {
         console.warn('socket.io本身的请求，忽略');
@@ -53,169 +36,150 @@ class Home extends Component {
       if (obj.originLength > maxLen) {
         obj.socketData = '内容太长，无法查看！';
       }
+      console.log('origin::::', obj);
 
-      this.props.onArrive(obj);
+      this.onArrive(obj);
     });
 
     socket.on('connectreq', data => {
       if (data.hostname === location.hostname && data.port === '9998') {
         // 忽略插件本身的请求
       } else {
-        this.props.onArrive(data);
+        this.onArrive(data);
       }
     });
-  }
+  },
 
-  componentDidUpdate () {
-    var reqRows = document.querySelectorAll('.request-row');
-    let len = reqRows.length;
-    let {isClick} = this;
+  onArrive: function (data) {
+    tableData.push(data);
+    this.renderTable();
+  },
 
-    // 如果不是隐藏click导致的渲染，滚动到最后
-    if (len && !isClick) {
-      reqRows[len - 1].scrollIntoView();
-    }
+  renderTable: function () {
+    let data = this.getRenderData();
+    let html = this.getTableHTML(data);
 
-    if (isClick) {
-      this.isClick = false;
-    }
-  }
+    $('#js-table-body').html(html);
+    this.scrollToBottom();
+  },
 
-  render () {
-    const { proxyPath, sslPath, httpPort, check, showQRCode } = this.state || {};
-    const _url = 'http://' + location.hostname + ':' + httpPort;
+  getRenderData: function () {
+    let data = tableData;
 
-    return <div className="app-body">
-      <Menu mode='horizontal' selectedKeys={['1']} theme='dark'>
-        <Menu.Item key='mail'>hiproxy-plugin-network</Menu.Item>
-        <Menu.Item><a onClick={()=>{this.props.clearAll();this.onClose();}}><Icon type='delete' />Clear</a></Menu.Item>
-        <Menu.Item><a href={_url + proxyPath}><Icon type='file-text' />PAC File</a></Menu.Item>
-        <Menu.Item><a href={_url + sslPath}
-                      onMouseLeave={this.hideQRCode.bind(this)}
-                      onMouseMove={this.showQRCode.bind(this)}
-                      onMouseEnter={this.showQRCode.bind(this)}><Icon type='cloud-download' />SSL Certificate</a></Menu.Item>
-        <Menu.Item><a href='https://github.com/hiproxy/hiproxy-plugin-network' target='_blank'><Icon type='github' />GitHub</a></Menu.Item>
-      </Menu>
-      <QRCode onMouseLeave={this.hideQRCode.bind(this)} onMouseEnter={this.showQRCode.bind(this)} visible={showQRCode} url={_url + sslPath} />
-      <section className='bars'>
-        <ul className='content'>
-          <li className='item'><input
-            className='filter'
-            placeholder='filter'
-            keys={this.state.keys}
-            onChange={this.filterKeys.bind(this)} /></li>
-          <li className='item'>
-            <label className='chebox-label'>
-              <input
-                type='checkbox'
-                className='checkbox'
-                checked={this.state.hideConnectUrls}
-                onChange={this.changeHideConnectUrls.bind(this)}
-              /> Hide CONNECT URLs
-            </label>
-          </li>
-          {
-            filters.map(item => {
-              let cls = item === check ? 'item checked' : 'item';
-              return <li key={item} className={cls} onClick={this.switchFileType.bind(this, item)}>{item}</li>;
-            })
-          }
-        </ul>
-      </section>
-      <Tables
-        data={this.getRequestsData()}
-        showRequestDetail={this.showRequestDetail.bind(this)}
-        currIndex={this.state.currIndex}
-      />
-      <Dialog
-        showRequestDetail={this.state.showRequestDetail}
-        requestDetail={this.state.requestDetail}
-        onClose={this.onClose.bind(this)}
-      />
-    </div>;
-  }
-
-  showQRCode () {
-    clearTimeout(this.hideTimer);
-
-    this.setState({
-      showQRCode: true
+    let renderData = data && data.map((t, index) => {
+      let {id, resHeaders = {}, socketData = '', statusCode, url, method, hostname, port, path, time} = t;
+      let contentType = resHeaders['content-type'] || '';
+      let length = resHeaders['content-length'] || socketData.length;
+      let fileType = this.getFileType(t);
+  
+      if (t.type === 'connect') {
+        return {
+          key: id,
+          name: ['UNKNOW', 'ssl-error'],
+          id: id,
+          method: 'CONNECT',
+          protocol: 'HTTPS',
+          status: '',
+          address: hostname + ':' + port,
+          targetAddress: '',
+          targetPath: '',
+          type: '',
+          size: 'N/A',
+          time: 'N/A'
+        };
+      }
+  
+      let {host, protocol = ''} = url;
+  
+      return {
+        key: id,
+        name: [t.url.path, fileType],
+        id: id,
+        method: method,
+        protocol: protocol.replace(':', '').toUpperCase(),
+        status: statusCode,
+        address: host,
+        targetAddress: hostname ? hostname + (port ? ':' + port : '') : '',
+        targetPath: path || '',
+        // type: getContentType(contentType),
+        type: contentType,
+        size: length, // getSizeLabel(length),
+        time: time // getTimeLabel(time)
+      };
     });
-  }
 
-  hideQRCode () {
-    if (window.isHoverQrCode) {
-      return;
-    }
-    this.hideTimer = setTimeout(() => {
-      this.setState({
-        showQRCode: false
-      });
-    }, 200);
-  }
+    return renderData;
+  },
 
-  getRequestsData () {
-    let reqs = this.props.requests;
-    if (this.state.hideConnectUrls === true) {
-      reqs = reqs.filter(req => req.type !== 'connect');
+  getFileType: function (t) {
+    const files = [
+      'css', 'file', 'html', 'javascript',
+      'jpg', 'png', 'pdf', 'json', 'svg', 'gif', 'ico',
+      'txt', 'xml', 'zip'
+    ];
+    let {resHeaders = {}} = t;
+    let contentType = resHeaders['content-type'] || '';
+    let fileType = contentType.split(';')[0].split('/')[1] || '';
+    if (t.type === 'connect') {
+      return 'ssl-error';
     }
   
-    return reqs.sort((a, b) => a.startTime - b.startTime);
-  }
-
-  filterKeys (e) {
-    let val = e.currentTarget.value;
-    // this.filterKeys(val);
-    this.setState({
-      keys: val
-    }, this.props.filterKeys(val));
-  }
-
-  switchFileType (type) {
-    let {check} = this.state;
-    if (type !== check) {
-      this.setState({
-        check: type
-      }, this.props.filterType(type));
+    fileType = fileType.trim();
+  
+    if (fileType.indexOf('+')) {
+      fileType = fileType.split('+')[0];
     }
-  }
+  
+    if (fileType === 'jpeg') {
+      fileType = 'jpg';
+    } else if (fileType === 'x-javascript') {
+      fileType = 'javascript';
+    } else if (fileType === 'x-ico' || fileType === 'x-icon') {
+      fileType = 'ico';
+    }
+  
+    if (files.indexOf(fileType) === -1) {
+      fileType = 'text';
+    }
+  
+    return fileType;
+  },
 
-  showRequestDetail (item) {
-    let {id, key} = item;
-
-    this.isClick = true;
-
-    this.setState({
-      showRequestDetail: true,
-      requestDetail: this.props.requests.filter(req => req.id === id)[0] || {},
-      currIndex: id
+  getTableHTML: function (data) {
+    let html = data.map(item => {
+      let arr = item.name[0].split('/');
+      return [
+        `<tr>`,
+        // `  <td>${arr.slice(-1)}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span></td>`,
+        `  <td>
+             <div class="network-name" title="${item.name[0]}">
+               <img class="file-type-img" src="../../icons/${item.name[1]}.png" alt="">
+               <span class="url-path">
+               ${arr.slice(-1)}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span>
+               </span>
+             </div>
+           </td>`,
+        `  <td>${item.method}</td>`,
+        `  <td>${item.status}<br/><span class="text-gray">${item.statusMessage || ''}</span></td>`,
+        `  <td>${item.protocol}</td>`,
+        `  <td>${item.address}</td>`,
+        `  <td>${item.targetAddress}</td>`,
+        `  <td>${item.targetPath}</td>`,
+        `  <td>${item.type}</td>`,
+        `  <td>${item.size}b</td>`,
+        `  <td><strong>${item.time}ms</strong></td>`,
+        `</tr>`
+      ]
     });
-  }
 
-  onClose () {
-    this.setState({
-      currIndex: -1,
-      showRequestDetail: false
-    });
-  }
+    return html.join('');
+  },
 
-  changeHideConnectUrls () {
-    this.setState({
-      hideConnectUrls: !this.state.hideConnectUrls
-    });
+  scrollToBottom() {
+    let $body = $('#js-body');
+    let offsetHeight = $body[0].offsetHeight;
+    let scrollHeight = $body[0].scrollHeight;
+
+    $body.scrollTop(scrollHeight - offsetHeight);
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    requests: state.requests
-  };
-};
-
-const mapDispatchToProps = {
-  onArrive,
-  clearAll,
-  filterType,
-  filterKeys
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
