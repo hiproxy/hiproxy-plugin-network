@@ -354,6 +354,7 @@ table .text-gray {
 
 .network-detail ul.list li {
   list-style: none;
+  line-height: 22px;
 }
 
 .network-detail pre {
