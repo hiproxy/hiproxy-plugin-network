@@ -124,7 +124,7 @@ window.networkDetail = window.ND = {
 
   renderResponse: function () {
     let netWorkInfo = this.netWorkInfo;
-    let regImg = /png|jpg|jpeg|gif|webp|bmp/;
+    let regImg = /png|jpg|jpeg|gif|webp|bmp|svg/;
 
     if (netWorkInfo.resContentType.match(regImg)) {
       return this._renderResponse('<img src="' + '/fetchresponse?reqId=' + netWorkInfo.id + '&contentType=' + netWorkInfo.resContentType + '"/>')
