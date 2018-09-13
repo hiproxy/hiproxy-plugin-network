@@ -3,11 +3,28 @@
  * @author zdying
  */
 
-let tableData = [];
-
 window.modPage = {
+  $el: null,
+
+  tableData: [],
+
+  tableDataMap: {},
+
   init: function () {
+    this.$el = $('#js-network-table');
+    this.initEvent();
     this.initSocket();
+  },
+
+  initEvent: function () {
+    this.$el.on('click', 'tbody tr', function (eve) {
+      let $curr = $(eve.currentTarget);
+      let data = $curr.data();
+      let key = data.key;
+      let currInfo = this.tableDataMap[key];
+
+      window.networkDetail.show(currInfo);
+    }.bind(this));
   },
 
   initSocket: function () {
@@ -50,7 +67,7 @@ window.modPage = {
   },
 
   onArrive: function (data) {
-    tableData.push(data);
+    this.tableData.push(data);
     this.renderTable();
   },
 
@@ -63,15 +80,17 @@ window.modPage = {
   },
 
   getRenderData: function () {
-    let data = tableData;
+    let data = this.tableData;
 
-    let renderData = data && data.map((t, index) => {
-      let {id, resHeaders = {}, socketData = '', statusCode, url, method, hostname, port, path, time} = t;
+    let renderData = data && data.map((item, index) => {
+      let {id, resHeaders = {}, socketData = '', statusCode, url, method, hostname, port, path, time} = item;
       let contentType = resHeaders['content-type'] || '';
       let length = resHeaders['content-length'] || socketData.length;
-      let fileType = this.getFileType(t);
+      let fileType = this.getFileType(item);
+
+      this.tableDataMap[id] = item;
   
-      if (t.type === 'connect') {
+      if (item.type === 'connect') {
         return {
           key: id,
           name: ['UNKNOW', 'ssl-error'],
@@ -92,7 +111,7 @@ window.modPage = {
   
       return {
         key: id,
-        name: [t.url.path, fileType],
+        name: [item.url.path, fileType],
         id: id,
         method: method,
         protocol: protocol.replace(':', '').toUpperCase(),
@@ -148,7 +167,7 @@ window.modPage = {
     let html = data.map(item => {
       let arr = item.name[0].split('/');
       return [
-        `<tr>`,
+        `<tr data-key=${item.key}>`,
         // `  <td>${arr.slice(-1)}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span></td>`,
         `  <td>
              <div class="network-name" title="${item.name[0]}">

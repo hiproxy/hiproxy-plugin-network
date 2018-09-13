@@ -20,6 +20,10 @@ body {
   color: #ffffff;
 }
 
+.hide {
+  display: none!important;
+}
+
 .header {
   height: 82px;
   border-bottom: 1px solid #e8e8e8;
