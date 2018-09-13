@@ -134,6 +134,7 @@ function parseRequest (req, res, proxy, data) {
   result.id = req.requestId;
   result.newUrl = req.newUrl;
   result.statusCode = res.statusCode;
+  result.statusMessage = res.statusMessage || '';
   result.time = Date.now() - req._startTime;
   result.resHeaders = JSON.parse(JSON.stringify(res.headers));
   result.url = url.parse(req.url);
