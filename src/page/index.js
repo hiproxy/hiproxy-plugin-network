@@ -14,7 +14,6 @@ window.modPage = {
     let socket = io('http://127.0.0.1:9998');
 
     socket.on('pageReady', (data) => {
-      // this.setState(data);
       console.log('page ready:', data);
     });
 
@@ -155,7 +154,7 @@ window.modPage = {
              <div class="network-name" title="${item.name[0]}">
                <img class="file-type-img" src="../../icons/${item.name[1]}.png" alt="">
                <span class="url-path">
-               ${arr.slice(-1)}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span>
+               ${arr.slice(-1)[0] || '/'}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span>
                </span>
              </div>
            </td>`,

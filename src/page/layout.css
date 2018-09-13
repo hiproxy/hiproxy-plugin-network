@@ -20,12 +20,12 @@ body {
   color: #ffffff;
 }
 
-header {
+.header {
   height: 82px;
   border-bottom: 1px solid #e8e8e8;
 }
 
-header .menu {
+.header .menu {
   height: 46px;
   background: #001529;
   color: #ffffff;
@@ -34,53 +34,53 @@ header .menu {
   align-items: center;
 }
 
-header .menu h1 {
+.header .menu h1 {
   margin-left: 5px;
   font-size: 20px;
   font-weight: 400;
 }
 
-header .menu h1 i {
+.header .menu h1 i {
   font-size: 20px;
   margin-right: 5px;
 }
 
-header .menu .nav {
+.header .menu .nav {
   margin: 0;
   padding: 0;
   margin-left: 10px;
   font-size: 15px;
 }
 
-header .menu .nav .item {
+.header .menu .nav .item {
   list-style: none;
   float: left;
   margin: 0 0 0 20px;
   cursor: default;
 }
 
-header .menu .nav .item a {
+.header .menu .nav .item a {
   color: rgba(255, 255, 255, 0.65);
   text-decoration: none;
 }
 
-header .menu .nav .item:hover a {
+.header .menu .nav .item:hover a {
   color: rgba(255, 255, 255, 1);
 }
 
-header .menu .nav .item i {
+.header .menu .nav .item i {
   margin-right: 3px;
 }
 
-header .group {
+.header .group {
   margin-left: 10px;
 }
 
-header .group:first-child {
+.header .group:first-child {
   margin-left: 5px;
 }
 
-header .filters {
+.header .filters {
   height: 36px;
   /* padding: 5px; */
   font-size: 13px;
@@ -90,7 +90,7 @@ header .filters {
   align-items: center;
 }
 
-header .filter-input {
+.header .filter-input {
   height: 25px;
   box-sizing: border-box;
   border-radius: 1px;
@@ -99,12 +99,12 @@ header .filter-input {
   outline: none;
 }
 
-header .file-types {
+.header .file-types {
   margin: 0;
   padding: 0 10px;
 }
 
-header .file-types .item {
+.header .file-types .item {
   float: left;
   list-style: none;
   padding: 2px 5px;
@@ -112,12 +112,12 @@ header .file-types .item {
   margin: 0 2px;
 }
 
-header .file-types .item.active, header .file-types .item:hover {
+.header .file-types .item.active, .header .file-types .item:hover {
   background: #e8e8e8;
   border-radius: 3px;
 }
 
-header .file-types .item:first-child:after {
+.header .file-types .item:first-child:after {
   content: "";
   border-right: 1px solid #e8e8e8;
   margin-left: 10px;
@@ -247,4 +247,95 @@ table .text-gray {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* network detail */
+
+.network-detail {
+  position: absolute;
+  left: 30%;
+  right: 0;
+  top: 83px;
+  bottom: 0;
+  background: #ffffff;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+}
+
+.network-detail header {
+  width: 100%;
+  height: 30px;
+  background: #eee;
+  line-height: 21px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  /* border-top: 1px solid #ccc; */
+}
+
+.network-detail header .close {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 300;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.network-detail header .tab {
+  text-align: center;
+  width: 80px;
+  border-right: 1px solid #ccc;
+  height: 31px;
+  line-height: 30px;
+}
+
+.network-detail header .active {
+  background: #FFFFFF;
+}
+
+.network-detail section.body {
+  padding: 15px;
+  font-size: 13px;
+  flex: 1;
+  overflow: auto;
+}
+
+.network-detail .group-header {
+  border-bottom: 1px solid #E0E0E0;
+  margin: 15px 0 0 0;
+  padding-bottom: 5px;
+  font-size: 14px;
+}
+
+.network-detail .group-header:first-child {
+  margin: 0 0;
+}
+
+.network-detail .code, .network-detail .content {
+  padding: 15px;
+  height: calc(100% - 30px);
+  box-sizing: border-box;
+  width: 100%;
+  overflow: auto;
+  border: none;
+  margin: 0;
+  font-size: 13px;
+  /* white-space: pre-line; */
+}
+
+.network-detail .content img {
+  max-width: 100%;
+}
+
+.network-detail ul.list {
+  /* margin-left: 15px; */
+  margin: 0;
+  padding-left: 1em;
+}
+
+.network-detail ul.list li {
+  list-style: none;
 }
