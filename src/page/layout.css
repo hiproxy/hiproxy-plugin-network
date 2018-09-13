@@ -268,6 +268,17 @@ table .text-gray {
   flex-direction: column;
 }
 
+.network-detail .spliter {
+  width: 1px;
+  height: 100%;
+  left: -5px;
+  top: 0;
+  position: absolute;
+  z-index: 2222;
+  padding: 0 3px;
+  cursor: ew-resize;
+}
+
 .network-detail header {
   width: 100%;
   height: 30px;
@@ -294,6 +305,7 @@ table .text-gray {
   border-right: 1px solid #ccc;
   height: 31px;
   line-height: 30px;
+  cursor: default;
 }
 
 .network-detail header .active {
@@ -301,7 +313,7 @@ table .text-gray {
 }
 
 .network-detail section.body {
-  padding: 15px;
+  padding: 10px;
   font-size: 13px;
   flex: 1;
   overflow: auto;
@@ -342,4 +354,8 @@ table .text-gray {
 
 .network-detail ul.list li {
   list-style: none;
+}
+
+.network-detail pre {
+  margin: 0;
 }

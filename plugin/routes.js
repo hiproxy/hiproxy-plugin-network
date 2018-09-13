@@ -2,6 +2,8 @@
 var path = require('path');
 var url = require('url');
 var fs = require('fs');
+var os = require('os');
+var querystring = require('querystring');
 var mustache = require('mustache');
 var Socket = require('../socket');
 var socketInstance;
@@ -25,18 +27,25 @@ module.exports = [
   {
     route: '/fetchresponse',
     render: function (route, request, response) {
-      var reqId = request.url.split('reqId=').slice(1)[0];
-      response.end(socketInstance.getSocketData(reqId) || '暂无该条数据', 'utf8');
+      var query = querystring.parse(request.url.split('?')[1]);
+      response.setHeader('Content-Type', query.contentType);
+
+      let _path = path.join(os.tmpdir(), '.hiproxy-network-cache');
+      let content = fs.readFileSync(path.join(_path, query.reqId));
+
+      response.end(content);
     }
   },
   {
     route: '/network/(*)',
     render: function (route, request, response) {
-      var pageName = route._ || 'index.html';
+      var pageName = route._ || 'src/page/index.html';
       var filePath = path.join(__dirname, '..', pageName);
       var hiproxyServer = global.hiproxyServer;
 
-      if (pageName === 'index.html') {
+      console.log(pageName, filePath);
+
+      if (pageName === 'src/page/index.html') {
         if (!socketInstance) {
           socketInstance = new Socket();
 

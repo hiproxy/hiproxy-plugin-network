@@ -6,6 +6,9 @@
 'use strict';
 var EventEmitter = require('events');
 var http = require('http');
+var path = require('path');
+var fs = require('fs');
+var os = require('os');
 var url = require('url');
 var skt = require('socket.io');
 var zlib = require('zlib');
@@ -21,6 +24,12 @@ function SocketServer () {
 
   EventEmitter.call(this);
   app.listen(PORT);
+
+  try {
+    fs.mkdirSync(path.join(os.tmpdir(), '.hiproxy-network-cache'));
+  } catch (err) {
+    log.error('make cache dir error:', err);
+  }
 
   io.on('connection', function (socket) {
     socketObj = socket;
@@ -59,8 +68,21 @@ function SocketServer () {
           return;
         }
 
-        for (var key in me.sockets) {
-          me.sockets[key].emit('data', parseRequest(req, res, proxy, streamArray[req.requestId]));
+        let key = req.requestId;
+        let socketData = parseRequest(req, res, proxy, streamArray[key]);
+
+        let filePath = path.join(os.tmpdir(), '.hiproxy-network-cache', key);
+
+        fs.writeFile(filePath, res.body, function (err) {
+          if (err) {
+            log.error('write network file error:', key, error);
+          } else {
+            log.debug('write network file success:', key);
+          }
+        });
+
+        for (var id in me.sockets) {
+          me.sockets[id].emit('data', socketData);
         }
       });
 
@@ -141,6 +163,7 @@ function parseRequest (req, res, proxy, data) {
   result.body = req.body;
   result.querystring = (result.path || '').split('?').slice(1).join('?');
   result.startTime = req._startTime;
+  result.resBody = (res.body || '').toString();
 
   return JSON.stringify(result);
 }

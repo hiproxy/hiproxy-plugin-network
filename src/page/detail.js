@@ -9,10 +9,52 @@ window.networkDetail = window.ND = {
 
   netWorkInfo: null,
 
+  networkResponse: '',
+
   init: function () {
-    this.$el = $('#js-network-detail');
+    let $el = this.$el = $('#js-network-detail');
     
-    this.$el.on('click', '.close', this.hide.bind(this));
+    $el.on('click', '.close', this.hide.bind(this));
+
+    $el.on('click', 'header .tab', function (eve) {
+      let $curr = $(eve.currentTarget);
+      let data = $curr.data();
+      let role = data.role;
+
+      if (role === 'request') {
+        this.renderRequest();
+      } else if (role === 'response') {
+        this.renderResponse();
+      }
+
+      $curr.parent().find('.tab.active').removeClass('active');
+      $curr.addClass('active');
+    }.bind(this));
+
+    let startLeft = 0;
+    let startX = 0;
+
+    $el.find('#js-spliter').on('mousedown', function (eve) {
+      startLeft = parseInt($el.css('left'), 10);
+      startX = eve.pageX;
+    }.bind(this));
+
+    $(document).on('mousemove', function (eve) {
+      if (!startX) {
+        return;
+      }
+
+      let pageX = eve.pageX;
+      let dx = pageX - startX;
+      let left = startLeft + dx;
+
+      $el.css('left', left);
+    }.bind(this));
+
+    $(document).on('mouseup', function (eve) {
+      startX = 0;
+      startLeft = 0;
+    }.bind(this));
   },
 
   show: function (info) {
@@ -20,23 +62,33 @@ window.networkDetail = window.ND = {
       throw Error('window.networkDetail.show(info) -> `info` should not be empty.'); 
     }
     this.netWorkInfo = info;
-    this.render();
+
+    let role = this.$el.find('header .tab.active').data('role');
+    if (role === 'request') {
+      this.renderRequest();
+    } else if (role === 'response') {
+      this.renderResponse();
+    }
+
     this.$el.removeClass('hide');
   },
 
   hide: function () {
     this.$el.addClass('hide');
     this.netWorkInfo = null;
+    this.networkResponse = '';
+    this.$el.find('header .tab.active').removeClass('active');
+    this.$el.find('header .tab').first().addClass('active');
   },
 
-  render: function () {
+  renderRequest: function () {
     let info = this.netWorkInfo;
     let generalInfo = {
       'Request URL': info.url.href,
       'Proxy URL': info.newUrl || '',
       'Request Method': info.method,
       'Status Code': info.statusCode,
-      'Remote Address': info.hostname
+      'Remote Address': info.hostname || ''
     };
 
     let html = [
@@ -68,5 +120,28 @@ window.networkDetail = window.ND = {
 
   fixKey: function (key) {
     return key.replace(/^\w|-\w/g, match => match.toUpperCase());
+  },
+
+  renderResponse: function () {
+    let netWorkInfo = this.netWorkInfo;
+    let regImg = /png|jpg|jpeg|gif|webp|bmp/;
+
+    if (netWorkInfo.resContentType.match(regImg)) {
+      return this._renderResponse('<img src="' + '/fetchresponse?reqId=' + netWorkInfo.id + '&contentType=' + netWorkInfo.resContentType + '"/>')
+    }
+
+    if (this.networkResponse) {
+      return this._renderResponse('<pre>' + this.networkResponse.replace(/</g, '&lt;') + '</pre>');
+    }
+
+    $.ajax('/fetchresponse?reqId=' + netWorkInfo.id + '&contentType=' + netWorkInfo.resContentType)
+    .then(function (body) {
+      this.networkResponse = body;
+      this._renderResponse('<pre>' + body.replace(/</g, '&lt;') + '</pre>');
+    }.bind(this));
+  },
+
+  _renderResponse: function (body) {
+    this.$el.find('section.body').scrollTop(0).html(body);
   }
 };

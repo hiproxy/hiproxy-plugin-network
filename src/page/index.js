@@ -68,6 +68,9 @@ window.modPage = {
 
   onArrive: function (data) {
     this.tableData.push(data);
+
+    this.tableData = this.tableData.slice(-200);
+
     this.renderTable();
   },
 
@@ -76,7 +79,7 @@ window.modPage = {
     let html = this.getTableHTML(data);
 
     $('#js-table-body').html(html);
-    this.scrollToBottom();
+    // this.scrollToBottom();
   },
 
   getRenderData: function () {
@@ -171,7 +174,7 @@ window.modPage = {
         // `  <td>${arr.slice(-1)}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span></td>`,
         `  <td>
              <div class="network-name" title="${item.name[0]}">
-               <img class="file-type-img" src="../../icons/${item.name[1]}.png" alt="">
+               <img class="file-type-img" src="icons/${item.name[1]}.png" alt="">
                <span class="url-path">
                ${arr.slice(-1)[0] || '/'}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span>
                </span>
