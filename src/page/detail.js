@@ -9,8 +9,6 @@ window.networkDetail = window.ND = {
 
   netWorkInfo: null,
 
-  networkResponse: '',
-
   init: function () {
     let $el = this.$el = $('#js-network-detail');
     
@@ -76,7 +74,6 @@ window.networkDetail = window.ND = {
   hide: function () {
     this.$el.addClass('hide');
     this.netWorkInfo = null;
-    this.networkResponse = '';
     this.$el.find('header .tab.active').removeClass('active');
     this.$el.find('header .tab').first().addClass('active');
   },
@@ -124,20 +121,18 @@ window.networkDetail = window.ND = {
 
   renderResponse: function () {
     let netWorkInfo = this.netWorkInfo;
-    let regImg = /png|jpg|jpeg|gif|webp|bmp|svg/;
+    let regImg = /png|jpg|jpeg|gif|webp|bmp|svg|ico|icon/;
+    let id = netWorkInfo.id;
+    let resContentType = netWorkInfo.resContentType;
 
     if (netWorkInfo.resContentType.match(regImg)) {
-      return this._renderResponse('<img src="' + '/fetchresponse?reqId=' + netWorkInfo.id + '&contentType=' + netWorkInfo.resContentType + '"/>')
+      return this._renderResponse('<img src="' + '/fetchresponse?reqId=' + id + '&contentType=' + resContentType + '"/>')
     }
 
-    if (this.networkResponse) {
-      return this._renderResponse('<pre>' + this.networkResponse.replace(/</g, '&lt;') + '</pre>');
-    }
-
-    $.ajax('/fetchresponse?reqId=' + netWorkInfo.id + '&contentType=' + netWorkInfo.resContentType)
-    .then(function (body) {
-      this.networkResponse = body;
-      this._renderResponse('<pre>' + body.replace(/</g, '&lt;') + '</pre>');
+    $.ajax('/fetchresponse?reqId=' + id + '&contentType=' + resContentType)
+    .then(function (body, status, xhr) {
+      let text = xhr.responseText;
+      this._renderResponse('<pre>' + text.replace(/</g, '&lt;') + '</pre>');
     }.bind(this));
   },
 
