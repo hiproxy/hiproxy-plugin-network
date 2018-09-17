@@ -47,6 +47,8 @@ window.networkDetail = window.ND = {
       let left = startLeft + dx;
 
       $el.css('left', left);
+
+      return false;
     }.bind(this));
 
     $(document).on('mouseup', function (eve) {

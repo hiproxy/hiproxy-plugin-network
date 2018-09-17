@@ -29,6 +29,10 @@ window.modPage = {
     $('#js-filter-checkbox').on('click', function (eve) {
       this.renderTable();
     }.bind(this));
+
+    $('#js-filter-input').on('input', function (eve) {
+      this.renderTable();
+    }.bind(this));
   },
 
   initSocket: function () {
@@ -136,6 +140,16 @@ window.modPage = {
     if (checked) {
       list = list.filter(function (item) {
         return item.method !== 'CONNECT';
+      });
+    }
+
+    let filterText = $('#js-filter-input').val();
+    if (filterText) {
+      list = list.filter(function (item) {
+        let hasText = ['name', 'address', 'method', 'protocol', 'targetAddress', 'targetPath', 'type'].some(function (key) {
+          return item[key].indexOf(filterText) !== -1;
+        });
+        return hasText;
       });
     }
 

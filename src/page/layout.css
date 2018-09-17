@@ -140,6 +140,7 @@ table {
   /* border: 1px solid #e8e8e8; */
   width: 100%;
   color: #000000;
+  cursor: default;
 }
 
 table thead tr th {
