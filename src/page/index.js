@@ -85,8 +85,6 @@ window.modPage = {
   onArrive: function (data) {
     this.tableData.push(data);
 
-    this.tableData = this.tableData.slice(-200);
-
     this.renderTable();
   },
 
@@ -102,9 +100,9 @@ window.modPage = {
     let data = this.tableData;
 
     let renderData = data && data.map((item, index) => {
-      let {id, resHeaders = {}, socketData = '', statusCode, url, method, hostname, port, path, time} = item;
+      let {id, resHeaders = {}, bodyLength, statusCode, url, method, hostname, port, path, time} = item;
       let contentType = resHeaders['content-type'] || '';
-      let length = resHeaders['content-length'] || socketData.length;
+      let length = resHeaders['content-length'] || bodyLength;
       let fileType = this.getFileType(item);
 
       this.tableDataMap[id] = item;
@@ -250,8 +248,8 @@ window.modPage = {
         `  <td>${item.targetAddress}</td>`,
         `  <td>${item.targetPath}</td>`,
         `  <td>${item.type.split(';')[0]}</td>`,
-        `  <td>${item.size}b</td>`,
-        `  <td><strong>${item.time}ms</strong></td>`,
+        `  <td>${this.formatSize(item.size)}</td>`,
+        `  <td>${this.formatTime(item.time)}</td>`,
         `</tr>`
       ]
     });
@@ -259,7 +257,7 @@ window.modPage = {
     return html.join('');
   },
 
-  scrollToBottom() {
+  scrollToBottom: function () {
     let $body = $('#js-body');
     let offsetHeight = $body[0].offsetHeight;
     let scrollHeight = $body[0].scrollHeight;
@@ -271,5 +269,32 @@ window.modPage = {
     }
 
     $body.scrollTop(newScrollTop);
+  },
+
+  formatTime: function (num) {
+    if (num >= 1000) {
+      return this.toFixed(num / 1000) + 's';
+    } else {
+      return num + 'ms';
+    }
+  },
+
+  formatSize: function (num) {
+    let n = 1024 * 1024;
+    let labels = ['MB', 'KB', 'B'];
+
+    for (let i = 0; i < labels.length; i++) {
+      if (num / n >= 1) {
+        return this.toFixed(num/n) + labels[i];
+      }
+
+      n /= 1024;
+    }
+
+    return num + 'B';
+  },
+
+  toFixed: function (num) {
+    return num.toFixed(1).replace('.0', '');
   }
 }

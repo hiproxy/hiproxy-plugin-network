@@ -163,7 +163,7 @@ function parseRequest (req, res, proxy, data) {
   result.body = req.body;
   result.querystring = (result.path || '').split('?').slice(1).join('?');
   result.startTime = req._startTime;
-  result.resBody = (res.body || '').toString();
+  result.bodyLength = (res.body || '').length;
 
   return JSON.stringify(result);
 }
