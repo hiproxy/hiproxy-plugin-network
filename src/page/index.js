@@ -146,8 +146,11 @@ window.modPage = {
     let filterText = $('#js-filter-input').val();
     if (filterText) {
       list = list.filter(function (item) {
-        let hasText = ['name', 'address', 'method', 'protocol', 'targetAddress', 'targetPath', 'type'].some(function (key) {
-          return item[key].indexOf(filterText) !== -1;
+        let hasText = [
+          'name', 'address', 'method', 'protocol', 'targetAddress', 
+          'targetPath', 'type', 'status'
+        ].some(function (key) {
+          return String(item[key]).indexOf(filterText) !== -1;
         });
         return hasText;
       });
