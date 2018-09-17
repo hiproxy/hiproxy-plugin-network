@@ -33,6 +33,16 @@ window.modPage = {
     $('#js-filter-input').on('input', function (eve) {
       this.renderTable();
     }.bind(this));
+
+    $('#js-file-types').on('click', '[data-file-type]', function (eve) {
+      let $curr = $(eve.currentTarget);
+      let $siblings = $curr.siblings();
+      
+      $siblings.removeClass('active');
+      $curr.addClass('active');
+
+      this.renderTable();
+    }.bind(this));
   },
 
   initSocket: function () {
@@ -156,6 +166,23 @@ window.modPage = {
       });
     }
 
+    let fileType = $('#js-file-types [data-file-type].active').data('fileType');
+
+    const fileTypes = {
+      'doc': /html/,
+      'js': /javascript/,
+      'json': /json/,
+      'css': /css/,
+      'img': /(jpg|png|gif|svg|ico|bmp|webp|icon)/,
+      'other': /(txt|xml|zip|pdf)/
+    };
+
+    if (fileType !== 'all') {
+      list = list.filter(function (item) {
+        return item.type.match(fileTypes[fileType])
+      });
+    }
+
     list = list.slice(-300);
 
     return list;
@@ -215,7 +242,7 @@ window.modPage = {
         `  <td>${item.address}</td>`,
         `  <td>${item.targetAddress}</td>`,
         `  <td>${item.targetPath}</td>`,
-        `  <td>${item.type}</td>`,
+        `  <td>${item.type.split(';')[0]}</td>`,
         `  <td>${item.size}b</td>`,
         `  <td><strong>${item.time}ms</strong></td>`,
         `</tr>`

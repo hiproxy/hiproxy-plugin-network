@@ -54,14 +54,15 @@
           <input class="filter-checkbox" type="checkbox" checked id="js-filter-checkbox" /> Hide data URLs
         </label>
       </span>
-      <ul class="group file-types">
-        <li class="item">All</li>
-        <li class="item active">Doc</li>
-        <li class="item">Media</li>
-        <li class="item">XHR</li>
-        <li class="item">Image</li>
-        <li class="item">Font</li>
-        <li class="item">Other</li>
+      <ul class="group file-types" id="js-file-types">
+        <li class="item active" data-file-type="all">All</li>
+        <li class="item spliter"></li>
+        <li class="item" data-file-type="doc">Doc</li>
+        <li class="item" data-file-type="json">JSON</li>
+        <li class="item" data-file-type="js">JavaScript</li>
+        <li class="item" data-file-type="css">CSS</li>
+        <li class="item" data-file-type="img">Image</li>
+        <li class="item" data-file-type="other">Other</li>
       </ul>
     </div>
   </header>

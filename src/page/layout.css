@@ -121,10 +121,12 @@ body {
   border-radius: 3px;
 }
 
-.header .file-types .item:first-child:after {
-  content: "";
+.header .file-types .item.spliter {
   border-right: 1px solid #e8e8e8;
-  margin-left: 10px;
+  margin-left: 6px;
+  height: 23px;
+  width: 1px;
+  padding: 0;
 }
 
 section.body {
