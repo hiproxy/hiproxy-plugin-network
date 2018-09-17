@@ -43,6 +43,13 @@ window.modPage = {
 
       this.renderTable();
     }.bind(this));
+
+    $('#js-clear-all').on('click', function (eve) {
+      this.tableData = [];
+      this.tableDataMap = {};
+      this.renderTable();
+      window.networkDetail.hide();
+    }.bind(this));
   },
 
   initSocket: function () {
