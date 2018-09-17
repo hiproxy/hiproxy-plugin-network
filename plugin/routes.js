@@ -43,8 +43,6 @@ module.exports = [
       var filePath = path.join(__dirname, '..', pageName);
       var hiproxyServer = global.hiproxyServer;
 
-      console.log(pageName, filePath);
-
       if (pageName === 'src/page/index.html') {
         if (!socketInstance) {
           socketInstance = new Socket();
