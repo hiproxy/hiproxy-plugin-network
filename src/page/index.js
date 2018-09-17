@@ -25,6 +25,10 @@ window.modPage = {
 
       window.networkDetail.show(currInfo);
     }.bind(this));
+
+    $('#js-filter-checkbox').on('click', function (eve) {
+      this.renderTable();
+    }.bind(this));
   },
 
   initSocket: function () {
@@ -120,7 +124,24 @@ window.modPage = {
       };
     });
 
+    renderData = this.filterRenderData(renderData);
+
     return renderData;
+  },
+
+  filterRenderData: function (list) {
+    // CONNECT request
+    let checked = $('#js-filter-checkbox').prop('checked');
+
+    if (checked) {
+      list = list.filter(function (item) {
+        return item.method !== 'CONNECT';
+      });
+    }
+
+    list = list.slice(-300);
+
+    return list;
   },
 
   getFileType: function (t) {
