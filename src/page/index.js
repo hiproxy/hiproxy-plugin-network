@@ -35,10 +35,8 @@ window.modPage = {
     });
 
     socket.on('data', data => {
-      let length = data.toString().length;
       let maxLen = 1 * 1024 * 1024;
       let obj = JSON.parse(data);
-      let socketData = obj.socketData || '';
       let path = obj.path;
       let isSocketIOURL = /^\/(socket\.io|network)/.test(path);
 
@@ -46,13 +44,6 @@ window.modPage = {
         console.warn('socket.io本身的请求，忽略');
         return;
       }
-
-      //obj.originLength = socketData.length;
-
-      if (obj.originLength > maxLen) {
-        obj.socketData = '内容太长，无法查看！';
-      }
-      console.log('origin::::', obj);
 
       this.onArrive(obj);
     });
