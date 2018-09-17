@@ -95,7 +95,7 @@ window.modPage = {
     let html = this.getTableHTML(data);
 
     $('#js-table-body').html(html);
-    // this.scrollToBottom();
+    this.scrollToBottom();
   },
 
   getRenderData: function () {
@@ -263,7 +263,13 @@ window.modPage = {
     let $body = $('#js-body');
     let offsetHeight = $body[0].offsetHeight;
     let scrollHeight = $body[0].scrollHeight;
+    let scrollTop = $body[0].scrollTop;
+    let newScrollTop = scrollHeight - offsetHeight;
 
-    $body.scrollTop(scrollHeight - offsetHeight);
+    if (newScrollTop - scrollTop > 50) {
+      return;
+    }
+
+    $body.scrollTop(newScrollTop);
   }
 }
