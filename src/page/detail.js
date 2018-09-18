@@ -35,6 +35,7 @@ window.networkDetail = window.ND = {
     $el.find('#js-spliter').on('mousedown', function (eve) {
       startLeft = parseInt($el.css('left'), 10);
       startX = eve.pageX;
+      return false;
     }.bind(this));
 
     $(document).on('mousemove', function (eve) {
