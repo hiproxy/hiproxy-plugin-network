@@ -358,6 +358,12 @@ table .text-gray {
 .network-detail ul.list li {
   list-style: none;
   line-height: 22px;
+  word-break: break-all;
+}
+
+.network-detail ul.list li span {
+  font-family: monospace;
+  color: #353535;
 }
 
 .network-detail pre {

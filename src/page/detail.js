@@ -109,7 +109,7 @@ window.networkDetail = window.ND = {
     for (let key in info) {
       
       html.push(
-        `<li><strong>${this.fixKey(key)}:</strong> ${info[key]}</li>`
+        `<li><strong>${this.fixKey(key)}:</strong> <span>${info[key]}</span></li>`
       )
     }
 
