@@ -288,6 +288,10 @@ window.modPage = {
   },
 
   formatTime: function (num) {
+    if (num === 'N/A') {
+      return num;
+    }
+
     if (num >= 1000) {
       return this.toFixed(num / 1000) + 's';
     } else {
@@ -296,6 +300,10 @@ window.modPage = {
   },
 
   formatSize: function (num) {
+    if (num === 'N/A') {
+      return num;
+    }
+
     let n = 1024 * 1024;
     let labels = ['MB', 'KB', 'B'];
 
