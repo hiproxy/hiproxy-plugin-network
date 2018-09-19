@@ -132,7 +132,7 @@ window.networkDetail = window.ND = {
       return this._renderResponse('<img src="' + '/fetchresponse?reqId=' + id + '&contentType=' + resContentType + '"/>')
     }
 
-    $.ajax('/fetchresponse?reqId=' + id + '&contentType=' + resContentType)
+    $.ajax('/fetchresponse?reqId=' + id + '&contentType=' + resContentType, {dataType: 'text'})
     .then(function (body, status, xhr) {
       let text = xhr.responseText;
       this._renderResponse('<pre>' + text.replace(/</g, '&lt;') + '</pre>');
