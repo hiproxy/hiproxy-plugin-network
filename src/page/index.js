@@ -26,14 +26,17 @@ window.modPage = {
       window.networkDetail.show(currInfo);
     }.bind(this));
 
+    // Hide CONNECT Requests
     $('#js-filter-checkbox').on('click', function (eve) {
       this.renderTable();
     }.bind(this));
 
+    // Filter by text
     $('#js-filter-input').on('input', function (eve) {
       this.renderTable();
     }.bind(this));
 
+    // Filter by content-type
     $('#js-file-types').on('click', '[data-file-type]', function (eve) {
       let $curr = $(eve.currentTarget);
       let $siblings = $curr.siblings();
@@ -42,8 +45,11 @@ window.modPage = {
       $curr.addClass('active');
 
       this.renderTable();
+
+      this.scrollToTop('#js-body');
     }.bind(this));
 
+    // Clear all data
     $('#js-clear-all').on('click', function (eve) {
       this.tableData = [];
       this.tableDataMap = {};
@@ -93,7 +99,7 @@ window.modPage = {
     let html = this.getTableHTML(data);
 
     $('#js-table-body').html(html);
-    this.scrollToBottom();
+    this.scrollToBottom('#js-body');
   },
 
   getRenderData: function () {
@@ -184,6 +190,10 @@ window.modPage = {
 
     if (fileType !== 'all') {
       list = list.filter(function (item) {
+        if (fileType === 'other' && !item.type) {
+          return true;
+        }
+
         return item.type.match(fileTypes[fileType])
       });
     }
@@ -257,8 +267,8 @@ window.modPage = {
     return html.join('');
   },
 
-  scrollToBottom: function () {
-    let $body = $('#js-body');
+  scrollToBottom: function (selector) {
+    let $body = $(selector);
     let offsetHeight = $body[0].offsetHeight;
     let scrollHeight = $body[0].scrollHeight;
     let scrollTop = $body[0].scrollTop;
@@ -269,6 +279,12 @@ window.modPage = {
     }
 
     $body.scrollTop(newScrollTop);
+  },
+
+
+  scrollToTop: function (selector) {
+    let $body = $(selector);
+    $body.scrollTop(0);
   },
 
   formatTime: function (num) {
