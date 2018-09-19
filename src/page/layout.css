@@ -279,7 +279,7 @@ table .text-gray {
   position: absolute;
   z-index: 2222;
   padding: 0 3px;
-  cursor: ew-resize;
+  cursor: col-resize;
 }
 
 .network-detail header {
