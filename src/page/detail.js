@@ -87,7 +87,7 @@ window.networkDetail = window.ND = {
       'Request URL': info.url.href,
       'Proxy URL': info.newUrl || '',
       'Request Method': info.method,
-      'Status Code': info.statusCode,
+      'Status Code': info.statusCode || '',
       'Remote Address': info.hostname || ''
     };
 
@@ -127,6 +127,10 @@ window.networkDetail = window.ND = {
     let regImg = /png|jpg|jpeg|gif|webp|bmp|svg|ico|icon/;
     let id = netWorkInfo.id;
     let resContentType = netWorkInfo.resContentType;
+
+    if (netWorkInfo.method === 'CONNECT') {
+      return this._renderResponse('');
+    }
 
     if (netWorkInfo.resContentType.match(regImg)) {
       return this._renderResponse('<img src="' + '/fetchresponse?reqId=' + id + '&contentType=' + resContentType + '"/>')
