@@ -202,7 +202,7 @@ table tbody tr:nth-child(even) {
   background: #fafafa;
 }
 
-table tbody tr:hover {
+table tbody tr:hover, table tbody tr.active {
   background: #ebf9f9;
 }
 

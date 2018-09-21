@@ -10,6 +10,8 @@ window.modPage = {
 
   tableDataMap: {},
 
+  currRowKey: '',
+
   init: function () {
     this.$el = $('#js-network-table');
     this.initEvent();
@@ -23,7 +25,12 @@ window.modPage = {
       let key = data.key;
       let currInfo = this.tableDataMap[key];
 
-      window.networkDetail.show(currInfo);
+      this.currRowKey = key;
+
+      this.$el.find('tbody tr.active').removeClass('active');
+      $curr.addClass('active');
+
+      window.$eve.trigger('itemclick.table', currInfo);
     }.bind(this));
 
     // Hide CONNECT Requests
@@ -55,6 +62,12 @@ window.modPage = {
       this.tableDataMap = {};
       this.renderTable();
       window.networkDetail.hide();
+    }.bind(this));
+
+    // Clear highlight row when network detail dialog close
+    window.$eve.on('hide.detail', function (eve) {
+      this.$el.find('tbody tr.active').removeClass('active');
+      this.currRowKey = '';
     }.bind(this));
   },
 
@@ -240,8 +253,10 @@ window.modPage = {
   getTableHTML: function (data) {
     let html = data.map(item => {
       let arr = item.name[0].split('/');
+      let cls = item.id === this.currRowKey ? 'active' : '';
+
       return [
-        `<tr data-key=${item.key}>`,
+        `<tr data-key=${item.key} class="${cls}">`,
         // `  <td>${arr.slice(-1)}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span></td>`,
         `  <td>
              <div class="network-name" title="${item.name[0]}">

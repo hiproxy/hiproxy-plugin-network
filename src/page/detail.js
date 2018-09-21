@@ -12,6 +12,7 @@ window.networkDetail = window.ND = {
   init: function () {
     let $el = this.$el = $('#js-network-detail');
     
+    // Close network detail dialog
     $el.on('click', '.close', this.hide.bind(this));
 
     $el.on('click', 'header .tab', function (eve) {
@@ -32,6 +33,7 @@ window.networkDetail = window.ND = {
     let startLeft = 0;
     let startX = 0;
 
+    // Network detail dialog resizer
     $el.find('#js-spliter').on('mousedown', function (eve) {
       startLeft = parseInt($el.css('left'), 10);
       startX = eve.pageX;
@@ -56,6 +58,11 @@ window.networkDetail = window.ND = {
       startX = 0;
       startLeft = 0;
     }.bind(this));
+
+    // Show detail dialog when click network table row
+    window.$eve.on('itemclick.table', function (eve, data) {
+      this.show(data);
+    }.bind(this));
   },
 
   show: function (info) {
@@ -72,6 +79,7 @@ window.networkDetail = window.ND = {
     }
 
     this.$el.removeClass('hide');
+    window.$eve.trigger('show.detail');
   },
 
   hide: function () {
@@ -79,6 +87,7 @@ window.networkDetail = window.ND = {
     this.netWorkInfo = null;
     this.$el.find('header .tab.active').removeClass('active');
     this.$el.find('header .tab').first().addClass('active');
+    window.$eve.trigger('hide.detail', {});
   },
 
   renderRequest: function () {
