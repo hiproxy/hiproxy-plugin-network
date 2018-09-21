@@ -367,19 +367,7 @@ table .text-gray {
   margin: 0 0;
 }
 
-.network-detail .code, .network-detail .content {
-  padding: 15px;
-  height: calc(100% - 30px);
-  box-sizing: border-box;
-  width: 100%;
-  overflow: auto;
-  border: none;
-  margin: 0;
-  font-size: 13px;
-  /* white-space: pre-line; */
-}
-
-.network-detail .content img {
+.network-detail section.body img {
   max-width: 100%;
 }
 
