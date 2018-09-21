@@ -14,19 +14,19 @@ npm i hiproxy-plugin-network -g
  
 ## 使用
 
- 启动hiproxy, 访问页面 http://127.0.0.1:5525/network
+ 启动hiproxy, 访问页面 http://hi.proxy/network
 
 ## TODO
 
-- [x] 支持显示`POST`请求参数
+- [ ] 支持显示`POST`请求参数
 - [ ] 性能优化
 - [x] 优化菜单选项
 - [x] 支持排序、过滤
 - [ ] 支持代码格式化
-- [x] 支持`JSON`数据格式预览
+- [ ] 支持`JSON`数据格式预览
 - [x] `CONNECT`请求
 - [x] 资源分类
-- [x] 扫码下载证书
-- [ ] 支持hiproxy指令输出内容展示
+- [ ] 扫码下载证书
+- [x] 支持hiproxy指令输出内容展示
 
 
