@@ -180,7 +180,7 @@ table thead tr th .cell-resizer {
   height: 100%;
   width: 1px;
   background: #e8e8e8;
-  cursor: col-resize;
+  /* cursor: col-resize; */
 }
 
 table thead tr th .cell-resizer:before {

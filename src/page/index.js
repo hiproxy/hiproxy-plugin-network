@@ -266,15 +266,15 @@ window.modPage = {
                </span>
              </div>
            </td>`,
-        `  <td>${item.method}</td>`,
-        `  <td>${item.status}<br/><span class="text-gray">${item.statusMessage || ''}</span></td>`,
-        `  <td>${item.protocol}</td>`,
-        `  <td>${item.address}</td>`,
-        `  <td>${item.targetAddress}</td>`,
-        `  <td>${item.targetPath}</td>`,
-        `  <td>${item.type.split(';')[0]}</td>`,
-        `  <td>${this.formatSize(item.size)}</td>`,
-        `  <td>${this.formatTime(item.time)}</td>`,
+        `  <td title="${item.method}">${item.method}</td>`,
+        `  <td title="${item.status}">${item.status}<br/><span class="text-gray">${item.statusMessage || ''}</span></td>`,
+        `  <td title="${item.protocol}">${item.protocol}</td>`,
+        `  <td title="${item.address}">${item.address}</td>`,
+        `  <td title="${item.targetAddress}">${item.targetAddress}</td>`,
+        `  <td title="${item.targetPath}">${item.targetPath}</td>`,
+        `  <td title="${item.type}">${item.type.split(';')[0]}</td>`,
+        `  <td title="${item.size}">${this.formatSize(item.size)}</td>`,
+        `  <td title="${item.time}">${this.formatTime(item.time)}</td>`,
         `</tr>`
       ]
     });
