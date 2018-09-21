@@ -75,7 +75,9 @@ window.modPage = {
     let socket = io('http://127.0.0.1:9998');
 
     socket.on('ready', (data) => {
-      console.log('page ready:', data);
+      // {httpPort: 5525, proxyPath: "/proxy.pac?type=view", sslPath: "/ssl-certificate", httpsPort: 10010, workspace: "/Users/zdying/Desktop"}
+      $('#js-link-pac').attr('href', data.proxyPath);
+      $('#js-link-cert').attr('href', data.sslPath);
     });
 
     socket.on('data', data => {
