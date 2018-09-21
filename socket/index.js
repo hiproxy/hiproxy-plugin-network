@@ -7,7 +7,7 @@
 var EventEmitter = require('events');
 var http = require('http');
 var path = require('path');
-var fs = require('fs');
+var fs = require('fs-extra');
 var os = require('os');
 var url = require('url');
 var skt = require('socket.io');
@@ -21,15 +21,13 @@ function SocketServer () {
   var io = skt(app);
   var self = this;
   var eventBound = false;
+  var cacheDir = path.join(os.tmpdir(), '.hiproxy-network-cache');
 
   EventEmitter.call(this);
   app.listen(PORT);
 
-  try {
-    fs.mkdirSync(path.join(os.tmpdir(), '.hiproxy-network-cache'));
-  } catch (err) {
-    log.error('make cache dir error:', err);
-  }
+  fs.ensureDirSync(cacheDir);
+  fs.emptyDirSync(cacheDir);
 
   io.on('connection', function (socket) {
     socketObj = socket;
@@ -83,22 +81,6 @@ function SocketServer () {
 
         for (var id in me.sockets) {
           me.sockets[id].emit('data', socketData);
-        }
-      });
-
-      self.on('data', function (data, req, res) {
-        var reqId = req.requestId;
-        if (!streamArray[reqId] &&
-            res.headers &&
-            res.headers['content-type'] &&
-            res.headers['content-type'].indexOf(/(image|ico|bmp)/) !== -1) {
-          data = '暂时不传递此类型的数据';
-        }
-
-        if (streamArray[reqId]) {
-          streamArray[reqId] += data;
-        } else {
-          streamArray[reqId] = data;
         }
       });
 
