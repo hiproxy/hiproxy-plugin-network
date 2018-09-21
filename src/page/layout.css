@@ -154,7 +154,7 @@ table thead tr th {
   border-bottom: none;
 }
 
-table thead tr th:after {
+table thead tr th:before {
   content: " ";
   display: block;
   border-bottom: 1px solid #e8e8e8;
@@ -170,6 +170,10 @@ table tbody tr {
 
 table tbody tr:nth-child(even) {
   background: #fafafa;
+}
+
+table tbody tr:hover {
+  background: #ebf9f9;
 }
 
 table th, td {

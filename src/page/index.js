@@ -61,7 +61,7 @@ window.modPage = {
   initSocket: function () {
     let socket = io('http://127.0.0.1:9998');
 
-    socket.on('pageReady', (data) => {
+    socket.on('ready', (data) => {
       console.log('page ready:', data);
     });
 

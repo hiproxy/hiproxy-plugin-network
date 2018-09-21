@@ -121,7 +121,7 @@ function SocketServer () {
       streamArray = {};
     }
 
-    socketObj.emit('pageReady', getPageData());
+    socketObj.emit('ready', getPageData());
   });
 }
 
