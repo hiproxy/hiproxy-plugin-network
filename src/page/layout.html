@@ -31,7 +31,20 @@
         </li>
         <li class="item">
           <i class="icon-shield"></i>
-          <a href="###">SSL Certificate</a>
+          <a href="###">
+            SSL Certificate
+          </a>
+          <div class="dropdown-menu">
+            <div class="qrcode">
+                <img src={window.jrQrcode.getQrBase64(url)} />
+                <div>
+                  <h3>Download the root certificate</h3>
+                  <p>1. Scan the QR code to download the root certificate.</p>
+                  <p>2. Or <a href={url}>click here</a> to download directly.</p>
+                  <p><strong>Tips</strong>: You can <a href='http://hiproxy.org/configuration/ssl_certificate.html' target='_blank'>click here</a> to see how to install the configuration certificate</p>
+                </div>
+              </div>
+            </div>
         </li>
         <li class="item">
           <i class="icon-book-open"></i>

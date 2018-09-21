@@ -137,10 +137,11 @@ function getPageData () {
   var t = hiproxyServer;
   return {
     httpPort: t.httpPort,
-    proxyPath: '/proxy.pac?type=view',
-    sslPath: '/ssl-certificate',
     httpsPort: t.httpsPort,
-    workspace: t.dir
+    pacPath: '/proxy.pac?type=view',
+    certPath: '/ssl-certificate',
+    workspace: t.dir,
+    localIP: t.localIP
   };
 }
 

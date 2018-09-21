@@ -61,6 +61,20 @@ body {
   float: left;
   margin: 0 0 0 20px;
   cursor: default;
+  position: relative;
+}
+
+.header .menu .nav .item .dropdown-menu {
+  display: none;
+  padding-top: 15px;
+  position: absolute;
+  top: 19px;
+  z-index: 99;
+  left: 0;
+}
+
+.header .menu .nav .item:hover .dropdown-menu {
+  display: flex;
 }
 
 .header .menu .nav .item a {
@@ -390,4 +404,39 @@ table .text-gray {
 
 .network-detail pre {
   margin: 0;
+}
+
+/* qrcode */
+.qrcode {
+  width: 590px;
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  background: #f1f1f1;
+  box-shadow: 0 3px 15px rgba(0,0,0,.3);
+  color: black;
+}
+
+.qrcode a {
+  color: #10b2f9!important;
+}
+
+.qrcode h3 {
+  margin: 0;
+}
+
+.qrcode p {
+  margin: 0;
+  padding: 0;
+  margin-bottom: .15em;
+}
+
+.qrcode .tips {
+  color: orange;
+}
+
+.qrcode img {
+  width: 140px;
+  height: 140px;
+  margin-right: 10px;
 }

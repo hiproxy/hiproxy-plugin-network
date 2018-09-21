@@ -75,9 +75,12 @@ window.modPage = {
     let socket = io('http://127.0.0.1:9998');
 
     socket.on('ready', (data) => {
+      console.log('page ready:', data);
       // {httpPort: 5525, proxyPath: "/proxy.pac?type=view", sslPath: "/ssl-certificate", httpsPort: 10010, workspace: "/Users/zdying/Desktop"}
-      $('#js-link-pac').attr('href', data.proxyPath);
-      $('#js-link-cert').attr('href', data.sslPath);
+      $('.js-link-pac').attr('href', data.pacPath);
+      $('.js-link-cert').attr('href', data.certPath);
+      $('#js-qrcode-cert').attr('src', window.jrQrcode.getQrBase64('http://hi.proxy' + data.sslPath));
+      $('.js-hiproxy-server').html(data.localIP + ':' + data.httpPort)
     });
 
     socket.on('data', data => {

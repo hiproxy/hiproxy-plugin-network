@@ -9,6 +9,7 @@
   <link rel="stylesheet" type="text/css" media="screen" href="src/page/layout.css" />
   <script src="source/jquery-3.3.1.min.js"></script>
   <script src="source/socket.io-2.1.1.min.js"></script>
+  <script src="source/jr-qrcode.min.js"></script>
   <script src="src/page/eve.js"></script>
   <script src="src/page/index.js"></script>
   <script src="src/page/detail.js"></script>
@@ -30,11 +31,23 @@
         </li>
         <li class="item">
           <i class="icon-file-text"></i>
-          <a href="javascript:;" target="_blank" id="js-link-pac">PAC File</a>
+          <a href="javascript:;" target="_blank" class="js-link-pac">PAC File</a>
         </li>
         <li class="item">
           <i class="icon-shield"></i>
-          <a href="javascript:;" id="js-link-cert">SSL Certificate</a>
+          <a href="javascript:;" class="js-link-cert">SSL Certificate</a>
+          <div class="dropdown-menu">
+            <div class="qrcode">
+              <img src="" id="js-qrcode-cert" />
+              <div>
+                <h3>Download the root certificate</h3>
+                <p style="color: red">1. Configure your device to use proxy on <span class="js-hiproxy-server" style="text-decoration: underline">0.0.0.0</span>.</p>
+                <p>2. Scan the QR code to download the root certificate.</p>
+                <p>3. Or <a class="js-link-cert" href="javascript:;">click here</a> to download directly.</p>
+                <p><strong>Tips</strong>: You can <a href='http://hiproxy.org/configuration/ssl_certificate.html' target='_blank'>click here</a> for more detail about certificate configuration.</p>
+              </div>
+            </div>
+          </div>
         </li>
         <li class="item">
           <i class="icon-book-open"></i>
