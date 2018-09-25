@@ -24,6 +24,8 @@ window.networkDetail = window.ND = {
         this.renderRequest();
       } else if (role === 'response') {
         this.renderResponse();
+      } else if (role === 'preview') {debugger
+        this.renderPreview();
       }
 
       $curr.parent().find('.tab.active').removeClass('active');
@@ -70,12 +72,16 @@ window.networkDetail = window.ND = {
       throw Error('window.networkDetail.show(info) -> `info` should not be empty.'); 
     }
     this.netWorkInfo = info;
-
+    if (info.resContentType.indexOf('json') > -1) {
+      this.$el.find('header .tab.preview').show();
+    }
     let role = this.$el.find('header .tab.active').data('role');
     if (role === 'request') {
       this.renderRequest();
     } else if (role === 'response') {
       this.renderResponse();
+    } else if (role === 'preview') {
+      this.renderPreview();
     }
 
     this.$el.removeClass('hide');
@@ -89,7 +95,9 @@ window.networkDetail = window.ND = {
     this.$el.find('header .tab').first().addClass('active');
     window.$eve.trigger('hide.detail', {});
   },
-
+  renderPreview: function () {
+    //TODO 这里需要一个插件来处理了
+  },
   renderRequest: function () {
     let info = this.netWorkInfo;
     let generalInfo = {
@@ -99,12 +107,17 @@ window.networkDetail = window.ND = {
       'Status Code': info.statusCode || '',
       'Remote Address': info.hostname || ''
     };
-
     let html = [
       this.renderSection('General', generalInfo),
       this.renderSection('Request Headers', info.headers),
       this.renderSection('Response Headers', info.resHeaders)
-    ].join('');
+    ];
+    if (info.queryObject.object) {
+      html.push(
+        this.renderSection(info.queryObject.keyName, info.queryObject.object)
+      )
+    }
+    html.join('');
 
     this.$el.find('section.body').scrollTop(0).html(html);
   },

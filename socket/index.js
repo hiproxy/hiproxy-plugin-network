@@ -148,7 +148,58 @@ function parseRequest (req, res, proxy, data) {
   result.startTime = req._startTime;
   result.bodyLength = (res.body || '').length;
 
+  if(result.url && result.url.href.indexOf('feedback') > -1) {
+    console.log(1)
+  }
+  //通过contentType和method判断出来显示方式和queryData
+  result.queryObject = getQueryObject(req.method, result.url.query, result.resContentType, req.body);
+
   return JSON.stringify(result);
+}
+
+function getQueryObject (method, query, contentType, body) {
+
+  if (method && method.toLowerCase() === 'get') {
+    return {
+      keyName: 'Query String Parameters',
+      object: query2string(query)
+    }
+  }
+
+  if (contentType && contentType.indexOf('application/json') > -1) {
+    return {
+      keyName: 'Request Payload',
+      object: query2string(body)
+    }
+  }
+
+  if (contentType && contentType.indexOf('x-www-form-urlencoded') > -1) {
+    return {
+      keyName: 'Form Data',
+      object: query2string(body)
+    }
+  }
+
+  return {
+    keyName: 'Plain Text',
+    object: {
+      'Plain Text': body || query || ''
+    }
+  };
+}
+
+function query2string(query) {
+  if (typeof query !== 'string') {
+    return query;
+  }
+  var result = {}
+  var queryArr = query.split("&");
+  queryArr.forEach(function(item){
+      var value = item.split("=")[1];
+      var key = item.split("=")[0];
+      result[key] = decodeURIComponent(value);
+  });
+  return result;
 }
 
 function sizeof (str, charset) {
