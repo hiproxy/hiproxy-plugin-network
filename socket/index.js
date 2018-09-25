@@ -148,9 +148,6 @@ function parseRequest (req, res, proxy, data) {
   result.startTime = req._startTime;
   result.bodyLength = (res.body || '').length;
 
-  if(result.url && result.url.href.indexOf('feedback') > -1) {
-    console.log(1)
-  }
   //通过contentType和method判断出来显示方式和queryData
   result.queryObject = getQueryObject(req.method, result.url.query, result.resContentType, req.body);
 

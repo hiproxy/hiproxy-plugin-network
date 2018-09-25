@@ -24,7 +24,7 @@ window.networkDetail = window.ND = {
         this.renderRequest();
       } else if (role === 'response') {
         this.renderResponse();
-      } else if (role === 'preview') {debugger
+      } else if (role === 'preview') {
         this.renderPreview();
       }
 
@@ -72,6 +72,7 @@ window.networkDetail = window.ND = {
       throw Error('window.networkDetail.show(info) -> `info` should not be empty.'); 
     }
     this.netWorkInfo = info;
+    this.$el.find('header .tab.preview').hide();
     if (info.resContentType.indexOf('json') > -1) {
       this.$el.find('header .tab.preview').show();
     }
@@ -97,6 +98,20 @@ window.networkDetail = window.ND = {
   },
   renderPreview: function () {
     //TODO 这里需要一个插件来处理了
+    let netWorkInfo = this.netWorkInfo;
+    let id = netWorkInfo.id;
+    let resContentType = netWorkInfo.resContentType;
+
+    $.ajax('/fetchresponse?reqId=' + id + '&contentType=' + resContentType, {dataType: 'text'})
+    .then(function (body, status, xhr) {
+      let json = JSON.parse(xhr.responseText);
+      jsonv(
+        this.$el.find('section.body').scrollTop(0)[0],
+        json
+      )
+    }.bind(this));
+
+    
   },
   renderRequest: function () {
     let info = this.netWorkInfo;
