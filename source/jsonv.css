@@ -1,0 +1,164 @@
+.jsonv, .jsonv-input pre, .jsonv-input textarea {
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .jsonv-object, .jsonv-array {
+    margin-left: 1.2em;
+  }
+  .jsonv-object ul, .jsonv-array ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .jsonv li {
+    white-space: nowrap;
+    padding-left: 1.2em;
+  }
+  .jsonv li:after {
+    content: ",";
+  }
+  .jsonv li:last-child:after {
+    content: none;
+  }
+  .jsonv button {
+    border: solid .1em #ddd;
+    border-radius: 3px;
+    background: white;
+    color: #808080;
+    cursor: pointer;
+    outline: none;
+  }
+  .jsonv button:hover {
+    color: white;
+    border-color: transparent;
+  }
+  .jsonv-delete, .jsonv-add {
+    display: none;
+    vertical-align: top;
+    width: 1em;
+    padding: 0;
+    margin: .2em 0 0 .1em;
+    font: 1em/.8em sans-serif;
+  }
+  .jsonv-delete {
+    margin: .2em .2em 0 -1.2em;
+  }
+  .jsonv-delete:hover {
+    background: #c5201c;
+  }
+  .jsonv-add:hover {
+    background: #0c0;
+  }
+  li > .jsonv-add {
+    margin: .2em -1.7em 0 .7em;
+  }
+  .jsonv-editable:hover > .jsonv-object > .jsonv-add,
+  .jsonv-editable:hover > .jsonv-array > .jsonv-add,
+  .jsonv-editable li:hover > .jsonv-object > .jsonv-add,
+  .jsonv-editable li:hover > .jsonv-array > .jsonv-add,
+  .jsonv-editable li:hover > .jsonv-add,
+  .jsonv-editable li:hover > .jsonv-delete {
+    display: inline-block;
+  }
+  .jsonv-toggle {
+    margin: 0 .65em 0 -1.8em;
+    cursor: pointer;
+  }
+  .jsonv-toggle:before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    height: 0;
+    border-style: solid;
+    border-width: .6em .35em 0 .35em;
+    border-color: #5a5a5a transparent transparent;
+    margin: .2em .25em;
+  }
+  .jsonv-object.closed .jsonv-toggle:before, .jsonv-array.closed .jsonv-toggle:before {
+    border-width: .35em 0 .35em .6em;
+    border-color: transparent transparent transparent #5a5a5a;
+    margin: .2em .3em;
+  }
+  .jsonv.jsonv-editable .jsonv-object.closed .jsonv-add, /* specificity hack */
+  .jsonv-object.closed ul, .jsonv-object.closed .jsonv-next,
+  .jsonv.jsonv-editable .jsonv-array.closed .jsonv-add, /* specificity hack */
+  .jsonv-array.closed ol, .jsonv-array.closed .jsonv-next  {
+    display: none;
+  }
+  .jsonv-object:before {
+    content: "{";
+  }
+  .jsonv-object:after {
+    content: "}";
+  }
+  .jsonv-object.closed:after {
+    content: "…}";
+  }
+  .jsonv-array:before {
+    content: "[";
+  }
+  .jsonv-array:after {
+    content: "]";
+  }
+  .jsonv-array.closed:after {
+    content: "…]";
+  }
+  .jsonv-string:before, .jsonv-string:after {
+    content: "\"";
+  }
+  .jsonv-key {
+    color: #881391;
+    white-space: pre-wrap;
+  }
+  .jsonv-string {
+    color: #c5201c;
+    white-space: pre-wrap;
+  }
+  .jsonv-number, .jsonv-boolean {
+    color: #1c00cf;
+  }
+  .jsonv-null {
+    color: #808080;
+  }
+  .jsonv-next {
+    padding-left: 1.2em;
+  }
+  .jsonv-next button {
+    padding: 0 5px;
+    font-size: 11px;
+  }
+  .jsonv-next button:hover {
+    background: #8097bd;
+  }
+  .jsonv-input {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 1px;
+    margin: -1px -2px;
+    border: solid 1px #999;
+  }
+  .jsonv-input pre, .jsonv-input textarea {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jsonv-input pre {
+    padding: 0;
+    visibility: hidden;
+    min-width: 3px;
+  }
+  .jsonv-input textarea {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    padding: 0 1px;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    resize: none;
+  }

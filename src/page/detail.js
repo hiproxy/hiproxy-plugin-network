@@ -19,7 +19,6 @@ window.networkDetail = window.ND = {
       let $curr = $(eve.currentTarget);
       let data = $curr.data();
       let role = data.role;
-
       if (role === 'request') {
         this.renderRequest();
       } else if (role === 'response') {
@@ -82,7 +81,9 @@ window.networkDetail = window.ND = {
     } else if (role === 'response') {
       this.renderResponse();
     } else if (role === 'preview') {
-      this.renderPreview();
+      this.$el.find('header .tab.active').removeClass('active');
+      this.$el.find('header .tab[data-role=request]').addClass('active');
+      this.renderRequest();
     }
 
     this.$el.removeClass('hide');

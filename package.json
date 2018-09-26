@@ -4,9 +4,7 @@
   "description": "hiproxy network plugin",
   "main": "index.js",
   "scripts": {
-    "start": "webpack -w",
-    "semistandard": "semistandard --fix",
-    "build": "export NODE_ENV=production && webpack"
+    "semistandard": "semistandard --fix"
   },
   "repository": {
     "type": "git",
