@@ -7,8 +7,8 @@
 var EventEmitter = require('events');
 var http = require('http');
 var path = require('path');
-var fs = require('fs-extra');
 var os = require('os');
+var fs = require('fs');
 var url = require('url');
 var skt = require('socket.io');
 var zlib = require('zlib');
@@ -26,8 +26,7 @@ function SocketServer () {
   EventEmitter.call(this);
   app.listen(PORT);
 
-  fs.ensureDirSync(cacheDir);
-  fs.emptyDirSync(cacheDir);
+  mkdirSync(cacheDir);
 
   io.on('connection', function (socket) {
     socketObj = socket;
@@ -45,7 +44,7 @@ function SocketServer () {
 
         // gzip过后,content-length没了,所以计算一下
         if (res.headers && res.headers['content-encoding'] === 'gzip') {
-          res.headers['content-length'] = sizeof(streamArray[req.requestId], 'utf-8');
+          delete res.headers['content-length'];
         }
 
         var urlInfo = url.parse(req.url);
@@ -198,38 +197,27 @@ function query2string(query) {
   });
   return result;
 }
-
-function sizeof (str, charset) {
-  var total = 0;
-  var charCode;
-  var i;
-  var len;
-
-  charset = charset ? charset.toLowerCase() : '';
-  if (charset === 'utf-16' || charset === 'utf16') {
-    for (i = 0, len = str.length; i < len; i++) {
-      charCode = str.charCodeAt(i);
-      if (charCode <= 0xffff) {
-        total += 2;
-      } else {
-        total += 4;
-      }
-    }
-  } else {
-    for (i = 0, len = str.length; i < len; i++) {
-      charCode = str.charCodeAt(i);
-      if (charCode <= 0x007f) {
-        total += 1;
-      } else if (charCode <= 0x07ff) {
-        total += 2;
-      } else if (charCode <= 0xffff) {
-        total += 3;
-      } else {
-        total += 4;
-      }
-    }
+//同步创建一个目录，存在会报错清空
+function mkdirSync (path) {
+  try {
+    fs.mkdirSync(path);
+  } catch (e) {
+    deleteall(path);
   }
-  return total;
+}
+function deleteall (path) {
+  var files = [];	
+  if(fs.existsSync(path)) {		
+    files = fs.readdirSync(path);		
+    files.forEach(function(file, index) {			
+      var curPath = path + "/" + file;			
+      if(fs.statSync(curPath).isDirectory()) { 
+        deleteall(curPath);			
+      } else {
+        fs.unlinkSync(curPath);			
+      }		
+    });		
+  }
 }
 
 module.exports = SocketServer;
