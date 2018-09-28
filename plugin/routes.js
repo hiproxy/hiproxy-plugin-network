@@ -75,10 +75,14 @@ module.exports = [
             socketInstance.emit('response', req, res, proxy);
           });
 
-          hiproxyServer.on('connect', function (request, socket, head) {
+          hiproxyServer.on('connect', function (detail) {
+            var request = detail.req;
+            var socket = detail.socket;
+            var head = detail.head;
             var urlObj = url.parse('https://' + request.url);
             var hostname = urlObj.hostname;
             var port = urlObj.port || 443;
+
             socketInstance.emit('connect', hostname, port, request, socket, head);
           });
 

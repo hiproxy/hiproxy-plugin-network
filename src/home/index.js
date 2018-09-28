@@ -21,7 +21,7 @@ window.modPage = {
   initEvent: function () {
     this.$el.on('click', 'tbody tr', function (eve) {
       let $curr = $(eve.currentTarget);
-      let key = $curr.attr('id');
+      let key = $curr.attr('id').replace('js-', '');
       let currInfo = this.tableDataMap[key];
 
       this.currRowKey = key;
@@ -143,7 +143,7 @@ window.modPage = {
 
   updateRow: function (id, data) {
     let html = this.getRowsHTML(this.getRenderData([data]));
-    let $row = $('#' + id);
+    let $row = $('#js-' + id);
     $row.html($(html).html());
   },
 
@@ -292,7 +292,7 @@ window.modPage = {
       let cls = item.id === this.currRowKey ? 'active' : '';
 
       return [
-        `<tr id="${item.key}" class="${cls}">`,
+        `<tr id="js-${item.key}" class="${cls}">`,
         // `  <td>${arr.slice(-1)}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span></td>`,
         `  <td>
              <div class="network-name" title="${item.name[0]}">
