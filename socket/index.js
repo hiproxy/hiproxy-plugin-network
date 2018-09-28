@@ -174,7 +174,7 @@ function parseRequest (req, res, proxy, data) {
   result.bodyLength = (res.body || '').length;
 
   //通过contentType和method判断出来显示方式和queryData
-  result.queryObject = getQueryObject(req.method, result.url.query, result.resContentType, req.body);
+  result.queryObject = getQueryObject(req.method, result.url.query, result.reqContentType, req.body);
 
   return JSON.stringify(result);
 }
@@ -191,7 +191,7 @@ function getQueryObject (method, query, contentType, body) {
   if (contentType && contentType.indexOf('application/json') > -1) {
     return {
       keyName: 'Request Payload',
-      object: query2string(body)
+      object: JSON.parse(body)
     }
   }
 
