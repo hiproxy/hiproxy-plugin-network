@@ -193,7 +193,7 @@ window.networkDetail = window.ND = {
     }
     let type = contentType.split(';')[0];
 
-    if (/(html|css|javascript)/.test(type)) {
+    if (/(html|css|javascript|json)/.test(type)) {
       let $code = this.$el.find('section.body pre');
       $code.addClass(type.split('/')[1]);
       hljs.highlightBlock($code[0]);
