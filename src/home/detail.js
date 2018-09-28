@@ -134,7 +134,7 @@ window.networkDetail = window.ND = {
     ];
     if (info.queryObject.object) {
       html.push(
-        this.renderSection(info.queryObject.keyName, info.queryObject.object)
+        this.renderSection(info.queryObject.keyName, info.queryObject.object, false)
       )
     }
     html.join('');
@@ -142,16 +142,17 @@ window.networkDetail = window.ND = {
     this.$el.find('section.body').scrollTop(0).html(html);
   },
 
-  renderSection: function (title, info) {
+  renderSection: function (title, info, fixKey) {
     let html = [
       `<h3 class="group-header">${title}</h3>`,
       `<ul class="list">`,
     ];
 
+    fixKey = fixKey !== false;
+
     for (let key in info) {
-      
       html.push(
-        `<li><strong>${this.fixKey(key)}:</strong> <span>${info[key]}</span></li>`
+        `<li><strong>${fixKey ? this.fixKey(key) : key}:</strong> <span>${info[key]}</span></li>`
       )
     }
 
