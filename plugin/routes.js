@@ -47,6 +47,12 @@ module.exports = [
         if (!socketInstance) {
           socketInstance = new Socket();
 
+          hiproxyServer.on('request', function (detail) {
+            var req = detail.req;
+            var res = detail.res;
+            socketInstance.emit('request', req, res);
+          });
+
           hiproxyServer.on('data', function (detail) {
             var data = detail.data;
             var req = detail.req;

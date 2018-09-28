@@ -21,8 +21,7 @@ window.modPage = {
   initEvent: function () {
     this.$el.on('click', 'tbody tr', function (eve) {
       let $curr = $(eve.currentTarget);
-      let data = $curr.data();
-      let key = data.key;
+      let key = $curr.attr('id');
       let currInfo = this.tableDataMap[key];
 
       this.currRowKey = key;
@@ -83,8 +82,7 @@ window.modPage = {
       $('.js-hiproxy-server').html(data.localIP + ':' + data.httpPort)
     });
 
-    socket.on('data', data => {
-      let maxLen = 1 * 1024 * 1024;
+    socket.on('response', data => {
       let obj = JSON.parse(data);
       let path = obj.path;
       let isSocketIOURL = /^\/(socket\.io|network)/.test(path);
@@ -94,35 +92,62 @@ window.modPage = {
         return;
       }
 
-      this.onArrive(obj);
+      this.onResponse(obj);
+    });
+
+    socket.on('request', data => {
+      let obj = JSON.parse(data);
+      this.onRequest(obj);
     });
 
     socket.on('connectreq', data => {
       if (data.hostname === location.hostname && data.port === '9998') {
         // 忽略插件本身的请求
       } else {
-        this.onArrive(data);
+        this.onRequest(data);
       }
     });
   },
 
-  onArrive: function (data) {
-    this.tableData.push(data);
+  onRequest: function (data) {
+    let {tableData} = this;
 
+    data.statusCode = 'pending';
+    data.index = tableData.length;
+
+    this.tableData.push(data);
     this.renderTable();
   },
 
+  onResponse: function (data) {
+    let {id} = data;
+    let {tableData, tableDataMap} = this;
+    let currInfo = tableDataMap[id];
+    let {index} = currInfo;
+
+    if (tableData[index]) {
+      tableData[index] = data;
+    }
+
+    this.updateRow(id, data);
+  },
+
   renderTable: function () {
-    let data = this.getRenderData();
-    let html = this.getTableHTML(data);
+    let data = this.getRenderData(this.tableData);
+    let fixedData = this.fixData(data);
+    let html = this.getRowsHTML(fixedData);
 
     $('#js-table-body').html(html);
     this.scrollToBottom('#js-body');
   },
 
-  getRenderData: function () {
-    let data = this.tableData;
+  updateRow: function (id, data) {
+    let html = this.getRowsHTML(this.getRenderData([data]));
+    let $row = $('#' + id);
+    $row.html($(html).html());
+  },
 
+  getRenderData: function (data) {
     let renderData = data && data.map((item, index) => {
       let {id, resHeaders = {}, bodyLength, statusCode, url, method, hostname, port, path, time} = item;
       let contentType = resHeaders['content-type'] || '';
@@ -131,8 +156,11 @@ window.modPage = {
 
       this.tableDataMap[id] = item;
   
+      item.index = index;
+
       if (item.type === 'connect') {
         return {
+          index: index,
           key: id,
           name: ['UNKNOW', 'ssl-error'],
           id: id,
@@ -149,12 +177,13 @@ window.modPage = {
       }
   
       let {host, protocol = ''} = url;
-  
+
       return {
+        index: index,
         key: id,
         name: [item.url.path, fileType],
         id: id,
-        method: method,
+        method: method || '',
         protocol: protocol.replace(':', '').toUpperCase(),
         status: statusCode,
         address: host,
@@ -167,9 +196,11 @@ window.modPage = {
       };
     });
 
-    renderData = this.filterRenderData(renderData);
-
     return renderData;
+  },
+
+  fixData: function (list) {
+    return this.filterRenderData(list);
   },
 
   filterRenderData: function (list) {
@@ -255,13 +286,13 @@ window.modPage = {
     return fileType;
   },
 
-  getTableHTML: function (data) {
-    let html = data.map(item => {
+  getRowsHTML: function (data) {
+    let html = data.map((item, index) => {
       let arr = item.name[0].split('/');
       let cls = item.id === this.currRowKey ? 'active' : '';
 
       return [
-        `<tr data-key=${item.key} class="${cls}">`,
+        `<tr id="${item.key}" class="${cls}">`,
         // `  <td>${arr.slice(-1)}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span></td>`,
         `  <td>
              <div class="network-name" title="${item.name[0]}">
@@ -281,7 +312,7 @@ window.modPage = {
         `  <td title="${item.size}">${this.formatSize(item.size)}</td>`,
         `  <td title="${item.time}">${this.formatTime(item.time)}</td>`,
         `</tr>`
-      ]
+      ].join('\n');
     });
 
     return html.join('');
@@ -300,7 +331,6 @@ window.modPage = {
 
     $body.scrollTop(newScrollTop);
   },
-
 
   scrollToTop: function (selector) {
     let $body = $(selector);

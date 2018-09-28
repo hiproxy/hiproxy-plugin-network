@@ -36,8 +36,27 @@ function SocketServer () {
     if (!eventBound) {
       eventBound = true;
 
+      self.on('request', function (req, res) {
+        var shouldIgnore = shouldIgnoreRequest(req);
+
+        if (shouldIgnore) {
+          return;
+        }
+
+        var socketData = parseRequest(req, res);
+
+        for (var id in me.sockets) {
+          me.sockets[id].emit('request', socketData);
+        }
+      });
+
       self.on('response', function (req, res, proxy) {
-        var hiproxy = global.hiproxyServer;
+        var shouldIgnore = shouldIgnoreRequest(req);
+
+        if (shouldIgnore) {
+          return;
+        }
+  
         if (!streamArray[req.requestId]) {
           streamArray[req.requestId] = '';
         }
@@ -47,23 +66,6 @@ function SocketServer () {
           delete res.headers['content-length'];
         }
 
-        var urlInfo = url.parse(req.url);
-        var reqPort = Number(urlInfo.port);
-        
-        if (!urlInfo.hostname) {
-          return;
-        }
-
-        // 忽略hiproxy以及插件的请求，不发送到浏览器端
-        if (urlInfo.hostname === '127.0.0.1' && (reqPort === PORT || reqPort === hiproxy.httpPort || reqPort === hiproxy.httpsPort)) {
-          log.debug('hiproxy or plugin requests, ignore', req.url);
-          return;
-        }
-
-        if (urlInfo.hostname === 'hi.proxy') {
-          log.debug('hi.proxy request, ignore', req.url);
-          return;
-        }
 
         let key = req.requestId;
         let socketData = parseRequest(req, res, proxy, streamArray[key]);
@@ -79,7 +81,7 @@ function SocketServer () {
         });
 
         for (var id in me.sockets) {
-          me.sockets[id].emit('data', socketData);
+          me.sockets[id].emit('response', socketData);
         }
       });
 
@@ -109,10 +111,34 @@ function SocketServer () {
 SocketServer.prototype = {
   constructor: SocketServer,
   getSocketData: function (reqId) {
+    // TODO 删除streamArray逻辑
     return streamArray[reqId];
   },
   __proto__: EventEmitter.prototype
 };
+
+function shouldIgnoreRequest (req) {
+  var hiproxy = global.hiproxyServer;
+  var urlInfo = url.parse(req.url);
+  var reqPort = Number(urlInfo.port);
+    
+  if (!urlInfo.hostname) {
+    return true;
+  }
+
+  // 忽略hiproxy以及插件的请求，不发送到浏览器端
+  if (urlInfo.hostname === '127.0.0.1' && (reqPort === PORT || reqPort === hiproxy.httpPort || reqPort === hiproxy.httpsPort)) {
+    log.debug('hiproxy or plugin requests, ignore', req.url);
+    return true;
+  }
+
+  if (urlInfo.hostname === 'hi.proxy') {
+    log.debug('hi.proxy request, ignore', req.url);
+    return true;
+  }
+
+  return false;
+}
 
 function getPageData () {
   var t = hiproxyServer;
@@ -131,7 +157,7 @@ function parseRequest (req, res, proxy, data) {
 
   res.headers = res.headers || {};
   result.headers = result.headers || {};
-  result.originLength = data.length;
+  result.originLength = (data || '').length;
   result.socketData = '';
   result.resContentType = res.headers['content-type'] || '';
   result.reqContentType = result.headers['content-type'] || '';
