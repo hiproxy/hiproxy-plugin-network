@@ -97,6 +97,7 @@ window.networkDetail = window.ND = {
     this.$el.find('header .tab').first().addClass('active');
     window.$eve.trigger('hide.detail', {});
   },
+
   renderPreview: function () {
     //TODO 这里需要一个插件来处理了
     let netWorkInfo = this.netWorkInfo;
@@ -106,14 +107,17 @@ window.networkDetail = window.ND = {
     $.ajax('/fetchresponse?reqId=' + id + '&contentType=' + resContentType, {dataType: 'text'})
     .then(function (body, status, xhr) {
       let json = JSON.parse(xhr.responseText);
+      let $body = this.$el.find('section.body');
+
+      $body.html('<div class="json-preview"></div>');
+
       jsonv(
-        this.$el.find('section.body').scrollTop(0)[0],
+        $body.find('.json-preview').scrollTop(0)[0],
         json
       )
     }.bind(this));
-
-    
   },
+
   renderRequest: function () {
     let info = this.netWorkInfo;
     let generalInfo = {
