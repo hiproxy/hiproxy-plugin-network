@@ -187,7 +187,7 @@ window.networkDetail = window.ND = {
   },
 
   _renderResponse: function (body, contentType) {
-    this.$el.find('section.body').scrollTop(0).html(body);
+    this.$el.find('section.body').scrollTop(0).scrollLeft(0).html(body);
 
     if (!contentType) {
       return;
