@@ -181,11 +181,22 @@ window.networkDetail = window.ND = {
     $.ajax('/fetchresponse?reqId=' + id + '&contentType=' + resContentType, {dataType: 'text'})
     .then(function (body, status, xhr) {
       let text = xhr.responseText;
-      this._renderResponse('<pre>' + text.replace(/</g, '&lt;') + '</pre>');
+      this._renderResponse('<pre>' + text.replace(/</g, '&lt;') + '</pre>', resContentType);
     }.bind(this));
   },
 
-  _renderResponse: function (body) {
+  _renderResponse: function (body, contentType) {
     this.$el.find('section.body').scrollTop(0).html(body);
+
+    if (!contentType) {
+      return;
+    }
+    let type = contentType.split(';')[0];
+
+    if (/(html|css|javascript)/.test(type)) {
+      let $code = this.$el.find('section.body pre');
+      $code.addClass(type.split('/')[1]);
+      hljs.highlightBlock($code[0]);
+    }
   }
 };

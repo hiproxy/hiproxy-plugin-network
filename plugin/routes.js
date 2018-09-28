@@ -39,11 +39,11 @@ module.exports = [
   {
     route: '/network/(*)',
     render: function (route, request, response) {
-      var pageName = route._ || 'src/page/index.html';
+      var pageName = route._ || 'src/home/index.html';
       var filePath = path.join(__dirname, '..', pageName);
       var hiproxyServer = global.hiproxyServer;
 
-      if (pageName === 'src/page/index.html') {
+      if (pageName === 'src/home/index.html') {
         if (!socketInstance) {
           socketInstance = new Socket();
 
