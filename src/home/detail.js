@@ -72,7 +72,7 @@ window.networkDetail = window.ND = {
     }
     this.netWorkInfo = info;
     this.$el.find('header .tab.preview').hide();
-    if (info.resContentType.indexOf('json') > -1) {
+    if (info.resContentType && info.resContentType.indexOf('json') > -1) {
       this.$el.find('header .tab.preview').show();
     }
     let role = this.$el.find('header .tab.active').data('role');
@@ -132,7 +132,7 @@ window.networkDetail = window.ND = {
       this.renderSection('Request Headers', info.headers),
       this.renderSection('Response Headers', info.resHeaders)
     ];
-    if (info.queryObject.object) {
+    if (info.queryObject && info.queryObject.object) {
       html.push(
         this.renderSection(info.queryObject.keyName, info.queryObject.object, false)
       )

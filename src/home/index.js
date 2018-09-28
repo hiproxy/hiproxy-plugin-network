@@ -112,7 +112,9 @@ window.modPage = {
   onRequest: function (data) {
     let {tableData} = this;
 
-    data.statusCode = 'pending';
+    if (data.method !== 'CONNECT') {
+      data.statusCode = 'pending';
+    }
     data.index = tableData.length;
 
     this.tableData.push(data);
