@@ -11,9 +11,7 @@ var os = require('os');
 var fs = require('fs');
 var url = require('url');
 var skt = require('socket.io');
-var zlib = require('zlib');
 var socketObj = null;
-var streamArray = {};
 var PORT = 9998;
 
 function SocketServer () {
@@ -30,7 +28,6 @@ function SocketServer () {
 
   io.on('connection', function (socket) {
     socketObj = socket;
-    streamArray = {};
     var me = this;
 
     if (!eventBound) {
@@ -56,10 +53,6 @@ function SocketServer () {
         if (shouldIgnore) {
           return;
         }
-  
-        if (!streamArray[req.requestId]) {
-          streamArray[req.requestId] = '';
-        }
 
         // gzip过后,content-length没了,所以计算一下
         if (res.headers && res.headers['content-encoding'] === 'gzip') {
@@ -68,7 +61,7 @@ function SocketServer () {
 
 
         let key = req.requestId;
-        let socketData = parseRequest(req, res, proxy, streamArray[key]);
+        let socketData = parseRequest(req, res, proxy);
 
         let filePath = path.join(os.tmpdir(), '.hiproxy-network-cache', key);
 
@@ -100,8 +93,6 @@ function SocketServer () {
           });
         }
       });
-    } else {
-      streamArray = {};
     }
 
     socketObj.emit('ready', getPageData());
@@ -110,10 +101,6 @@ function SocketServer () {
 
 SocketServer.prototype = {
   constructor: SocketServer,
-  getSocketData: function (reqId) {
-    // TODO 删除streamArray逻辑
-    return streamArray[reqId];
-  },
   __proto__: EventEmitter.prototype
 };
 
@@ -157,8 +144,7 @@ function parseRequest (req, res, proxy, data) {
 
   res.headers = res.headers || {};
   result.headers = result.headers || {};
-  result.originLength = (data || '').length;
-  result.socketData = '';
+  result.originLength = (res.body || '').length;
   result.resContentType = res.headers['content-type'] || '';
   result.reqContentType = result.headers['content-type'] || '';
   result.id = req.requestId;
