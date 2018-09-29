@@ -189,8 +189,8 @@ window.modPage = {
         protocol: protocol.replace(':', '').toUpperCase(),
         status: statusCode,
         address: host,
-        targetAddress: hostname ? hostname + (port ? ':' + port : '') : '',
-        targetPath: path || '',
+        targetAddress: this.getTargetAddress(item),
+        targetPath: this.getTargetPath(item),
         // type: getContentType(contentType),
         type: contentType,
         size: length, // getSizeLabel(length),
@@ -199,6 +199,24 @@ window.modPage = {
     });
 
     return renderData;
+  },
+
+  getTargetAddress: function (item) {
+    let {proxyType, proxyPass, hostname, port} = item; 
+    if (proxyType === 'ALIAS') {
+      return proxyPass;
+    } else {
+      hostname ? hostname + (port ? ':' + port : '') : '';
+    }
+  },
+
+  getTargetPath: function (item) {
+    let {proxyType, url, path=''} = item; 
+    if (proxyType === 'ALIAS') {
+      return url.pathname;
+    } else {
+      return path;
+    }
   },
 
   fixData: function (list) {
