@@ -71,8 +71,11 @@ window.networkDetail = window.ND = {
       throw Error('window.networkDetail.show(info) -> `info` should not be empty.'); 
     }
     this.netWorkInfo = info;
+
+    let resContentType = info.res.headers['content-type']; 
+
     this.$el.find('header .tab.preview').hide();
-    if (info.resContentType && info.resContentType.indexOf('json') > -1) {
+    if (resContentType && resContentType.indexOf('json') > -1) {
       this.$el.find('header .tab.preview').show();
     }
     let role = this.$el.find('header .tab.active').data('role');
@@ -101,7 +104,7 @@ window.networkDetail = window.ND = {
   renderPreview: function () {
     let netWorkInfo = this.netWorkInfo;
     let id = netWorkInfo.id;
-    let resContentType = netWorkInfo.resContentType;
+    let resContentType = netWorkInfo.res.headers['content-type'];
 
     $.ajax('/fetchresponse?reqId=' + id + '&contentType=' + resContentType, {dataType: 'text'})
     .then(function (body, status, xhr) {
@@ -174,7 +177,7 @@ window.networkDetail = window.ND = {
     let id = netWorkInfo.id;
     let resContentType = res.headers['content-type'] || '';
 
-    if (netWorkInfo.method === 'CONNECT') {
+    if (netWorkInfo.req.method === 'CONNECT') {
       return this._renderResponse('');
     }
 

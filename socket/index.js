@@ -81,7 +81,7 @@ function SocketServer () {
       self.on('connect', function (hostname, port, request, socket, head) {
         for (var key in me.sockets) {
           request.url = 'https://' + request.url;
-          me.sockets[key].emit('connectreq', parseRequest(request, {}, {}));
+          me.sockets[key].emit('connectreq', parseRequest(request, {headers:{}}, {}));
         }
       });
     }
