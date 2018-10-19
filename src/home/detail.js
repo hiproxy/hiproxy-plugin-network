@@ -99,7 +99,6 @@ window.networkDetail = window.ND = {
   },
 
   renderPreview: function () {
-    //TODO 这里需要一个插件来处理了
     let netWorkInfo = this.netWorkInfo;
     let id = netWorkInfo.id;
     let resContentType = netWorkInfo.resContentType;
