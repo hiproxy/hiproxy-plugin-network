@@ -80,17 +80,8 @@ function SocketServer () {
 
       self.on('connect', function (hostname, port, request, socket, head) {
         for (var key in me.sockets) {
-          me.sockets[key].emit('connectreq', {
-            type: 'connect',
-            hostname: hostname,
-            port: port,
-            method: 'CONNECT',
-            headers: {},
-            body: '',
-            id: request.requestId,
-            startTime: request._startTime,
-            url: url.parse('https://' + hostname + (port ? ':' + port : ':443'))
-          });
+          request.url = 'https://' + request.url;
+          me.sockets[key].emit('connectreq', parseRequest(request, {}, {}));
         }
       });
     }
@@ -140,60 +131,114 @@ function getPageData () {
 }
 
 function parseRequest (req, res, proxy, data) {
-  var result = JSON.parse(JSON.stringify(proxy || {}));
+  var resultInfo = {};
+  var urlInfo = url.parse(req.url);
 
-  res.headers = res.headers || {};
-  result.headers = result.headers || {};
-  result.originLength = (res.body || '').length;
-  result.resContentType = res.headers['content-type'] || '';
-  result.reqContentType = result.headers['content-type'] || '';
-  result.id = req.requestId;
-  result.newUrl = req.newUrl;
-  result.statusCode = res.statusCode;
-  result.statusMessage = res.statusMessage || '';
-  result.time = Date.now() - req._startTime;
-  result.resHeaders = JSON.parse(JSON.stringify(res.headers));
-  result.url = url.parse(req.url);
-  result.body = req.body;
-  result.querystring = (result.path || '').split('?').slice(1).join('?');
-  result.startTime = req._startTime;
-  result.bodyLength = (res.body || '').length;
-
+  resultInfo.id = req.requestId;
+  resultInfo.proxy = JSON.parse(JSON.stringify(proxy || {}));
+  resultInfo.req = getReqInfo(req);
+  resultInfo.originalReq = req.originalInfo || {};
+  resultInfo.res = getResInfo(res);
+  resultInfo.originalRes = res.originalInfo || {};
+  resultInfo.time = Date.now() - req._startTime;
+  resultInfo.urlInfo = urlInfo;
   //通过contentType和method判断出来显示方式和queryData
-  result.queryObject = getQueryObject(req.method, result.url.query, result.reqContentType, req.body);
+  resultInfo.queryObject = getQueryObject(req.method, urlInfo.query, req.headers['content-type'], req.body);
 
-  return JSON.stringify(result);
+  return JSON.stringify(resultInfo);
+}
+
+function getReqInfo(req) {
+  var obj = {};
+  var props = [
+    // 标准属性
+    'headers',
+    'httpVersion',
+    'method',
+    'rawHeaders',
+    'rawTrailers',
+    'trailers',
+    'url',
+
+    // 自定义属性
+    'requestId',
+    // 'body',
+    '_startTime'
+  ];
+
+  props.forEach(function (key) {
+    if (typeof req[key] === 'object') {
+      obj[key] = JSON.parse(JSON.stringify(req[key]));
+    } else {
+      obj[key] = req[key];
+    }
+  });
+
+  obj.urlInfo = url.parse(obj.url);
+
+  return obj;
+}
+
+function getResInfo(res) {
+  var obj = {};
+  var props = [
+    // 标准属性
+    'headers',
+    'httpVersion',
+    'method',
+    'rawHeaders',
+    'rawTrailers',
+    'statusCode',
+    'statusMessage',
+    'trailers'//,
+
+    // 自定义属性
+    // 'body'
+  ];
+
+  props.forEach(function (key) {
+    if (typeof res[key] === 'object') {
+      obj[key] = JSON.parse(JSON.stringify(res[key]));
+    } else {
+      obj[key] = res[key];
+    }
+  });
+
+  obj.body = {
+    length: (res.body || '').length
+  }
+
+  return obj;
 }
 
 function getQueryObject (method, query, contentType, body) {
-
-  if (method && method.toLowerCase() === 'get') {
+  if (query && method && method.toLowerCase() === 'get') {
     return {
       keyName: 'Query String Parameters',
       object: query2string(query)
     }
   }
 
-  if (contentType && contentType.indexOf('application/json') > -1) {
+  if (body && contentType && contentType.indexOf('application/json') > -1) {
     return {
       keyName: 'Request Payload',
       object: JSON.parse(body)
     }
   }
 
-  if (contentType && contentType.indexOf('x-www-form-urlencoded') > -1) {
+  if (body && contentType && contentType.indexOf('x-www-form-urlencoded') > -1) {
     return {
       keyName: 'Form Data',
       object: query2string(body)
     }
   }
 
-  return {
+  return body || query ? {
     keyName: 'Plain Text',
     object: {
       'Plain Text': body || query || ''
     }
-  };
+  } : null;
 }
 
 function query2string(query) {
