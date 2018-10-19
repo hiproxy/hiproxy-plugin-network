@@ -126,6 +126,11 @@ window.modPage = {
     let {id} = data;
     let {tableData, tableDataMap} = this;
     let currInfo = tableDataMap[id];
+
+    if (!currInfo) {
+      return;
+    }
+
     let {index} = currInfo;
 
     if (tableData[index]) {
