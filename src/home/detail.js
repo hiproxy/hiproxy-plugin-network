@@ -123,7 +123,7 @@ window.networkDetail = window.ND = {
   renderRequest: function () {
     let info = this.netWorkInfo;
 
-    let {req, res, proxy, urlInfo, queryObject} = info;
+    let {req, res, proxy, urlInfo, queryObject, originalReq, originalRes} = info;
     let generalInfo = {
       'Request URL': urlInfo.href,
       'Proxy URL': proxy.url || '',
@@ -132,9 +132,9 @@ window.networkDetail = window.ND = {
       'Remote Address': proxy.hostname || ''
     };
     let html = [
-      this.renderSection('General', generalInfo),
-      this.renderSection('Request Headers', req.headers),
-      this.renderSection('Response Headers', res.headers)
+      this.renderSection('General', generalInfo, true, generalInfo),
+      this.renderSection('Request Headers', req.headers, true, originalReq.headers),
+      this.renderSection('Response Headers', res.headers, true, originalRes.headers),
     ];
 
     if (queryObject && queryObject.object) {
@@ -147,17 +147,19 @@ window.networkDetail = window.ND = {
     this.$el.find('section.body').scrollTop(0).html(html);
   },
 
-  renderSection: function (title, info, fixKey) {
+  renderSection: function (title, info, fixKey, originalInfo) {
     let html = [
       `<h3 class="group-header">${title}</h3>`,
       `<ul class="list">`,
     ];
+    let isAddedByHiproxy = false;
 
     fixKey = fixKey !== false;
 
     for (let key in info) {
+      isAddedByHiproxy = !originalInfo || (originalInfo[key] !== info[key]);
       html.push(
-        `<li><strong>${fixKey ? this.fixKey(key) : key}:</strong> <span>${info[key]}</span></li>`
+        `<li ${isAddedByHiproxy ? 'by-hiproxy="true" title="Added/Modified by hiproxy"' : ''}><strong>${fixKey ? this.fixKey(key) : key}:</strong> <span>${info[key]}</span></li>`
       )
     }
 

@@ -397,6 +397,10 @@ table .text-gray {
   word-break: break-all;
 }
 
+.network-detail ul.list li[by-hiproxy] {
+  text-decoration: underline;
+}
+
 .network-detail ul.list li span {
   font-family: monospace;
   color: #353535;
