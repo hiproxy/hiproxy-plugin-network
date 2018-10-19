@@ -120,21 +120,24 @@ window.networkDetail = window.ND = {
 
   renderRequest: function () {
     let info = this.netWorkInfo;
+
+    let {req, res, proxy, urlInfo, queryObject} = info;
     let generalInfo = {
-      'Request URL': info.url.href,
-      'Proxy URL': info.newUrl || '',
-      'Request Method': info.method,
-      'Status Code': info.statusCode || '',
-      'Remote Address': info.hostname || ''
+      'Request URL': urlInfo.href,
+      'Proxy URL': proxy.url || '',
+      'Request Method': req.method,
+      'Status Code': res.statusCode || '',
+      'Remote Address': proxy.hostname || ''
     };
     let html = [
       this.renderSection('General', generalInfo),
-      this.renderSection('Request Headers', info.headers),
-      this.renderSection('Response Headers', info.resHeaders)
+      this.renderSection('Request Headers', req.headers),
+      this.renderSection('Response Headers', res.headers)
     ];
-    if (info.queryObject && info.queryObject.object) {
+
+    if (queryObject && queryObject.object) {
       html.push(
-        this.renderSection(info.queryObject.keyName, info.queryObject.object, false)
+        this.renderSection(queryObject.keyName, queryObject.object, false)
       )
     }
     html.join('');
@@ -167,15 +170,16 @@ window.networkDetail = window.ND = {
 
   renderResponse: function () {
     let netWorkInfo = this.netWorkInfo;
+    let {res} = netWorkInfo;
     let regImg = /png|jpg|jpeg|gif|webp|bmp|svg|ico|icon/;
     let id = netWorkInfo.id;
-    let resContentType = netWorkInfo.resContentType;
+    let resContentType = res.headers['content-type'] || '';
 
     if (netWorkInfo.method === 'CONNECT') {
       return this._renderResponse('');
     }
 
-    if (netWorkInfo.resContentType.match(regImg)) {
+    if (resContentType.match(regImg)) {
       return this._renderResponse('<img src="' + '/fetchresponse?reqId=' + id + '&contentType=' + resContentType + '"/>')
     }
 

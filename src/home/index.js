@@ -104,7 +104,8 @@ window.modPage = {
       if (data.hostname === location.hostname && data.port === '9998') {
         // 忽略插件本身的请求
       } else {
-        this.onRequest(data);
+        let obj = JSON.parse(data);
+        this.onRequest(obj);
       }
     });
   },
@@ -112,8 +113,8 @@ window.modPage = {
   onRequest: function (data) {
     let {tableData} = this;
 
-    if (data.method !== 'CONNECT') {
-      data.statusCode = 'pending';
+    if (data.req.method !== 'CONNECT' && data.res) {
+      data.res.statusCode = 'pending';
     }
     data.index = tableData.length;
 
@@ -151,16 +152,12 @@ window.modPage = {
 
   getRenderData: function (data) {
     let renderData = data && data.map((item, index) => {
-      let {id, resHeaders = {}, bodyLength, statusCode, url, method, hostname, port, path, time} = item;
-      let contentType = resHeaders['content-type'] || '';
-      let length = resHeaders['content-length'] || bodyLength;
-      let fileType = this.getFileType(item);
-
+      let {id, req, res, urlInfo, time} = item;
       this.tableDataMap[id] = item;
-  
+
       item.index = index;
 
-      if (item.type === 'connect') {
+      if (item.req.method === 'CONNECT') {
         return {
           index: index,
           key: id,
@@ -169,7 +166,7 @@ window.modPage = {
           method: 'CONNECT',
           protocol: 'HTTPS',
           status: '',
-          address: hostname + ':' + port,
+          address: urlInfo.hostname + ':' + urlInfo.port,
           targetAddress: '',
           targetPath: '',
           type: '',
@@ -178,22 +175,20 @@ window.modPage = {
         };
       }
   
-      let {host, protocol = ''} = url;
-
       return {
         index: index,
         key: id,
-        name: [item.url.path, fileType],
+        name: [urlInfo.path, this.getFileType(item)],
         id: id,
-        method: method || '',
-        protocol: protocol.replace(':', '').toUpperCase(),
-        status: statusCode,
-        address: host,
+        method: req.method || '',
+        protocol: (urlInfo.protocol || '').replace(':', '').toUpperCase(),
+        status: res.statusCode,
+        address: urlInfo.host,
         targetAddress: this.getTargetAddress(item),
         targetPath: this.getTargetPath(item),
         // type: getContentType(contentType),
-        type: contentType,
-        size: length, // getSizeLabel(length),
+        type: res.headers['content-type'] || '',
+        size: res.headers['content-length'] || res.body.length, // getSizeLabel(length),
         time: time // getTimeLabel(time)
       };
     });
@@ -202,20 +197,21 @@ window.modPage = {
   },
 
   getTargetAddress: function (item) {
-    let {proxyType, proxyPass, hostname, port} = item; 
-    if (proxyType === 'ALIAS') {
-      return proxyPass;
+    let {proxy, urlInfo} = item; 
+    if (proxy.proxyType === 'ALIAS') {
+      return proxy.proxyPass;
     } else {
-      hostname ? hostname + (port ? ':' + port : '') : '';
+      let {hostname, port} = urlInfo;
+      return hostname ? hostname + (port ? ':' + port : '') : '';
     }
   },
 
   getTargetPath: function (item) {
-    let {proxyType, url, path=''} = item; 
-    if (proxyType === 'ALIAS') {
-      return url.pathname;
+    let {proxy, urlInfo} = item; 
+    if (proxy.proxyType === 'ALIAS') {
+      return urlInfo.pathname;
     } else {
-      return path;
+      return urlInfo.path || '';
     }
   },
 
@@ -278,8 +274,8 @@ window.modPage = {
       'jpg', 'png', 'pdf', 'json', 'svg', 'gif', 'ico',
       'txt', 'xml', 'zip'
     ];
-    let {resHeaders = {}} = t;
-    let contentType = resHeaders['content-type'] || '';
+    let {res} = t;
+    let contentType = res.headers['content-type'] || '';
     let fileType = contentType.split(';')[0].split('/')[1] || '';
     if (t.type === 'connect') {
       return 'ssl-error';
@@ -318,7 +314,7 @@ window.modPage = {
              <div class="network-name" title="${item.name[0]}">
                <img class="file-type-img" src="icons/${item.name[1]}.png" alt="">
                <span class="url-path">
-               ${arr.slice(-1)[0] || '/'}<br/><span class="text-gray">${arr.slice(0, -1).join('/')}</span>
+               ${arr.slice(-1)[0] || '/'}<br/><span class="text-gray">${arr.slice(0, -1).join('/') || '&nbsp;'}</span>
                </span>
              </div>
            </td>`,
