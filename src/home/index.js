@@ -75,10 +75,10 @@ window.modPage = {
 
     socket.on('ready', (data) => {
       console.log('page ready:', data);
-      // {httpPort: 5525, proxyPath: "/proxy.pac?type=view", sslPath: "/ssl-certificate", httpsPort: 10010, workspace: "/Users/zdying/Desktop"}
+      // {httpPort: 5525, proxyPath: "/proxy.pac?type=view", certPath: "/ssl-certificate", httpsPort: 10010, workspace: "/Users/zdying/Desktop"}
       $('.js-link-pac').attr('href', data.pacPath);
       $('.js-link-cert').attr('href', data.certPath);
-      $('#js-qrcode-cert').attr('src', window.jrQrcode.getQrBase64('http://hi.proxy' + data.sslPath));
+      $('#js-qrcode-cert').attr('src', window.jrQrcode.getQrBase64('http://hi.proxy' + data.certPath));
       $('.js-hiproxy-server').html(data.localIP + ':' + data.httpPort)
     });
 
